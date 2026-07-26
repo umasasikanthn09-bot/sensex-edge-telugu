@@ -1,0 +1,36 @@
+# Query: Today's Levels
+# ContextLines: 1
+
+6 results - 3 files
+
+app\page.tsx:
+  32              <a href="#" className="hover:text-yellow-400">Home</a>
+  33:            <a href="/premium" className="hover:text-yellow-400">
+  Today's Levels
+</a>
+  34              <a href="#" className="hover:text-yellow-400">About</a>
+
+  64            <a
+  href="/premium"
+  className="border border-yellow-400 px-8 py-4 rounded-xl hover:bg-yellow-400 hover:text-black transition inline-block"
+>
+  📈 Today's Levels
+</a>
+
+app\admin\page backup.tsx:
+   22  
+   23:     alert("✅ Today's Levels Saved Successfully!");
+   24    } catch (error) {
+
+  304  >
+  305:   💾 Save Today's Levels
+  306  </button>
+
+app\admin\page.tsx:
+  167  
+  168: alert("✅ Today's Levels Saved Successfully!");
+  169    } catch (error: any) {
+
+  520  >
+  521:   💾 Save Today's Levels
+  522  </button>
