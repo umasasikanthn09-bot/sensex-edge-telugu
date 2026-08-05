@@ -469,7 +469,7 @@
         });
 
         // Page Navigation Logic
-        function showPage(pageId) {
+        function handleMemberLogin()
             document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
             const targetPage = document.getElementById(pageId);
             if (targetPage) targetPage.classList.remove('hidden');
