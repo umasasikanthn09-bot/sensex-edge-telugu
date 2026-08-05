@@ -507,7 +507,9 @@
         // Placeholders for Member / Admin Actions
         function checkMemberStatus() {}
         function sendOtp() { alert('OTP sent successfully!'); }
-        function handleMemberLogin() { showPage('premium'); }
+        function handleMemberLogin() {
+    alert("❌ మీ Account ఇంకా Admin Approval పొందలేదు.\n\nPayment చేసిన తరువాత Screenshot పంపండి.\nAdmin Approval అయిన తరువాత మాత్రమే Login చేయవచ్చు.");
+        }
         function memberLogout() { showPage('home'); }
         function submitPaymentAndRegister() { alert('Payment submitted successfully! Waiting for admin approval.'); showPage('home'); }
         function clearAdminForm() { document.getElementById('adminForm').reset(); }
