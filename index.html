@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensex Edge Telugu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background-color: #050811; 
+            color: #ffffff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            scroll-behavior: smooth; 
+        }
+        .cinematic-title {
+            text-shadow: 0 0 25px rgba(250, 204, 21, 0.4), 0 2px 4px rgba(0, 0, 0, 0.9);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        /* Splash Screen Transition Styles */
+        #splash-screen {
+            transition: opacity 0.8s ease-in-out;
+            z-index: 9999;
+        }
+        .splash-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+        .splash-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-4">
 
+    <!-- Splash Screen Wrapper -->
+    <div id="splash-screen" class="fixed inset-0 bg-[#050811] flex items-center justify-center">
+        <!-- Slide 1: Welcome Card -->
+        <div class="splash-slide active" id="slide1">
+            <div class="text-center p-6 bg-gray-900/90 rounded-2xl border border-yellow-500/30 max-w-sm mx-auto shadow-2xl backdrop-blur-sm">
+                <h1 class="text-2xl md:text-3xl font-bold text-yellow-400 cinematic-title mb-3">
+                    Welcome to Sensex Edge Telugu
+                </h1>
+                <p class="text-gray-300 text-sm md:text-base">
+                    స్టాక్ మార్కెట్ విశ్లేషణ మరియు ప్రత్యక్ష సమాచారం
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Processing / Transition Card -->
+        <div class="splash-slide" id="slide2">
+            <div class="text-center p-6 bg-gray-900/90 rounded-2xl border border-yellow-500/30 max-w-sm mx-auto shadow-2xl backdrop-blur-sm">
+                <h2 class="text-xl font-semibold text-yellow-400 mb-3">డేటా లోడ్ అవుతోంది...</h2>
+                <div class="w-10 h-10 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container (Hidden initially, shown after splash sequence) -->
+    <main id="main-content" class="hidden opacity-0 transition-opacity duration-700 ease-in">
+        <div class="max-w-5xl mx-auto py-6">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-yellow-400 cinematic-title">
+                    Sensex Edge Telugu
+                </h1>
+                <p class="text-gray-400 mt-2 text-sm md:text-base">మార్కెట్ అప్‌డేట్స్ మరియు విశ్లేషణలు</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800 shadow-lg">
+                    <h3 class="text-lg font-bold text-yellow-400 mb-2">SENSEX</h3>
+                    <p class="text-2xl font-semibold text-green-400">+0.45%</p>
+                </div>
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800 shadow-lg">
+                    <h3 class="text-lg font-bold text-yellow-400 mb-2">NIFTY 50</h3>
+                    <p class="text-2xl font-semibold text-green-400">+0.38%</p>
+                </div>
+                <div class="bg-gray-900/80 p-5 rounded-xl border border-gray-800 shadow-lg">
+                    <h3 class="text-lg font-bold text-yellow-400 mb-2">BANK NIFTY</h3>
+                    <p class="text-2xl font-semibold text-red-400">-0.12%</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript to Handle Automatic Slide Transitions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slide1 = document.getElementById('slide1');
+            const slide2 = document.getElementById('slide2');
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+
+            // 1. Welcome Card 2.5 సెకన్ల పాటు కనిపించిన తర్వాత నెక్స్ట్ స్లైడ్‌కు మారుతుంది
+            setTimeout(() => {
+                if (slide1 && slide2) {
+                    slide1.classList.remove('active');
+                    slide2.classList.add('active');
+                }
+            }, 2500);
+
+            // 2. 4.5 సెకన్ల వద్ద Splash Screen ఫేడ్ అయ్యి మెయిన్ కంటెంట్ డిస్ప్లే అవుతుంది
+            setTimeout(() => {
+                if (splashScreen) {
+                    splashScreen.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                        if (mainContent) {
+                            mainContent.classList.remove('hidden');
+                            // Smooth fade-in effect for main content
+                            setTimeout(() => {
+                                mainContent.classList.remove('opacity-0');
+                            }, 50);
+                        }
+                    }, 800); // Wait for CSS opacity 0.8s transition
+                }
+            }, 4500);
+        });
+    </script>
+</body>
+                      </html>
