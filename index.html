@@ -511,7 +511,11 @@
         function memberLogout() { showPage('home'); }
         function submitPaymentAndRegister() { alert('Payment submitted successfully! Waiting for admin approval.'); showPage('home'); }
         function clearAdminForm() { document.getElementById('adminForm').reset(); }
-        function previewPremiumPage() { showPage('premium'); }
+        if(member.approved){
+    showPage("premium");
+}else{
+    alert("మీ Payment ఇంకా Admin Verify చేయలేదు.");
+        }
         function saveAdminLevels() { alert('Levels updated successfully!'); }
         function downloadExcel() { alert('Downloading member data...'); }
     </script>
