@@ -6,31 +6,48 @@
     <title>Sensex Edge Telugu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #050811; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        .cinematic-title {
-            text-shadow: 0 0 25px rgba(250, 204, 21, 0.4), 0 2px 4px rgba(0, 0, 0, 0.9);
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
-        /* Splash Screen Transition Styles */
-        #splash-screen {
-            transition: opacity 0.8s ease-in-out;
-            z-index: 9999;
-        }
-        .splash-slide {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            pointer-events: none;
-        }
-        .splash-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+ /* =========================
+   SENSEX EDGE UI UPDATE
+   ========================= */
+
+/* Thick Outer Boxes */
+.bg-\[\#0b101d\]{
+    border-width:2px !important;
+    border-radius:16px !important;
+    box-shadow:0 0 18px rgba(0,0,0,.35);
+}
+
+/* All Buttons Box Style */
+button,
+a[class*="bg-"]{
+    border-radius:12px !important;
+    border:1.8px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.20),
+        0 6px 14px rgba(0,0,0,.35);
+    transition:.25s ease;
+}
+
+/* Hover Effect */
+button:hover,
+a[class*="bg-"]:hover{
+    transform:translateY(-1px);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,.25),
+        0 10px 20px rgba(0,0,0,.40);
+}
+
+/* Brown Theme */
+.bg-yellow-400{
+    background:#8B5A2B !important;
+    color:#fff !important;
+}
+
+.hover\:bg-yellow-500:hover{
+    background:#6f451f !important;
+}
         <style>
     body {
         background-color: #050811;
