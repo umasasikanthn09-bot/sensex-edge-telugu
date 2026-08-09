@@ -393,31 +393,116 @@
     </div>
 
     <!-- 5. ADMIN DASHBOARD -->
-    <div id="admin" class="page hidden space-y-6 max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-xl mt-4 pb-12">
-        <h2 class="text-xl font-bold text-[#4A5866] text-center mb-4">Sensex Edge Telugu - Admin Dashboard</h2>
-        
-        <!-- Members Database Section -->
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-            <div class="flex flex-wrap justify-between items-center gap-2">
-                <h3 class="text-black font-bold text-sm">👥 Joining Members Database</h3>
-                <button onclick="downloadExcel()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3 py-1.5 rounded text-xs shadow">📥 Download Excel</button>
-            </div>
-            <div class="overflow-x-auto max-h-48 border border-gray-200 rounded-lg bg-white">
-                <table class="w-full text-left text-xs text-gray-700">
-                    <thead class="bg-[#4A5866] text-white sticky top-0">
-                        <tr>
-                            <th class="p-2 border-b border-gray-300">Name</th>
-                            <th class="p-2 border-b border-gray-300">Mobile No</th>
-                            <th class="p-2 border-b border-gray-300">Txn ID</th>
-                            <th class="p-2 border-b border-gray-300 text-center">Action (Approve / Delete)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="members-table-body">
-                        <tr><td colspan="4" class="p-3 text-center text-gray-500">No members joined yet.</td></tr>
-                    </tbody>
-                </table>
-            </div>
+    <!-- 5. ADMIN DASHBOARD -->
+<div id="admin" class="page hidden space-y-6 max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-xl mt-4 pb-12">
+    <h2 class="text-xl font-bold text-[#4A5866] text-center mb-4">Sensex Edge Telugu - Admin Dashboard</h2>
+    
+    <!-- 1ST APP MEMBERS DATABASE SECTION -->
+    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+            <h3 class="text-black font-bold text-sm">👥 1st App - Practice Members Database</h3>
+            <button onclick="downloadExcel()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3 py-1.5 rounded text-xs shadow">📥 Download Excel</button>
         </div>
+        <div class="overflow-x-auto max-h-48 border border-gray-200 rounded-lg bg-white">
+            <table class="w-full text-left text-xs text-gray-700">
+                <thead class="bg-[#4A5866] text-white sticky top-0">
+                    <tr>
+                        <th class="p-2 border-b border-gray-300">Name</th>
+                        <th class="p-2 border-b border-gray-300">Mobile No</th>
+                        <th class="p-2 border-b border-gray-300">Txn ID</th>
+                        <th class="p-2 border-b border-gray-300 text-center">Action (Approve / Delete)</th>
+                    </tr>
+                </thead>
+                <tbody id="members-table-body">
+                    <tr><td colspan="4" class="p-3 text-center text-gray-500">No members joined yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2ND APP (PRO AUTO-TRADING) DATABASE & APPROVALS SECTION -->
+    <div class="bg-gray-900 text-white p-4 rounded-xl border-2 border-cyan-600 space-y-4 shadow-lg">
+        <div class="flex flex-wrap justify-between items-center gap-2 border-b border-gray-800 pb-2">
+            <div class="flex items-center gap-2">
+                <span class="bg-cyan-500 text-gray-950 text-xs font-black px-2 py-0.5 rounded">PRO</span>
+                <h3 class="font-bold text-sm text-cyan-400">🤖 2nd App - Auto Trading Approvals</h3>
+            </div>
+            <button onclick="fetchSecondAppUsers()" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-3 py-1 rounded text-xs shadow transition flex items-center gap-1">
+                🔄 Refresh Data
+            </button>
+        </div>
+
+        <div class="overflow-x-auto max-h-60 border border-gray-800 rounded-lg bg-gray-950">
+            <table class="w-full text-left text-xs text-gray-300">
+                <thead class="bg-cyan-950 text-cyan-300 border-b border-cyan-800 sticky top-0">
+                    <tr>
+                        <th class="p-2.5">User Details</th>
+                        <th class="p-2.5">UTR / Txn ID</th>
+                        <th class="p-2.5 text-center">Screenshot</th>
+                        <th class="p-2.5 text-center">Status</th>
+                        <th class="p-2.5 text-center">Action (30 Days Access)</th>
+                    </tr>
+                </thead>
+                <tbody id="second-app-table-body">
+                    <!-- Sample Data View (JavaScript నుండి డైనమిక్‌గా లోడ్ అవుతుంది) -->
+                    <tr class="border-b border-gray-800 hover:bg-gray-900/50">
+                        <td class="p-2.5">
+                            <div class="font-bold text-white">Ramesh Kumar</div>
+                            <div class="text-[10px] text-gray-400">+91 9876543210</div>
+                        </td>
+                        <td class="p-2.5 font-mono text-yellow-400 font-bold">423891029384</td>
+                        <td class="p-2.5 text-center">
+                            <button onclick="viewScreenshot('sample.jpg')" class="text-cyan-400 hover:underline text-[11px] font-semibold">🔍 View Image</button>
+                        </td>
+                        <td class="p-2.5 text-center">
+                            <span class="bg-amber-950 text-amber-400 border border-amber-800/80 text-[10px] px-2 py-0.5 rounded-full font-bold">Pending</span>
+                        </td>
+                        <td class="p-2.5 text-center">
+                            <div class="flex justify-center gap-1.5">
+                                <button onclick="approveSecondAppUser('USER_123')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded text-[11px]">
+                                    ✓ Approve 30 Days
+                                </button>
+                                <button onclick="rejectSecondAppUser('USER_123')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2 py-1 rounded text-[11px]">
+                                    ✕ Reject
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-[11px] text-gray-400 italic text-right">* "Approve" క్లిక్ చేయగానే 2nd యాప్‌లో ఆటోమేటిక్‌గా 30 రోజుల యాక్సెస్ ఓపెన్ అవుతుంది.</p>
+    </div>
+</div>
+
+<!-- JAVASCRIPT FUNCTIONS (ఈ ఫంక్షన్‌లను మీ Script ట్యాగ్‌లో చేర్చుకోండి) -->
+<script>
+    // 2nd App ఫైర్‌బేస్/డేటాబేస్ నుండి డేటా తీసుకునే ఫంక్షన్
+    function fetchSecondAppUsers() {
+        // ఇక్కడ మీ Firebase / Database లాజిక్ కనెక్ట్ అవుతుంది
+        console.log("Fetching 2nd App Database...");
+    }
+
+    // 2nd App యూజర్‌కు 30 రోజులు అప్రూవ్ చేసే ఫంక్షన్
+    function approveSecondAppUser(userId) {
+        if(confirm("ఈ యూజర్‌కు 2nd యాప్ కోసం 30 రోజుల సబ్‌స్క్రిప్షన్ అప్రూవ్ చేయాలనుకుంటున్నారా?")) {
+            // Firebase Update Logic (Status -> Active, Expiry Date -> Today + 30 Days)
+            alert("సబ్‌స్క్రిప్షన్ విజయవంతంగా అప్రూవ్ అయింది!");
+        }
+    }
+
+    // 2nd App యూజర్ అభ్యర్థనను రిజెక్ట్ చేసే ఫంక్షన్
+    function rejectSecondAppUser(userId) {
+        if(confirm("ఈ అభ్యర్థనను రిజెక్ట్ చేయాలనుకుంటున్నారా?")) {
+            alert("అభ్యర్థన తొలగించబడింది.");
+        }
+    }
+
+    // స్క్రీన్‌షాట్ చూడడానికి ఫంక్షన్
+    function viewScreenshot(imageUrl) {
+        window.open(imageUrl, '_blank');
+    }
+    </script>
 
         <form id="adminForm" onsubmit="event.preventDefault();" class="space-y-6">
             <!-- Today's Market Details -->
