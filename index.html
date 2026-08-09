@@ -8,14 +8,14 @@
     <style>
         body { 
             background-color: #ffffff; 
-            color: #2D3748; 
+            color: #222A30; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             scroll-behavior: smooth; 
         }
 
         /* Screenshot Banner Headers Style */
         .banner-header {
-            background-color: #4A5866;
+            background-color: #222A30;
             color: #ffffff;
         }
 
@@ -31,7 +31,7 @@
         /* Card Section styling matching screenshot */
         .card-box {
             background-color: #ffffff;
-            border: 1px solid #E2E8F0;
+            border: 1px solid #E222A30;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
@@ -59,7 +59,7 @@
 <body class="p-0 sm:p-2 md:p-4">
 
     <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 bg-[#4A5866] flex items-center justify-center">
+    <div id="splash-screen" class="fixed inset-0 bg-[#222A30] flex items-center justify-center">
         <!-- IMAGE 1 (Shown for first 3 seconds) -->
         <div id="splash-slide-1" class="splash-slide active">
             <div class="text-center py-12 px-6 space-y-3 max-w-4xl w-full bg-transparent border-0 shadow-none">
@@ -87,8 +87,8 @@
     <!-- NAVIGATION -->
     <nav class="p-4 border-b border-gray-200 mb-6 max-w-5xl mx-auto sticky top-0 bg-white/95 backdrop-blur z-50 shadow-sm">
         <div class="flex items-center space-x-2 md:space-x-3 text-xs md:text-sm overflow-x-auto w-full justify-between md:justify-start">
-            <button onclick="showPage('home')" class="bg-[#4A5866] text-white px-3 py-2 rounded-lg font-bold hover:bg-[#394450] transition whitespace-nowrap">Home</button>
-            <button onclick="showPage('membership')" class="bg-[#0099FF] text-white px-3 py-2 rounded-lg font-bold hover:bg-blue-600 transition whitespace-nowrap">⭐Join</button>
+            <button onclick="showPage('home')" class="bg-[#222A30] text-white px-3 py-2 rounded-lg font-bold hover:bg-[#394450] transition whitespace-nowrap">Home</button>
+            <button onclick="showPage('membership')" class="bg-[#222A30] text-white px-3 py-2 rounded-lg font-bold hover:bg-blue-600 transition whitespace-nowrap">⭐Join</button>
             <button onclick="showPage('login')" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">🔑 Member Login</button>
             <button onclick="openAdminModal()" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">🔒 Admin</button>
             <button onclick="scrollToContact()" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">Contact Us</button>
@@ -102,7 +102,7 @@
             <p class="text-xs text-gray-500 text-center">దయచేసి అడ్మిన్ పాస్‌వర్డ్ ఎంటర్ చేయండి</p>
             <input type="password" id="adminPassInput" placeholder="Enter Password" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm focus:border-[#0099FF] outline-none">
             <div class="flex space-x-2">
-                <button onclick="verifyAdminPassword()" class="flex-1 bg-[#0099FF] text-white font-bold py-2.5 rounded-lg text-sm hover:bg-blue-600">Login</button>
+                <button onclick="verifyAdminPassword()" class="flex-1 bg-[#222A30] text-white font-bold py-2.5 rounded-lg text-sm hover:bg-blue-600">Login</button>
                 <button onclick="closeAdminModal()" class="flex-1 bg-gray-200 text-gray-800 font-bold py-2.5 rounded-lg text-sm hover:bg-gray-300">Cancel</button>
             </div>
         </div>
@@ -123,30 +123,30 @@
 
         <div class="text-center space-y-4 px-2">
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold highlight-blue">
-                Need More Monthly Income?
+                Need More Monthly Income ?
             </h2>
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-black">
-                Join Sensex Edge Telugu!
+                Join Sensex Edge Telugu !
             </h2>
             <p class="text-lg sm:text-xl font-bold highlight-blue">
                 LEARN • PRACTICE • GROW
             </p>
 
             <p class="text-base text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                Sensible Intraday Options Trading Levels & Risk Management Strategies in Telugu. Learn income trading and make new friends.
+             Intraday Options Trading Analysis & Risk Management Strategies in Telugu.
             </p>
 
             <div class="flex flex-wrap justify-center gap-3 pt-2">
                 <a href="https://www.youtube.com/@SensexEdgeTelugu-w5d" target="_blank" 
-                   class="bg-[#0099FF] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm flex items-center gap-1">
+                   class="bg-[#222A30] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm flex items-center gap-1">
                     📺 Visit YouTube
                 </a>
                 <button onclick="showPage('login')" 
-                        class="bg-[#4A5866] text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#394450] transition shadow">
+                        class="bg-[#222A30] text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#394450] transition shadow">
                     📊 Today's Levels
                 </button>
                 <button onclick="showPage('membership')" 
-                        class="bg-[#0099FF] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm">
+                        class="bg-[#222A30] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm">
                     ⭐ Premium Membership
                 </button>
             </div>
@@ -166,7 +166,7 @@
         <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 space-y-8 shadow-sm">
             
             <h2 class="text-3xl sm:text-4xl font-extrabold text-black text-center">
-                Why Choose Sensex Edge Telugu?
+                Why Choose Sensex Edge Telugu ?
             </h2>
 
             <!-- Features Grid -->
@@ -200,13 +200,13 @@
                     <p>✅ ఆర్థిక స్వేచ్ఛ దిశగా ప్రయాణించాలనుకునే వారు</p>
                     <p>✅ ఉద్యోగంతో పాటు అదనపు ప్రత్యామ్నాయాన్ని అభివృద్ధి చేసుకొనికోవాలనుకునే వారు</p>
                     <p>✅ క్రమశిక్షణతో ట్రేడింగ్ నేర్చుకోవాలనుకునే వారు</p>
-                    <p>✅ రిస్క్ మేనేజ్ మెంట్ నేర్చుకోవాలనుకునే వారు</p>
+                    <p>✅ రిస్క్ మేనేజ్మెంట్ నేర్చుకోవాలనుకునే వారు</p>
                     <p>✅ తెలుగులో సులువుగా నేర్చుకోవాలనుకునే ప్రతి ఒక్కరూ</p>
                 </div>
             </div>
 
             <!-- Our Goal -->
-            <div class="bg-[#4A5866] text-white p-6 rounded-xl text-center space-y-2">
+            <div class="bg-[#222A30] text-white p-6 rounded-xl text-center space-y-2">
                 <h3 class="font-bold text-lg text-white">🎯 మా లక్ష్యం</h3>
                 <p class="text-xs sm:text-sm font-medium max-w-2xl mx-auto leading-relaxed text-gray-200">
                     తెలుగు ప్రజలకు ఆర్థిక విజ్ఞానం, క్రమశిక్షణతో కూడిన ట్రేడింగ్ అవగాహన, రిస్క్ మేనేజ్‌మెంట్ మరియు లాభదాయకమైన ఆర్థిక నిర్ణయాలకు <strong class="underline text-white">విశ్వసనీయ వేదికగా నిలవడం</strong> మా లక్ష్యం.
@@ -241,7 +241,7 @@
                     <p>📺 YouTube : <a href="https://www.youtube.com/@SensexEdgeTelugu-w5d" target="_blank" class="highlight-blue underline">Sensex Edge Telugu</a></p>
                     <p>📧 Email : sensexedgetelugu@gmail.com</p>
                 </div>
-                <p class="text-xs sm:text-sm font-semibold">💬 WhatsApp : <a href="https://wa.me/916302889071" target="_blank" class="highlight-blue underline">+91 6302889071</a></p>
+                <p class="text-xs sm:text-sm font-semibold">💬 WhatsApp : <a href="https://wa.me/9163028 89071" target="_blank" class="highlight-blue underline">+91 6302889071</a></p>
                 <p class="text-xs highlight-blue font-bold pt-1">⭐ Knowledge Builds Confidence • Discipline Creates Success ⭐</p>
             </div>
 
@@ -284,7 +284,7 @@
                 <input type="password" id="login-pass" placeholder="Enter Password" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
             </div>
 
-            <button onclick="handleMemberLogin()" class="w-full bg-[#0099FF] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">Login to Premium</button>
+            <button onclick="handleMemberLogin()" class="w-full bg-[#222A30] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">Login to Premium</button>
             <button onclick="showPage('home')" class="w-full text-center text-xs text-gray-500 hover:text-black pt-2">← Back to Home</button>
         </div>
     </div>
@@ -304,37 +304,37 @@
             <input type="text" id="pay-name" placeholder="Full Name" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
             <input type="text" id="pay-mobile" placeholder="Mobile Number (Cell No)" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
             <input type="text" id="pay-txid" placeholder="UPI Transaction ID / UTR" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
-            <button onclick="submitPaymentAndRegister()" class="w-full bg-[#0099FF] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">✅ Submit & Confirm Membership</button>
+            <button onclick="submitPaymentAndRegister()" class="w-full bg-[#222A30] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">✅ Submit & Confirm Membership</button>
             <button onclick="showPage('home')" class="w-full text-center text-xs text-gray-500 hover:text-black pt-2">← Back to Home</button>
         </div>
     </div>
 
     <!-- 4. PREMIUM LEVELS PAGE -->
     <div id="premium" class="page hidden space-y-6 max-w-2xl mx-auto pb-12">
-        <div class="flex justify-between items-center bg-[#4A5866] p-4 rounded-xl text-white">
+        <div class="flex justify-between items-center bg-[#222A30] p-4 rounded-xl text-white">
             <div>
                 <h2 class="text-xl font-bold text-white">Today's Premium Levels</h2>
                 <p id="display-date-time" class="text-xs text-gray-200">Date: -- | Time: -- | Spot: --</p>
             </div>
             <div class="flex gap-2 items-center">
-                <button id="btn-back-to-admin" onclick="showPage('admin')" class="hidden bg-[#0099FF] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-600 transition">🔙 Back to Admin</button>
+                <button id="btn-back-to-admin" onclick="showPage('admin')" class="hidden bg-[#222A30] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-600 transition">🔙 Back to Admin</button>
                 <button onclick="memberLogout()" class="bg-red-500 px-3 py-1.5 rounded text-white text-xs font-bold hover:bg-red-600 transition">Logout</button>
             </div>
         </div>
 
         <!-- SENSEX INDEX LEVELS -->
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4 text-center">
-            <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Levels</h2>
+            <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Analysis</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                 <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">CE Support Levels</p>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-sup">Support Level : --</div>
+                    <p class="text-green-700 font-bold text-sm">Supports</p>
+                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-sup">Supports : --</div>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-s1">Target 1 : --</div>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-s2">Target 2 : --</div>
                 </div>
                 <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">PE Resistance Levels</p>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-res">Resistance Level : --</div>
+                    <p class="text-red-700 font-bold text-sm">Resistance</p>
+                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-res">Resistance : --</div>
                     <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-r1">Target 1 : --</div>
                     <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-r2">Target 2 : --</div>
                 </div>
@@ -343,34 +343,34 @@
 
         <!-- CE Levels -->
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 class="text-black font-bold text-center text-lg">CE Levels</h3>
+            <h3 class="text-black font-bold text-center text-lg">CE Analysis</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">Support Levels</p>
+                    <p class="text-green-700 font-bold text-sm">Supports</p>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-s1">Support 1 : --</div>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-s2">Support 2 : --</div>
                 </div>
                 <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">Resistance Levels</p>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r1">Resistance 1 : --</div>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r2">Resistance 2 : --</div>
+                    <p class="text-red-700 font-bold text-sm">Resistance</p>
+                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r1">Target 1 : --</div>
+                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r2">Target 2 : --</div>
                 </div>
             </div>
         </div>
 
         <!-- PE Levels -->
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 class="text-black font-bold text-center text-lg">PE Levels</h3>
+            <h3 class="text-black font-bold text-center text-lg">PE Analysis</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">Support Levels</p>
+                    <p class="text-green-700 font-bold text-sm">Support</p>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-s1">Support 1 : --</div>
                     <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-s2">Support 2 : --</div>
                 </div>
                 <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">Resistance Levels</p>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r1">Resistance 1 : --</div>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r2">Resistance 2 : --</div>
+                    <p class="text-red-700 font-bold text-sm">Resistance</p>
+                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r1">Target 1 : --</div>
+                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r2">Target 2 : --</div>
                 </div>
             </div>
         </div>
@@ -422,7 +422,7 @@
         <form id="adminForm" onsubmit="event.preventDefault();" class="space-y-6">
             <!-- Today's Market Details -->
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm">Today's Market Details</h3>
+                <h3 class="text-black font-bold text-sm">Today's Market Analysis</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-[11px] text-gray-600 mb-1">Date</label>
@@ -441,17 +441,17 @@
 
             <!-- SENSEX INDEX LEVELS -->
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-center">
-                <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Levels</h2>
+                <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Analysis</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                     <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">CE Support Levels</p>
-                        <input type="text" id="adm-sup-lvl" placeholder="Support Level" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <p class="text-green-700 font-bold text-sm">CE Analysis</p>
+                        <input type="text" id="adm-sup-lvl" placeholder="Supports" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-sup-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-sup-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
                     <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">PE Resistance Levels</p>
-                        <input type="text" id="adm-res-lvl" placeholder="Resistance Level" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <p class="text-red-700 font-bold text-sm">PE Analysis</p>
+                        <input type="text" id="adm-res-lvl" placeholder="Resistance" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-res-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-res-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
@@ -460,15 +460,15 @@
 
             <!-- CE Levels Inputs -->
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm text-center">CE Levels Inputs</h3>
+                <h3 class="text-black font-bold text-sm text-center">CE Analysis</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">Support Levels</p>
+                        <p class="text-green-700 font-bold text-sm">Supports</p>
                         <input type="text" id="adm-ce-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-ce-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
                     <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">Resistance Levels</p>
+                        <p class="text-red-700 font-bold text-sm">Resistance</p>
                         <input type="text" id="adm-ce-r1" placeholder="Resistance 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-ce-r2" placeholder="Resistance 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
@@ -477,17 +477,17 @@
 
             <!-- PE Levels Inputs -->
             <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm text-center">PE Levels Inputs</h3>
+                <h3 class="text-black font-bold text-sm text-center">PE Analysis</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">Support Levels</p>
+                        <p class="text-green-700 font-bold text-sm">Supports</p>
                         <input type="text" id="adm-pe-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                         <input type="text" id="adm-pe-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
                     <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">Resistance Levels</p>
-                        <input type="text" id="adm-pe-r1" placeholder="Resistance 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-pe-r2" placeholder="Resistance 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <p class="text-red-700 font-bold text-sm">Resistance</p>
+                        <input type="text" id="adm-pe-r1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <input type="text" id="adm-pe-r2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
                     </div>
                 </div>
             </div>
@@ -501,8 +501,8 @@
             <!-- Buttons -->
             <div class="flex flex-wrap gap-3 pt-2">
                 <button type="button" onclick="clearAdminForm()" class="flex-1 bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl text-sm hover:bg-gray-300">🗑️ Clear Form</button>
-                <button type="button" onclick="previewPremiumPage()" class="flex-1 bg-[#4A5866] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-[#394450]">👁️ Preview</button>
-                <button type="button" onclick="saveAdminLevels()" class="flex-1 bg-[#0099FF] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-blue-600 shadow">💾 Publish Levels</button>
+                <button type="button" onclick="previewPremiumPage()" class="flex-1 bg-[#222A30] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-[#394450]">👁️ Preview</button>
+                <button type="button" onclick="saveAdminLevels()" class="flex-1 bg-[#222A30] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-blue-600 shadow">💾 Publish Levels</button>
             </div>
         </form>
     </div>
