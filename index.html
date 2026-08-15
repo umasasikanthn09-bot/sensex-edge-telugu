@@ -511,7 +511,9 @@
         </form>
     </div>
 
-    <!-- JAVASCRIPT LOGIC (100% UNTOUCHED & PRESERVED) -->
+    <
+        // Data Store Initialization
+        <!-- JAVASCRIPT LOGIC -->
     <script>
         // Data Store Initialization
         let members = JSON.parse(localStorage.getItem('set_members') || '[]');
@@ -519,6 +521,32 @@
         let galleryData = JSON.parse(localStorage.getItem('set_gallery') || '[]');
         let currentAdminPreview = false;
         let generatedOtp = "";
+
+        // 1. Clear Form Function
+        function clearAdminForm() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.reset();
+                console.log("Form cleared successfully.");
+            }
+        }
+
+        // 2. Preview Premium Page Function
+        function previewPremiumPage() {
+            currentAdminPreview = true;
+            // ప్రివ్యూ లాజిక్ ఇక్కడ నడుస్తుంది
+            alert("Preview Mode Activated!");
+            console.log("Preview status:", currentAdminPreview);
+        }
+
+        // 3. Save Admin Levels Function
+        function saveAdminLevels() {
+            // డేటాను LocalStorage లో సేవ్ చేసే లాజిక్
+            localStorage.setItem('set_levels', JSON.stringify(levelsData));
+            alert("Levels successfully published/saved!");
+            console.log("Saved Levels Data:", levelsData);
+        }
+    </script>
 
         // Splash Screen Transition
         window.addEventListener('load', () => {
