@@ -1824,98 +1824,938 @@
             localStorage.setItem('set_levels', JSON.stringify(levelsData));
 
             // Handle Screenshot Upload
-            const fileInput = document.getElementById('adm-screenshot');
-            if (fileInput && fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const newItem = {
-                        img: e.target.result,
-                        date: levelsData.date || new Date().toISOString().split('T')[0]
-                    };
-                    galleryData.unshift(newItem);
-                    localStorage.setItem('set_gallery', JSON.stringify(galleryData));
-                    renderGallery();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+    // ================= DATA STORE =================
+    let members = JSON.parse(localStorage.getItem('set_members') || '[]');
+    let levelsData = JSON.parse(localStorage.getItem('set_levels') || '{}');
+    let galleryData = JSON.parse(localStorage.getItem('set_gallery') || '[]');
+
+    let currentAdminPreview = false;
+    let generatedOtp = "";
+
+
+    // ================= PAGE NAVIGATION =================
+    function showPage(pageId) {
+
+        document.querySelectorAll('.page').forEach(function(page) {
+            page.classList.add('hidden');
+        });
+
+        const target = document.getElementById(pageId);
+
+        if (target) {
+            target.classList.remove('hidden');
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        const backAdmin = document.getElementById('btn-back-to-admin');
+
+        if (backAdmin) {
+            if (pageId === 'premium' && currentAdminPreview) {
+                backAdmin.classList.remove('hidden');
+            } else {
+                backAdmin.classList.add('hidden');
+            }
+        }
+    }
+
+
+    // ================= CONTACT =================
+    function scrollToContact() {
+
+        showPage('home');
+
+        setTimeout(function() {
+
+            const contact = document.getElementById('contact-section');
+
+            if (contact) {
+                contact.scrollIntoView({
+                    behavior: 'smooth'
+                });
             }
 
+        }, 150);
+    }
+
+
+    // ================= ADMIN MODAL =================
+    function openAdminModal() {
+
+        const modal = document.getElementById('adminModal');
+
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    }
+
+
+    function closeAdminModal() {
+
+        const modal = document.getElementById('adminModal');
+
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        const input = document.getElementById('adminPassInput');
+
+        if (input) {
+            input.value = '';
+        }
+    }
+
+
+    // ================= ADMIN LOGIN =================
+    function verifyAdminPassword() {
+
+        const input = document.getElementById('adminPassInput');
+
+        if (!input) return;
+
+        const pass = input.value.trim();
+
+        /*
+         * మీ existing passwords ఇక్కడ ఉన్నాయి.
+         * కావాలంటే తర్వాత ఒక password కి మార్చుకోవచ్చు.
+         */
+        if (
+            pass === 'admin123' ||
+            pass === 'sensex123' ||
+            pass === 'baba@123'
+        ) {
+
+            closeAdminModal();
+
+            currentAdminPreview = false;
+
+            showPage('admin');
+
+            renderMembersTable();
             renderLevels();
-            alert('లెవెల్స్ విజయవంతంగా సేవ్ చేయబడ్డాయి!');
+            renderGallery();
+
+        } else {
+
+            alert('ఇచ్చిన పాస్‌వర్డ్ తప్పు! దయచేసి సరిచూసుకోండి.');
+
+        }
+    }
+
+
+    // ================= MEMBER STATUS =================
+    function checkMemberStatus() {
+
+        const mobileInput = document.getElementById('login-cell');
+
+        if (!mobileInput) return;
+
+        const mobile = mobileInput.value.trim();
+
+        const member = members.find(function(m) {
+            return m.mobile === mobile;
+        });
+
+        const otpSec = document.getElementById('otp-section');
+        const passSec = document.getElementById('password-section');
+
+        if (!otpSec || !passSec) return;
+
+        if (mobile.length === 10) {
+
+            if (member) {
+
+                if (member.registered) {
+
+                    otpSec.classList.add('hidden');
+                    passSec.classList.remove('hidden');
+
+                } else {
+
+                    otpSec.classList.remove('hidden');
+                    passSec.classList.add('hidden');
+
+                }
+
+            } else {
+
+                otpSec.classList.add('hidden');
+                passSec.classList.remove('hidden');
+
+            }
+
+        }
+    }
+
+
+    // ================= OTP =================
+    function sendOtp() {
+
+        generatedOtp = Math.floor(
+            1000 + Math.random() * 9000
+        ).toString();
+
+        alert(
+            'మీ OTP సంఖ్య: ' +
+            generatedOtp +
+            '\n\nడెమో కోసం ఈ OTPని నమోదు చేయండి.'
+        );
+    }
+
+
+    // ================= MEMBER LOGIN =================
+    function handleMemberLogin() {
+
+        const mobileInput = document.getElementById('login-cell');
+
+        if (!mobileInput) return;
+
+        const mobile = mobileInput.value.trim();
+
+        if (!/^\d{10}$/.test(mobile)) {
+
+            alert('దయచేసి 10 అంకెల మొబైల్ సంఖ్యను నమోదు చేయండి.');
+
+            return;
         }
 
-        function previewPremiumPage() {
-            saveAdminLevels();
-            currentAdminPreview = true;
-            document.getElementById('btn-back-to-admin').classList.remove('hidden');
-            showPage('premium');
+        const member = members.find(function(m) {
+            return m.mobile === mobile;
+        });
+
+        if (!member) {
+
+            alert(
+                'ఈ నంబర్‌తో మెంబర్‌షిప్ లేదు.\n' +
+                'దయచేసి మొదట Join బటన్ క్లిక్ చేసి రిజిస్టర్ చేసుకోండి.'
+            );
+
+            return;
         }
 
-        function clearAdminForm() {
-            document.getElementById('adminForm').reset();
-            levelsData = {};
-            localStorage.removeItem('set_levels');
-            renderLevels();
-            alert('ఫారమ్ క్లియర్ చేయబడింది.');
+
+        // Admin Approval Check
+        if (!member.approved) {
+
+            alert(
+                'మీ అకౌంట్ ఇంకా అడ్మిన్ ద్వారా అప్రూవ్ కాలేదు.\n\n' +
+                'దయచేసి కొద్దిసేపు వేచి ఉండండి లేదా WhatsApp లో సంప్రదించండి.'
+            );
+
+            return;
         }
 
-        // Render Levels to Premium Page
-        function renderLevels() {
-            document.getElementById('display-date-time').innerText = 
-                `Date: ${levelsData.date || '--'} | Time: ${levelsData.time || '--'} | Spot: ${levelsData.spot || '--'}`;
 
-            document.getElementById('lbl-p-sup').innerText = `Support Level : ${levelsData.supLvl || '--'}`;
-            document.getElementById('lbl-p-s1').innerText = `Target 1 : ${levelsData.supT1 || '--'}`;
-            document.getElementById('lbl-p-s2').innerText = `Target 2 : ${levelsData.supT2 || '--'}`;
+        // First Time Registration
+        if (!member.registered) {
 
-            document.getElementById('lbl-p-res').innerText = `Resistance Level : ${levelsData.resLvl || '--'}`;
-            document.getElementById('lbl-p-r1').innerText = `Target 1 : ${levelsData.resT1 || '--'}`;
-            document.getElementById('lbl-p-r2').innerText = `Target 2 : ${levelsData.resT2 || '--'}`;
+            const otp = document.getElementById('login-otp');
+            const newPass = document.getElementById('login-new-pass');
+            const confPass = document.getElementById('login-conf-pass');
 
-            document.getElementById('lbl-ce-s1').innerText = `Support 1 : ${levelsData.ceS1 || '--'}`;
-            document.getElementById('lbl-ce-s2').innerText = `Support 2 : ${levelsData.ceS2 || '--'}`;
-            document.getElementById('lbl-ce-r1').innerText = `Resistance 1 : ${levelsData.ceR1 || '--'}`;
-            document.getElementById('lbl-ce-r2').innerText = `Resistance 2 : ${levelsData.ceR2 || '--'}`;
+            if (!otp || !newPass || !confPass) return;
 
-            document.getElementById('lbl-pe-s1').innerText = `Support 1 : ${levelsData.peS1 || '--'}`;
-            document.getElementById('lbl-pe-s2').innerText = `Support 2 : ${levelsData.peS2 || '--'}`;
-            document.getElementById('lbl-pe-r1').innerText = `Resistance 1 : ${levelsData.peR1 || '--'}`;
-            document.getElementById('lbl-pe-r2').innerText = `Resistance 2 : ${levelsData.peR2 || '--'}`;
-        }
+            if (
+                !generatedOtp ||
+                otp.value.trim() !== generatedOtp
+            ) {
 
-        // Render Gallery Screenshots
-        function renderGallery() {
-            const todayContainer = document.getElementById('today-gallery-container');
-            const historyContainer = document.getElementById('history-gallery-container');
+                alert('తప్పు OTP నమోదైనది!');
 
-            if (!todayContainer || !historyContainer) return;
-
-            if (galleryData.length === 0) {
-                todayContainer.innerHTML = `<p class="text-gray-500 text-xs text-center">No screenshot uploaded for today yet.</p>`;
-                historyContainer.innerHTML = `<p class="text-gray-500 text-xs text-center">No history screenshots available.</p>`;
                 return;
             }
 
-            // Most recent screenshot in Today's Gallery
-            const todayItem = galleryData[0];
-            todayContainer.innerHTML = `
-                <div class="space-y-1">
-                    <p class="text-[10px] highlight-blue font-bold">Date: ${todayItem.date}</p>
-                    <img src="${todayItem.img}" alt="Today's Result" class="w-full rounded-lg border border-gray-300">
-                </div>
-            `;
+            if (
+                !newPass.value ||
+                newPass.value !== confPass.value
+            ) {
 
-            // History Gallery (excluding the first item)
-            if (galleryData.length > 1) {
-                historyContainer.innerHTML = galleryData.slice(1).map(item => `
-                    <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-200">
-                        <p class="text-[10px] highlight-blue font-bold">Date: ${item.date}</p>
-                        <img src="${item.img}" alt="History Result" class="w-full rounded border border-gray-300">
-                    </div>
-                `).join('');
-            } else {
-                historyContainer.innerHTML = `<p class="text-gray-500 text-xs text-center">No history screenshots available.</p>`;
+                alert('పాస్‌వర్డ్‌లు మ్యాచ్ అవ్వడం లేదు.');
+
+                return;
+            }
+
+            member.registered = true;
+            member.password = newPass.value;
+
+            localStorage.setItem(
+                'set_members',
+                JSON.stringify(members)
+            );
+
+            alert('రిజిస్ట్రేషన్ విజయవంతమైంది!');
+
+        } else {
+
+            // Existing Member Login
+            const passInput = document.getElementById('login-pass');
+
+            if (!passInput) return;
+
+            if (passInput.value !== member.password) {
+
+                alert('తప్పు పాస్‌వర్డ్!');
+
+                return;
             }
         }
+
+
+        currentAdminPreview = false;
+
+        showPage('premium');
+
+        renderLevels();
+        renderGallery();
+    }
+
+
+    // ================= PAYMENT / MEMBERSHIP =================
+    function submitPaymentAndRegister() {
+
+        const nameEl = document.getElementById('pay-name');
+        const mobileEl = document.getElementById('pay-mobile');
+        const txidEl = document.getElementById('pay-txid');
+
+        if (!nameEl || !mobileEl || !txidEl) return;
+
+        const name = nameEl.value.trim();
+        const mobile = mobileEl.value.trim();
+        const txid = txidEl.value.trim();
+
+
+        if (!name || !mobile || !txid) {
+
+            alert('దయచేసి అన్ని వివరాలు నింపండి.');
+
+            return;
+        }
+
+
+        if (!/^\d{10}$/.test(mobile)) {
+
+            alert('దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.');
+
+            return;
+        }
+
+
+        if (
+            members.some(function(m) {
+                return m.mobile === mobile;
+            })
+        ) {
+
+            alert('ఈ మొబైల్ నంబర్ ఇప్పటికే రిజిస్టర్ అయి ఉంది.');
+
+            return;
+        }
+
+
+        const newMember = {
+
+            name: name,
+            mobile: mobile,
+            txid: txid,
+            approved: false,
+            registered: false,
+            password: ''
+
+        };
+
+
+        members.push(newMember);
+
+        localStorage.setItem(
+            'set_members',
+            JSON.stringify(members)
+        );
+
+        renderMembersTable();
+
+        alert(
+            'మీ వివరాలు విజయవంతంగా సమర్పించబడ్డాయి!\n\n' +
+            'అడ్మిన్ అప్రూవ్ చేసిన తర్వాత మీరు Member Login ద్వారా Login చేయవచ్చు.'
+        );
+
+        showPage('home');
+    }
+
+
+    // ================= MEMBER LOGOUT =================
+    function memberLogout() {
+
+        currentAdminPreview = false;
+
+        showPage('home');
+    }
+
+
+    // ================= ADMIN MEMBERS TABLE =================
+    function renderMembersTable() {
+
+        const tbody =
+            document.getElementById('members-table-body');
+
+        if (!tbody) return;
+
+
+        if (members.length === 0) {
+
+            tbody.innerHTML =
+                '<tr>' +
+                '<td colspan="4" class="p-3 text-center text-gray-500">' +
+                'No members joined yet.' +
+                '</td>' +
+                '</tr>';
+
+            return;
+        }
+
+
+        tbody.innerHTML = members.map(function(m, index) {
+
+            return `
+                <tr class="border-b border-gray-200">
+
+                    <td class="p-2">${m.name || ''}</td>
+
+                    <td class="p-2">${m.mobile || ''}</td>
+
+                    <td class="p-2">${m.txid || ''}</td>
+
+                    <td class="p-2 text-center">
+
+                        <button
+                            onclick="toggleApprove(${index})"
+                            class="px-2 py-1 text-[11px] rounded font-bold ${
+                                m.approved
+                                ? 'bg-green-600 text-white'
+                                : 'bg-yellow-500 text-white'
+                            }"
+                        >
+                            ${
+                                m.approved
+                                ? 'Approved'
+                                : 'Approve'
+                            }
+                        </button>
+
+                        <button
+                            onclick="deleteMember(${index})"
+                            class="px-2 py-1 text-[11px] bg-red-600 text-white rounded font-bold ml-1"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
+
+        }).join('');
+    }
+
+
+    function toggleApprove(index) {
+
+        if (!members[index]) return;
+
+        members[index].approved =
+            !members[index].approved;
+
+        localStorage.setItem(
+            'set_members',
+            JSON.stringify(members)
+        );
+
+        renderMembersTable();
+    }
+
+
+    function deleteMember(index) {
+
+        if (!members[index]) return;
+
+        if (
+            confirm('ఈ మెంబర్‌ను తొలగించాలా?')
+        ) {
+
+            members.splice(index, 1);
+
+            localStorage.setItem(
+                'set_members',
+                JSON.stringify(members)
+            );
+
+            renderMembersTable();
+        }
+    }
+
+
+    // ================= DOWNLOAD MEMBERS =================
+    function downloadExcel() {
+
+        let csvContent =
+            'data:text/csv;charset=utf-8,' +
+            'Name,Mobile,TxnID,Approved\n';
+
+        members.forEach(function(m) {
+
+            csvContent +=
+                '"' + (m.name || '') + '",' +
+                '"' + (m.mobile || '') + '",' +
+                '"' + (m.txid || '') + '",' +
+                '"' + (m.approved ? 'Yes' : 'No') + '"\n';
+
+        });
+
+
+        const encodedUri =
+            encodeURI(csvContent);
+
+        const link =
+            document.createElement('a');
+
+        link.setAttribute(
+            'href',
+            encodedUri
+        );
+
+        link.setAttribute(
+            'download',
+            'sensex_edge_members.csv'
+        );
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    }
+
+
+    // ================= HELPER =================
+    function getValue(id) {
+
+        const el = document.getElementById(id);
+
+        return el ? el.value : '';
+    }
+
+
+    // ================= SAVE ADMIN LEVELS =================
+    function saveAdminLevels() {
+
+        levelsData = {
+
+            date: getValue('adm-date'),
+            time: getValue('adm-time'),
+            spot: getValue('adm-spot'),
+
+            supLvl: getValue('adm-sup-lvl'),
+            supT1: getValue('adm-sup-t1'),
+            supT2: getValue('adm-sup-t2'),
+
+            resLvl: getValue('adm-res-lvl'),
+            resT1: getValue('adm-res-t1'),
+            resT2: getValue('adm-res-t2'),
+
+            ceS1: getValue('adm-ce-s1'),
+            ceS2: getValue('adm-ce-s2'),
+            ceR1: getValue('adm-ce-r1'),
+            ceR2: getValue('adm-ce-r2'),
+
+            peS1: getValue('adm-pe-s1'),
+            peS2: getValue('adm-pe-s2'),
+            peR1: getValue('adm-pe-r1'),
+            peR2: getValue('adm-pe-r2')
+        };
+
+
+        localStorage.setItem(
+            'set_levels',
+            JSON.stringify(levelsData)
+        );
+
+
+        // Screenshot Upload
+        const fileInput =
+            document.getElementById('adm-screenshot');
+
+
+        if (
+            fileInput &&
+            fileInput.files &&
+            fileInput.files[0]
+        ) {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = function(e) {
+
+                const newItem = {
+
+                    img: e.target.result,
+
+                    date:
+                        levelsData.date ||
+                        new Date()
+                            .toISOString()
+                            .split('T')[0]
+                };
+
+
+                galleryData.unshift(newItem);
+
+
+                localStorage.setItem(
+                    'set_gallery',
+                    JSON.stringify(galleryData)
+                );
+
+
+                renderGallery();
+            };
+
+
+            reader.readAsDataURL(
+                fileInput.files[0]
+            );
+        }
+
+
+        renderLevels();
+
+        alert(
+            'లెవెల్స్ విజయవంతంగా సేవ్ చేయబడ్డాయి!'
+        );
+    }
+
+
+    // ================= PREVIEW =================
+    function previewPremiumPage() {
+
+        saveAdminLevels();
+
+        currentAdminPreview = true;
+
+        const backAdmin =
+            document.getElementById(
+                'btn-back-to-admin'
+            );
+
+        if (backAdmin) {
+            backAdmin.classList.remove('hidden');
+        }
+
+        showPage('premium');
+
+        renderLevels();
+        renderGallery();
+    }
+
+
+    // ================= CLEAR ADMIN FORM =================
+    function clearAdminForm() {
+
+        const form =
+            document.getElementById('adminForm');
+
+        if (form) {
+            form.reset();
+        }
+
+
+        levelsData = {};
+
+        localStorage.removeItem(
+            'set_levels'
+        );
+
+        renderLevels();
+
+        alert(
+            'ఫారమ్ క్లియర్ చేయబడింది.'
+        );
+    }
+
+
+    // ================= RENDER LEVELS =================
+    function setText(id, text) {
+
+        const el =
+            document.getElementById(id);
+
+        if (el) {
+            el.innerText = text;
+        }
+    }
+
+
+    function renderLevels() {
+
+        setText(
+            'display-date-time',
+            `Date: ${levelsData.date || '--'} | Time: ${levelsData.time || '--'} | Spot: ${levelsData.spot || '--'}`
+        );
+
+
+        setText(
+            'lbl-p-sup',
+            `Support Level : ${levelsData.supLvl || '--'}`
+        );
+
+        setText(
+            'lbl-p-s1',
+            `Target 1 : ${levelsData.supT1 || '--'}`
+        );
+
+        setText(
+            'lbl-p-s2',
+            `Target 2 : ${levelsData.supT2 || '--'}`
+        );
+
+
+        setText(
+            'lbl-p-res',
+            `Resistance Level : ${levelsData.resLvl || '--'}`
+        );
+
+        setText(
+            'lbl-p-r1',
+            `Target 1 : ${levelsData.resT1 || '--'}`
+        );
+
+        setText(
+            'lbl-p-r2',
+            `Target 2 : ${levelsData.resT2 || '--'}`
+        );
+
+
+        setText(
+            'lbl-ce-s1',
+            `Support 1 : ${levelsData.ceS1 || '--'}`
+        );
+
+        setText(
+            'lbl-ce-s2',
+            `Support 2 : ${levelsData.ceS2 || '--'}`
+        );
+
+        setText(
+            'lbl-ce-r1',
+            `Resistance 1 : ${levelsData.ceR1 || '--'}`
+        );
+
+        setText(
+            'lbl-ce-r2',
+            `Resistance 2 : ${levelsData.ceR2 || '--'}`
+        );
+
+
+        setText(
+            'lbl-pe-s1',
+            `Support 1 : ${levelsData.peS1 || '--'}`
+        );
+
+        setText(
+            'lbl-pe-s2',
+            `Support 2 : ${levelsData.peS2 || '--'}`
+        );
+
+        setText(
+            'lbl-pe-r1',
+            `Resistance 1 : ${levelsData.peR1 || '--'}`
+        );
+
+        setText(
+            'lbl-pe-r2',
+            `Resistance 2 : ${levelsData.peR2 || '--'}`
+        );
+    }
+
+
+    // ================= RENDER GALLERY =================
+    function renderGallery() {
+
+        const todayContainer =
+            document.getElementById(
+                'today-gallery-container'
+            );
+
+        const historyContainer =
+            document.getElementById(
+                'history-gallery-container'
+            );
+
+
+        if (!todayContainer || !historyContainer) {
+            return;
+        }
+
+
+        if (galleryData.length === 0) {
+
+            todayContainer.innerHTML =
+                '<p class="text-gray-500 text-xs text-center">' +
+                'No screenshot uploaded for today yet.' +
+                '</p>';
+
+
+            historyContainer.innerHTML =
+                '<p class="text-gray-500 text-xs text-center">' +
+                'No history screenshots available.' +
+                '</p>';
+
+            return;
+        }
+
+
+        const todayItem =
+            galleryData[0];
+
+
+        todayContainer.innerHTML = `
+
+            <div class="space-y-1">
+
+                <p class="text-[10px] highlight-blue font-bold">
+                    Date: ${todayItem.date}
+                </p>
+
+                <img
+                    src="${todayItem.img}"
+                    alt="Today's Result"
+                    class="w-full rounded-lg border border-gray-300"
+                >
+
+            </div>
+
+        `;
+
+
+        if (galleryData.length > 1) {
+
+            historyContainer.innerHTML =
+                galleryData
+                .slice(1)
+                .map(function(item) {
+
+                    return `
+
+                        <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-200">
+
+                            <p class="text-[10px] highlight-blue font-bold">
+                                Date: ${item.date}
+                            </p>
+
+                            <img
+                                src="${item.img}"
+                                alt="History Result"
+                                class="w-full rounded border border-gray-300"
+                            >
+
+                        </div>
+
+                    `;
+
+                })
+                .join('');
+
+        } else {
+
+            historyContainer.innerHTML =
+                '<p class="text-gray-500 text-xs text-center">' +
+                'No history screenshots available.' +
+                '</p>';
+        }
+    }
+
+
+    // ================= SPLASH SCREEN =================
+    window.addEventListener('load', function() {
+
+        setTimeout(function() {
+
+            const s1 =
+                document.getElementById(
+                    'splash-slide-1'
+                );
+
+            const s2 =
+                document.getElementById(
+                    'splash-slide-2'
+                );
+
+
+            if (s1) {
+                s1.classList.remove('active');
+            }
+
+            if (s2) {
+                s2.classList.add('active');
+            }
+
+        }, 3000);
+
+
+        setTimeout(function() {
+
+            const splash =
+                document.getElementById(
+                    'splash-screen'
+                );
+
+
+            if (splash) {
+
+                splash.style.opacity = '0';
+
+
+                setTimeout(function() {
+
+                    splash.style.display =
+                        'none';
+
+                }, 800);
+            }
+
+        }, 5000);
+
+
+        // Today's date
+        const today =
+            new Date()
+            .toISOString()
+            .split('T')[0];
+
+
+        const admDate =
+            document.getElementById(
+                'adm-date'
+            );
+
+
+        if (admDate) {
+            admDate.value = today;
+        }
+
+
+        // Initial rendering
+        renderMembersTable();
+        renderLevels();
+        renderGallery();
+
+    });
+
     </script>
-</body>
-    </html>
