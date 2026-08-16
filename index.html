@@ -3,38 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensex Edge Telugu</title>
+    <title>SENSEX EDGE TELUGU - Auto Trading Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .splash-slide {
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            pointer-events: none;
-        }
-        .splash-slide.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen pb-12 text-sm">
 
-        /* Mobile Screens లో Headings & Matter Centering కోసం */
-        @media (max-width: 768px) {
-            h1, h2, h3, h4, h5, h6, p, div, input, button {
-                text-align: center !important;
+    <!-- Main Container -->
+    <div class="max-w-lg mx-auto px-4 pt-6 space-y-6">
+
+        <!-- Main Heading Section (Lemon Yellow) -->
+        <header class="text-center space-y-1">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-wider text-yellow-300 drop-shadow-md">
+                SENSEX EDGE TELUGU
+            </h1>
+            <p class="text-xs sm:text-sm font-medium text-gray-400 tracking-widest uppercase">
+                Learn • Practice • Grow
+            </p>
+        </header>
+
+        <!-- Thick Divider Line -->
+        <hr class="border-t-2 border-gray-800">
+
+        <!-- Sensex Options Dashboard Section -->
+        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl backdrop-blur">
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white tracking-wide flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-cyan-400"></i> Sensex Options
+                    </h2>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1">Automated Algorithmic Execution</p>
+                </div>
+            </div>
+            
+            <!-- Connection Status -->
+            <div class="mt-4 p-3 bg-cyan-950/40 border-2 border-cyan-800/80 rounded-xl flex items-center gap-3 text-xs sm:text-sm text-cyan-300">
+                <i class="fa-solid fa-circle-info text-cyan-400 text-base"></i>
+                <span>ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-amber-400">Waiting for Login</strong></span>
+            </div>
+        </section>
+
+        <!-- Thick Divider Line -->
+        <hr class="border-t-2 border-gray-800">
+
+        <!-- Broker API Integration -->
+        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-sm sm:text-base font-bold text-gray-200 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-key text-cyan-400"></i> Broker API Integration
+                </h3>
+            </div>
+
+            <div class="space-y-3">
+                <!-- Select Broker Dropdown -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">Select Your Broker</label>
+                    <select id="brokerSelect" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-cyan-500 transition">
+                        <option value="zerodha">Zerodha (Kite)</option>
+                        <option value="upstox">Upstox</option>
+                        <option value="fyers">Fyers</option>
+                        <option value="angelone">Angel One (SmartAPI)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">API Key / App Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">API Secret / Access Token / PIN</label>
+                    <input type="password" id="apiSecret" placeholder="••••••••••••••••••••" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-500 transition">
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-1">
+                <button onclick="startAutoTrader()" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-xl text-sm sm:text-base transition shadow-lg shadow-cyan-950/50 flex items-center justify-center gap-2 border-2 border-cyan-500">
+                    <i class="fa-solid fa-right-to-bracket"></i> Connect & Start Auto Algo
+                </button>
+            </div>
+        </section>
+
+        <!-- Thick Divider Line -->
+        <hr class="border-t-2 border-gray-800">
+
+        <!-- Lot Size & Live P&L Section -->
+        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl space-y-4">
+            <div>
+                <label class="block text-xs sm:text-sm font-semibold text-gray-300 mb-1">
+                    Selected Lot Size <span class="text-gray-400 font-normal">(Recommended 2 Lots Only)</span>
+                </label>
+                <select id="lotSelect" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base font-semibold text-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-cyan-500 transition">
+                    <option value="1">1 Lot</option>
+                    <option value="2" selected>2 Lots</option>
+                    <option value="3">3 Lots</option>
+                    <option value="4">4 Lots</option>
+                    <option value="5">5 Lots</option>
+                    <option value="10">10 Lots</option>
+                    <option value="15">15 Lots</option>
+                    <option value="20">20 Lots</option>
+                </select>
+            </div>
+
+            <!-- Live P & L Display Box -->
+            <div class="bg-gray-950 rounded-xl p-4 border-2 border-gray-800 text-center space-y-1">
+                <span class="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider">Today's Realtime P & L</span>
+                <div id="pnlDisplay" class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight flex items-center justify-center gap-1">
+                    <span>₹0.00</span>
+                </div>
+                <span class="text-xs text-gray-500 block">Auto-Syncing with Broker Account</span>
+            </div>
+
+            <!-- Legal Risk Disclaimer Box -->
+            <div class="bg-amber-950/20 border-2 border-amber-800/60 rounded-xl p-3.5 space-y-2">
+                <div class="flex items-start gap-2">
+                    <i class="fa-solid fa-shield-halved text-amber-500 text-sm mt-0.5"></i>
+                    <h4 class="text-xs sm:text-sm font-bold text-amber-400">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</h4>
+                </div>
+                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                    1. ఆటోమేటిక్ ఆర్డర్ ఎగ్జిక్యూషన్ ద్వారా జరిగే లాభనష్టాలకు <strong>యూజరే పూర్తి బాధ్యుడు</strong>.<br>
+                    2. మార్కెట్ వోలాటిలిటీ వల్ల స్లిప్పేజెస్ (Slippage) రావచ్చు.
+                </p>
+
+                <label class="flex items-start gap-2 mt-2 pt-2 border-t-2 border-amber-900/60 cursor-pointer">
+                    <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded border-gray-700 bg-gray-900 text-cyan-500 focus:ring-0">
+                    <span class="text-xs sm:text-sm text-gray-300 font-medium leading-tight">నేను పైన పేర్కొన్న నియమాలు మరియు మార్కెట్ రిస్క్‌లను చదివాను, అంగీకరిస్తున్నాను.</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Thick Divider Line -->
+        <hr class="border-t-2 border-gray-800">
+
+        <!-- Secure Logout Button -->
+        <div class="text-center pt-2">
+            <button onclick="stopAutoTrader()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-xl text-sm sm:text-base transition shadow-lg shadow-cyan-950/50 flex items-center justify-center gap-2 border-2 border-cyan-500">
+                <i class="fa-solid fa-power-off"></i> Stop & Secure Logout
+            </button>
+            <p class="text-xs text-gray-500 mt-3">SENSEX EDGE TELUGU Platform • Version 2.0 Secure</p>
+        </div>
+
+    </div>
+
+    <script>
+        const BACKEND_URL = "http://127.0.0.1:8000"; // GitHub/Render URL deployment tarvatha maarstharu
+
+        async function startAutoTrader() {
+            const broker = document.getElementById('brokerSelect').value;
+            const apiKey = document.getElementById('apiKey').value;
+            const apiSecret = document.getElementById('apiSecret').value;
+            const lotSize = document.getElementById('lotSelect').value;
+            const isChecked = document.getElementById('disclaimerCheck').checked;
+
+            if (!isChecked) {
+                alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
+                return;
+            }
+
+            if (!apiKey || !apiSecret) {
+                alert("దయచేసి API Key మరియు Secret రెంటిని ఎంటర్ చేయండి.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/start-strategy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        broker: broker,
+                        api_key: apiKey,
+                        api_secret: apiSecret,
+                        lots: parseInt(lotSize)
+                    })
+                });
+
+                const res = await response.json();
+                if(response.ok) {
+                    document.getElementById('statusText').innerText = "Active & Auto Engine Running";
+                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
+                    alert(res.message);
+                } else {
+                    alert("Error: " + res.detail);
+                }
+            } catch (err) {
+                alert("బ్యాకెండ్ ఇంజిన్ అందుబాటులో లేదు. ఉదాహరణకు Python Server రన్ అవుతుందో లేదో చూడండి.");
             }
         }
-    </style>
-</head>
-<body class="p-0 sm:p-2 md:p-4 bg-gray-100">
 
-    <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 bg-[#4A5866] flex items-center justify-center z-50">
-        <!-- IMAGE 1 -->
-        <div id="splash-slide-1" class="splash-slide active">
-            <div class="text-center py-12 px-6 space-y-3 max-w-4xl w-full bg-transparent border-0 shadow-none">
-                <p class="text-gray-200 text-xs md:text-sm font-medium uppercase tracking-widest text-center">WELCOME TO</p>
-                <div class="overflow-x-auto py-2 text-center">
-                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-yellow-400 cinematic-title inline-block text-center">SENSEX EDGE TELUGU</h1>
-                </div>
+        function stopAutoTrader() {
+            document.getElementById('statusText').innerText = "Stopped";
+            document.getElementById('statusText').className = "text-red-400 font-bold";
+            alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
+        }
+    </script>
+</body>
+</html>                </div>
                 <p class="text-blue-300 text-xs md:text-sm font-bold tracking-widest uppercase text-center">LEARN • PRACTICE • GROW</p>
             </div>
         </div>
