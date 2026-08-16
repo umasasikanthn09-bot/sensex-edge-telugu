@@ -531,47 +531,4 @@
 
             if (galleryData.length > 0) {
                 historyContainer.innerHTML = galleryData.map(function(item) {
-                    return `
-                        <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-200 text-center">
-                            <p class="text-[10px] text-blue-600 font-bold text-center">
-                                Date: ${item.date}
-                            </p>
-                            <img src="${item.img}" alt="History Result" class="w-full rounded border border-gray-300 mx-auto">
-                        </div>
-                    `;
-                }).join('');
-            } else {
-                historyContainer.innerHTML = '<p class="text-gray-500 text-xs text-center">No history screenshots available.</p>';
-            }
-        }
 
-        // Splash Screen & Page Setup on Load
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const s1 = document.getElementById('splash-slide-1');
-                const s2 = document.getElementById('splash-slide-2');
-                if (s1) s1.classList.remove('active');
-                if (s2) s2.classList.add('active');
-            }, 3000);
-
-            setTimeout(function() {
-                const splash = document.getElementById('splash-screen');
-                if (splash) {
-                    splash.style.opacity = '0';
-                    setTimeout(function() {
-                        splash.style.display = 'none';
-                    }, 800);
-                }
-            }, 5000);
-
-            const today = new Date().toISOString().split('T')[0];
-            const admDate = document.getElementById('adm-date');
-            if (admDate) admDate.value = today;
-
-            renderMembersTable();
-            renderLevels();
-            renderGallery();
-        });
-    </script>
-</body>
-</html>
