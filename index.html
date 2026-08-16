@@ -6,1747 +6,250 @@
     <title>Sensex Edge Telugu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { 
-            background-color: #ffffff; 
-            color: #FACC15; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            scroll-behavior: smooth; 
-        }
-
-        /* Screenshot Banner Headers Style */
-        .banner-header {
-            background-color: #4A5866;
-            color: #ffffff;
-        }
-
-        .highlight-blue {
-            color: #FACC15;
-        }
-
-        .cinematic-title {
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        /* Card Section styling matching screenshot */
-        .card-box {
-            background-color: #ffffff;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Splash Screen Transition Styles */
-        #splash-screen {
-            transition: opacity 0.8s ease-in-out;
-            z-index: 9999;
-        }
         .splash-slide {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
             pointer-events: none;
         }
         .splash-slide.active {
             opacity: 1;
             pointer-events: auto;
         }
+
+        /* Mobile Screens లో Headings & Matter Centering కోసం */
+        @media (max-width: 768px) {
+            h1, h2, h3, h4, h5, h6, p, div, input, button {
+                text-align: center !important;
+            }
+        }
     </style>
 </head>
-<body class="p-0 sm:p-2 md:p-4">
+<body class="p-0 sm:p-2 md:p-4 bg-gray-100">
 
     <!-- SPLASH SCREEN -->
-    <div id="splash-screen" class="fixed inset-0 bg-[#4A5866] flex items-center justify-center">
-        <!-- IMAGE 1 (Shown for first 3 seconds) -->
+    <div id="splash-screen" class="fixed inset-0 bg-[#4A5866] flex items-center justify-center z-50">
+        <!-- IMAGE 1 -->
         <div id="splash-slide-1" class="splash-slide active">
             <div class="text-center py-12 px-6 space-y-3 max-w-4xl w-full bg-transparent border-0 shadow-none">
-                <p class="text-gray-200 text-xs md:text-sm font-medium uppercase tracking-widest">WELCOME TO</p>
-                <div class="overflow-x-auto py-2">
-                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-yellow cinematic-title inline-block">SENSEX EDGE TELUGU</h1>
+                <p class="text-gray-200 text-xs md:text-sm font-medium uppercase tracking-widest text-center">WELCOME TO</p>
+                <div class="overflow-x-auto py-2 text-center">
+                    <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-yellow-400 cinematic-title inline-block text-center">SENSEX EDGE TELUGU</h1>
                 </div>
-                <p class="text-blue-300 text-xs md:text-sm font-bold tracking-widest uppercase">LEARN • PRACTICE • GROW</p>
-                <div class="pt-2"></div>
+                <p class="text-blue-300 text-xs md:text-sm font-bold tracking-widest uppercase text-center">LEARN • PRACTICE • GROW</p>
             </div>
         </div>
 
-        <!-- IMAGE 2 (Appears after 3 seconds) -->
+        <!-- IMAGE 2 -->
         <div id="splash-slide-2" class="splash-slide">
             <div class="text-center py-12 px-6 space-y-4 max-w-4xl w-full">
                 <div class="inline-block p-4 rounded-full bg-white/10 border border-white/20 mb-2">
                     <span class="text-4xl">🚀</span>
                 </div>
-                <h1 class="text-3xl sm:text-5xl font-extrabold text-white cinematic-title">GET STARTED</h1>
-                <p class="text-gray-200 text-sm md:text-base font-semibold tracking-wider">Loading Your Trading Dashboard...</p>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-white cinematic-title text-center">GET STARTED</h1>
+                <p class="text-gray-200 text-sm md:text-base font-semibold tracking-wider text-center">Loading Your Trading Dashboard...</p>
             </div>
         </div>
     </div>
 
-    <!-- NAVIGATION -->
-    <nav class="p-4 border-b border-gray-200 mb-6 max-w-5xl mx-auto sticky top-0 bg-white/95 backdrop-blur z-50 shadow-sm">
-        <div class="flex items-center space-x-2 md:space-x-3 text-xs md:text-sm overflow-x-auto w-full justify-between md:justify-start">
-            <button onclick="showPage('home')" class="bg-[#4A5866] text-white px-3 py-2 rounded-lg font-bold hover:bg-[#394450] transition whitespace-nowrap">Home</button>
-            <button onclick="showPage('membership')" class="bg-[#0099FF] text-white px-3 py-2 rounded-lg font-bold hover:bg-blue-600 transition whitespace-nowrap">⭐Join</button>
-            <button onclick="showPage('login')" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">🔑 Member Login</button>
-            <button onclick="openAdminModal()" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">🔒 Admin</button>
-            <button onclick="scrollToContact()" class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-2 rounded-lg font-bold hover:bg-gray-200 transition whitespace-nowrap">Contact Us</button>
-        </div>
-    </nav>
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="max-w-4xl mx-auto space-y-6">
 
-    <!-- ADMIN PASSWORD MODAL -->
-    <div id="adminModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white border border-gray-300 p-6 rounded-2xl max-w-sm w-full space-y-4 shadow-2xl">
-            <h3 class="text-[#4A5866] text-lg font-bold text-center">🔒 Admin Login</h3>
-            <p class="text-xs text-gray-500 text-center">దయచేసి అడ్మిన్ పాస్‌వర్డ్ ఎంటర్ చేయండి</p>
-            <input type="password" id="adminPassInput" placeholder="Enter Password" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm focus:border-[#0099FF] outline-none">
-            <div class="flex space-x-2">
-                <button onclick="verifyAdminPassword()" class="flex-1 bg-[#0099FF] text-white font-bold py-2.5 rounded-lg text-sm hover:bg-blue-600">Login</button>
-                <button onclick="closeAdminModal()" class="flex-1 bg-gray-200 text-gray-800 font-bold py-2.5 rounded-lg text-sm hover:bg-gray-300">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 1. HOME PAGE -->
-    <div id="home" class="page space-y-8 max-w-4xl mx-auto pb-12">
-        
-        <!-- Header Banner matching Screenshot -->
-        <div class="banner-header text-center py-6 px-4 space-y-2 rounded-xl">
-            <div class="flex items-center justify-center gap-2">
-                
-                <h1 class="text-base sm:text-2xl md:text-3xl lg:text-3xl font-bold text-white tracking-wide whitespace-nowrap">
-                    Join The Fun Options Trading Community !
-                </h1>
-            </div>
-        </div>
-<div class="text-center space-y-4 px-2">
-    <h2 class="text-2xl sm:text-4xl md:text-5xl font-extrabold highlight-blue -mt-3">
-        Need More Monthly Income ?
-    </h2>
-</div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-black">
-                Join Sensex Edge Telugu !
-            </h2>
-            <p class="text-lg sm:text-xl font-bold highlight-blue">
-                LEARN • PRACTICE • GROW
-            </p>
-
-            <p class="text-base text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                Sensible Intraday Options Trading Levels & Risk Management Strategies in Telugu. Learn income trading and make new friends.
-            </p>
-
-            <div class="flex flex-wrap justify-center gap-3 pt-2">
-                <a href="https://www.youtube.com/@SensexEdgeTelugu-w5d" target="_blank" 
-                   class="bg-[#0099FF] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm flex items-center gap-1">
-                    📺 Visit YouTube
-                </a>
-                <button onclick="showPage('login')" 
-                        class="bg-[#4A5866] text-white font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-[#394450] transition shadow">
-                    📊 Today's Levels
-                </button>
-                <button onclick="showPage('membership')" 
-                        class="bg-[#0099FF] text-white font-bold px-5 py-2.5 rounded-lg shadow hover:bg-blue-600 transition text-sm">
-                    ⭐ Premium Membership
-                </button>
-            </div>
-        </div>
-
-        <!-- Middle Banner matching Screenshot -->
-        <div class="banner-header text-center py-8 px-4 rounded-xl space-y-2">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
-                Learn Options Trading
-            </h2>
-            <p class="text-base sm:text-lg font-semibold text-gray-200">
-                Our Goal is to Generate Supplemental Monthly Income
-            </p>
-        </div>
-
-        <!-- Content Card Section matching Screenshot -->
-        <div class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 space-y-8 shadow-sm">
-            
-            <h2 class="text-2xl sm:text-xl font-extrabold text-black text-center whitespace-nowrap overflow-x-auto">
-    Why Sensex Edge Telugu ?
-            </h2>
-
-            <!-- Features Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-                    <h3 class="highlight-blue font-bold text-base">Daily Analysis</h3>
-                    <p class="text-xs text-gray-600">Accurate Intraday Support & Resistance Analysis calculated daily.</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-                    <h3 class="highlight-blue font-bold text-base">Market Analysis</h3>
-                    <p class="text-xs text-gray-600">Clear Telugu explanations with market direction and trends.</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-                    <h3 class="highlight-blue font-bold text-base">Risk Management</h3>
-                    <p class="text-xs text-gray-600">Protect your capital with strict rules and disciplined trading.</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-                    <h3 class="highlight-blue font-bold text-base">Learn Trading</h3>
-                    <p class="text-xs text-gray-600">Step-by-step learning for beginners to build trading confidence.</p>
-                </div>
-            </div>
-
-            <!-- Welcome Box -->
-            <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl text-center space-y-4">
-                <h3 class="highlight-blue font-bold text-xl">ఆర్థిక స్వేచ్ఛను పొందాలనుకునే వారికి స్వాగతం</h3>
-                <p class="text-xs sm:text-sm text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                    <strong class="text-black">Sensex Edge Telugu</strong> అనేది స్వయం ఉపాధి కోరుకునే వారికి, ఆర్థిక విజ్ఞానాన్ని పెంపొందించుకోవాలనుకునే వారికి, క్రమశిక్షణతో ట్రేడింగ్ నేర్చుకుని తమ భవిష్యత్తును మెరుగుపరుచుకోవాలనుకునే ప్రతి తెలుగు వ్యక్తికి అంకితమైన వేదిక.
+        <!-- HOME PAGE SECTION -->
+        <div id="home-page" class="space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4 text-center">
+                <h4 class="text-black font-bold text-sm text-center">తెలుగు</h4>
+                <p class="text-xs text-gray-600 leading-relaxed text-center">
+                    <strong class="text-black">Sensex Edge Telugu</strong> ట్రేడర్లకు మార్కెట్పై సరైన అవగాహన, క్రమశిక్షణ, రిస్క్ మేనేజ్‌మెంట్ మరియు స్పష్టమైన ట్రేడింగ్ నిర్ణయాలు తీసుకోవడానికి ఉపయోగపడే విద్యాపరమైన వేదిక. Premium సభ్యులకు ప్రతి Trading Day Support, Resistance, CE మరియు PE Levels అందించబడినవి.
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-left max-w-xl mx-auto text-gray-700">
-                    <p>✅ స్వయం ఉపాధి సాధించాలనుకునే వారు</p>
-                    <p>✅ ఆర్థిక స్వేచ్ఛ దిశగా ప్రయాణించాలనుకునే వారు</p>
-                    <p>✅ ఉద్యోగంతో పాటు అదనపు ప్రత్యామ్నాయాన్ని అభివృద్ధి చేసుకొనికోవాలనుకునే వారు</p>
-                    <p>✅ క్రమశిక్షణతో ట్రేడింగ్ నేర్చుకోవాలనుకునే వారు</p>
-                    <p>✅ రిస్క్ మేనేజ్ మెంట్ నేర్చుకోవాలనుకునే వారు</p>
-                    <p>✅ తెలుగులో సులువుగా నేర్చుకోవాలనుకునే ప్రతి ఒక్కరూ</p>
-                </div>
-            </div>
-
-            <!-- Our Goal -->
-            <div class="bg-[#4A5866] text-white p-6 rounded-xl text-center space-y-2">
-                <h3 class="font-bold text-lg text-white">🎯 మా లక్ష్యం</h3>
-                <p class="text-xs sm:text-sm font-medium max-w-2xl mx-auto leading-relaxed text-gray-200">
-                    తెలుగు ప్రజలకు ఆర్థిక విజ్ఞానం, క్రమశిక్షణతో కూడిన ట్రేడింగ్ అవగాహన, రిస్క్ మేనేజ్‌మెంట్ మరియు లాభదాయకమైన ఆర్థిక నిర్ణయాలకు <strong class="underline text-white">విశ్వసనీయ వేదికగా నిలవడం</strong> మా లక్ష్యం.
-                </p>
-            </div>
-
-            <!-- About Section -->
-            <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl space-y-4">
-                <h3 class="highlight-blue font-bold text-center text-lg">👤 About Sensex Edge Telugu</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded-lg border border-gray-200 space-y-2">
-                        <h4 class="text-black font-bold text-sm text-center">English</h4>
-                        <p class="text-xs text-gray-600 leading-relaxed">
-                            <strong class="text-black">Sensex Edge Telugu</strong> helps traders improve market discipline, understand price action, manage risk effectively and make better trading decisions through simple educational market analysis. Premium Members receive accurate Support, Resistance, CE & PE Levels every trading day.
-                        </p>
-                        <p class="text-xs highlight-blue text-center font-bold pt-2">Trade Smart • Stay Disciplined • Grow Consistently</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-gray-200 space-y-2">
-                        <h4 class="text-black font-bold text-sm text-center">తెలుగు</h4>
-                        <p class="text-xs text-gray-600 leading-relaxed">
-                            <strong class="text-black">Sensex Edge Telugu</strong> ట్రేడర్లకు మార్కెట్పై సరైన అవగాహన, క్రమశిక్షణ, రిస్క్ మేనేజ్‌మెంట్ మరియు స్పష్టమైన ట్రేడింగ్ నిర్ణయాలు తీసుకోవడానికి ఉపయోగపడే విద్యాపరమైన వేదిక. Premium సభ్యులకు ప్రతి Trading Day Support, Resistance, CE మరియు PE Levels అందించబడినవి.
-                        </p>
-                        <p class="text-xs highlight-blue text-center font-bold pt-2">అవగాహన • క్రమశిక్షణ • నిరంతర అభివృద్ధి</p>
-                    </div>
-                </div>
+                <p class="text-xs text-blue-600 text-center font-bold pt-2">అవగాహన • క్రమశిక్షణ • నిరంతర అభివృద్ధి</p>
             </div>
 
             <!-- Contact Us Section -->
             <div id="contact-section" class="bg-gray-100 border border-gray-300 text-gray-800 p-6 rounded-xl text-center space-y-3">
-    <h3 class="font-bold text-lg text-black">📞 Contact Us</h3>
-    <div class="flex flex-wrap justify-center gap-6 text-xs sm:text-sm font-semibold">
-        <p>📺 YouTube : <a href="https://www.youtube.com/@SensexEdgeTelugu-w5d" target="_blank" class="highlight-blue underline">Sensex Edge Telugu</a></p>
-        <p>📧 Email : sensexedgetelugu@gmail.com</p>
-        <!-- Inline style ద్వారా 1.5pt పెంచబడింది -->
-        <p>📈 <a href="https://join.dhan.co/?invite=FSBMH52877" target="_blank" class="highlight-blue underline" style="font-size: calc(100% + 1.5pt);">Dhan A/c</a></p>
-    </div>
-    <p class="text-xs sm:text-sm font-semibold">💬 WhatsApp : <a href="https://wa.me/916302889071" target="_blank" class="highlight-blue underline">+91 6302889071</a></p>
-    <p class="text-[10px] sm:text-xs highlight-blue font-bold pt-1 whitespace-nowrap overflow-hidden text-ellipsis">
-    ⭐ Knowledge Builds Confidence • Discipline Creates Success ⭐
-    </p>
+                <h3 class="font-bold text-lg text-black text-center">📞 Contact Us</h3>
+                <div class="flex flex-wrap justify-center items-center gap-6 text-xs sm:text-sm font-semibold text-center">
+                    <p>📺 YouTube : <a href="https://www.youtube.com/@SensexEdgeTelugu-w5d" target="_blank" class="text-blue-600 underline">Sensex Edge Telugu</a></p>
+                    <p>📧 Email : sensexedgetelugu@gmail.com</p>
+                    <p>📈 <a href="https://join.dhan.co/?invite=FSBMH52877" target="_blank" class="text-blue-600 underline" style="font-size: calc(100% + 1.5pt);">Dhan A/c</a></p>
+                </div>
+                <p class="text-xs sm:text-sm font-semibold text-center">💬 WhatsApp : <a href="https://wa.me/916302889071" target="_blank" class="text-blue-600 underline">+91 6302889071</a></p>
+                <p class="text-[10px] sm:text-xs text-blue-600 font-bold pt-1 text-center">
+                    ⭐ Knowledge Builds Confidence • Discipline Creates Success ⭐
+                </p>
             </div>
 
             <!-- Disclaimer -->
-            <div class="bg-red-50 border border-red-200 p-4 rounded-xl text-[11px] sm:text-xs text-gray-600 space-y-1">
-                <p class="text-red-600 font-bold">⚠️ Disclaimer</p>
-                <p>ఈ Website మరియు YouTube Channel లో అందించే సమాచారం విద్యాపరమైన (Educational) ప్రయోజనాల కోసం మాత్రమే. షేర్ మార్కెట్ మరియు Options Trading లో పెట్టుబడులు రిస్క్‌తో కూడుకుని ఉంటాయి. ప్రతి క్రయ లేదా పెట్టుబడి నిర్ణయం తీసుకునే ముందు మీ సొంత పరిశీలన లేదా సర్టిఫైడ్ ఫైనాన్షియల్ అడ్వైజర్ సలహా తీసుకోండి.</p>
+            <div class="bg-red-50 border border-red-200 p-4 rounded-xl text-[11px] sm:text-xs text-gray-600 space-y-1 text-center">
+                <p class="text-red-600 font-bold text-center">⚠️ Disclaimer</p>
+                <p class="text-center">ఈ Website మరియు YouTube Channel లో అందించే సమాచారం విద్యాపరమైన (Educational) ప్రయోజనాల కోసం మాత్రమే. షేర్ మార్కెట్ మరియు Options Trading లో పెట్టుబడులు రిస్క్‌తో కూడుకుని ఉంటాయి. ప్రతి క్రయ లేదా పెట్టుబడి నిర్ణయం తీసుకునే ముందు మీ సొంత పరిశీలన లేదా సర్టిఫైడ్ ఫైనాన్షియల్ అడ్వైజర్ సలహా తీసుకోండి.</p>
             </div>
-
         </div>
 
-        <div class="text-center text-xs text-gray-500 py-4 border-t border-gray-200 space-y-1">
-            <p class="text-black font-bold">Sensex Edge Telugu</p>
-            <p>తెలుగు వారి ఆర్థిక స్వేచ్ఛకు విశ్వసనీయ మార్గదర్శి</p>
-            <p class="text-[10px] text-gray-400 pt-2">© 2026 Sensex Edge Telugu. All Rights Reserved.</p>
-        </div>
-    </div>
-
-    <!-- 2. SMART MEMBER LOGIN PAGE -->
-    <div id="login" class="page hidden max-w-md mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-lg mt-10 space-y-4">
-        <h2 class="text-2xl font-bold text-black text-center">🔑 Member Login</h2>
-        <div class="space-y-3">
-            <div>
-                <label class="block text-xs text-gray-600 mb-1">Cell Number</label>
-                <input type="text" id="login-cell" placeholder="Enter Mobile Number" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]" oninput="checkMemberStatus()">
-            </div>
-
-            <div id="otp-section" class="hidden space-y-3 border border-blue-200 p-3 rounded-lg bg-blue-50">
-                <p class="text-xs highlight-blue font-bold">1st Time Registration / Verification</p>
-                <div class="flex gap-2">
-                    <input type="text" id="login-otp" placeholder="Enter 4-Digit OTP" class="flex-1 p-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none">
-                    <button type="button" onclick="sendOtp()" class="bg-[#4A5866] text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-[#394450]">Send OTP</button>
-                </div>
-                <input type="password" id="login-new-pass" placeholder="Create New Password" class="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none">
-                <input type="password" id="login-conf-pass" placeholder="Confirm Password" class="w-full p-2.5 bg-white border border-gray-300 rounded-lg text-sm outline-none">
-            </div>
-
-            <div id="password-section">
-                <label class="block text-xs text-gray-600 mb-1">Password</label>
-                <input type="password" id="login-pass" placeholder="Enter Password" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
-            </div>
-
-            <button onclick="handleMemberLogin()" class="w-full bg-[#0099FF] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">Login to Premium</button>
+        <!-- PAYMENT FORM SECTION -->
+        <div id="payment-section" class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-3 text-center">
+            <input type="text" id="pay-mobile" placeholder="Mobile Number (Cell No)" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF] text-center">
+            <input type="text" id="pay-txid" placeholder="UPI Transaction ID / UTR" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF] text-center">
+            <button onclick="submitPaymentAndRegister()" class="w-full bg-[#0099FF] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow text-center">✅ Submit & Confirm Membership</button>
             <button onclick="showPage('home')" class="w-full text-center text-xs text-gray-500 hover:text-black pt-2">← Back to Home</button>
         </div>
-    </div>
 
-    <!-- 3. MEMBERSHIP PAYMENT & REGISTRATION PAGE -->
-    <div id="membership" class="page hidden max-w-lg mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-lg mt-6 space-y-4">
-        <h2 class="text-2xl font-bold text-black text-center mb-1">⭐ Premium Membership Payment</h2>
-        <p class="text-center text-3xl font-extrabold highlight-blue">₹999 <span class="text-sm text-gray-500">/ Month</span></p>
-        <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl text-center">
-            <p class="text-sm text-gray-600 mb-2">Scan QR Code using any UPI App</p>
-            <div class="bg-white p-2 inline-block rounded border border-gray-300">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=umasasakanthn04@okhdfcbank" alt="QR">
-            </div>
-            <p class="text-xs highlight-blue font-bold mt-2">umasasakanthn04@okhdfcbank</p>
-        </div>
-        <div class="space-y-3">
-            <input type="text" id="pay-name" placeholder="Full Name" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
-            <input type="text" id="pay-mobile" placeholder="Mobile Number (Cell No)" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
-            <input type="text" id="pay-txid" placeholder="UPI Transaction ID / UTR" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-800 text-sm outline-none focus:border-[#0099FF]">
-            <button onclick="submitPaymentAndRegister()" class="w-full bg-[#0099FF] text-white font-bold py-3 rounded-lg text-sm hover:bg-blue-600 transition shadow">✅ Submit & Confirm Membership</button>
-            <button onclick="showPage('home')" class="w-full text-center text-xs text-gray-500 hover:text-black pt-2">← Back to Home</button>
-        </div>
-    </div>
-
-    <!-- 4. PREMIUM LEVELS PAGE -->
-    <div id="premium" class="page hidden space-y-6 max-w-2xl mx-auto pb-12">
-        <div class="flex justify-between items-center bg-[#4A5866] p-4 rounded-xl text-white">
-            <div>
-                <h2 class="text-xl font-bold text-white">Today's Premium Analysis</h2>
-                <p id="display-date-time" class="text-xs text-gray-200">Date: -- | Time: -- | Spot: --</p>
-            </div>
-            <div class="flex gap-2 items-center">
-                <button id="btn-back-to-admin" onclick="showPage('admin')" class="hidden bg-[#0099FF] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-600 transition">🔙 Back to Admin</button>
-                <button onclick="memberLogout()" class="bg-red-500 px-3 py-1.5 rounded text-white text-xs font-bold hover:bg-red-600 transition">Logout</button>
-            </div>
-        </div>
-
-        <!-- SENSEX INDEX Analysis -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4 text-center">
-            <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Analysis</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">Supports</p>
-                
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-s1">Target 1 : --</div>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-s2">Target 2 : --</div>
+        <!-- PREMIUM LEVELS PAGE -->
+        <div id="premium" class="page hidden space-y-6 max-w-2xl mx-auto pb-12">
+            <div class="flex flex-col sm:flex-row justify-between items-center bg-[#4A5866] p-4 rounded-xl text-white text-center gap-3">
+                <div>
+                    <h2 class="text-xl font-bold text-white text-center">Today's Premium Analysis</h2>
+                    <p id="display-date-time" class="text-xs text-gray-200 text-center">Date: -- | Time: -- | Spot: --</p>
                 </div>
-                <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">Resistances</p>
-                    
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-r1">Target 1 : --</div>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-p-r2">Target 2 : --</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CE Analysis -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 class="text-black font-bold text-center text-lg">CE Analysis</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">Supports</p>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-s1">Support 1 : --</div>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-s2">Support 2 : --</div>
-                </div>
-                <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">Resistances</p>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r1">Target 1 : --</div>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-ce-r2">Target 2 : --</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PE Analysis -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 class="text-black font-bold text-center text-lg">PE Analysis </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-green-700 font-bold text-sm">Supports</p>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-s1">Support 1 : --</div>
-                    <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-s2">Support 2 : --</div>
-                </div>
-                <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
-                    <p class="text-red-700 font-bold text-sm">Resistances</p>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r1">Target 1 : --</div>
-                    <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium" id="lbl-pe-r2">Target 2 : --</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 1. TODAY'S RESULTS GALLERY BOX -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-            <h3 class="text-black font-bold text-center text-sm">📅 Today's Results Gallery</h3>
-            <div id="today-gallery-container" class="space-y-2">
-                <p class="text-gray-500 text-xs text-center">No screenshot uploaded for today yet.</p>
-            </div>
-        </div>
-
-        <!-- 2. HISTORY GALLERY BOX -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-            <h3 class="text-black font-bold text-center text-sm">📂 History Gallery</h3>
-            <div id="history-gallery-container" class="space-y-2 max-h-60 overflow-y-auto">
-                <p class="text-gray-500 text-xs text-center">No history screenshots available.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. ADMIN DASHBOARD -->
-    <div id="admin" class="page hidden space-y-6 max-w-3xl mx-auto bg-white p-6 rounded-2xl border border-gray-200 shadow-xl mt-4 pb-12">
-        <h2 class="text-xl font-bold text-[#4A5866] text-center mb-4">Sensex Edge Telugu - Admin Dashboard</h2>
-        
-        <!-- Members Database Section -->
-        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-            <div class="flex flex-wrap justify-between items-center gap-2">
-                <h3 class="text-black font-bold text-sm">👥 Joining Members Database</h3>
-                <button onclick="downloadExcel()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3 py-1.5 rounded text-xs shadow">📥 Download Excel</button>
-            </div>
-            <div class="overflow-x-auto max-h-48 border border-gray-200 rounded-lg bg-white">
-                <table class="w-full text-left text-xs text-gray-700">
-                    <thead class="bg-[#4A5866] text-white sticky top-0">
-                        <tr>
-                            <th class="p-2 border-b border-gray-300">Name</th>
-                            <th class="p-2 border-b border-gray-300">Mobile No</th>
-                            <th class="p-2 border-b border-gray-300">Txn ID</th>
-                            <th class="p-2 border-b border-gray-300 text-center">Action (Approve / Delete)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="members-table-body">
-                        <tr><td colspan="4" class="p-3 text-center text-gray-500">No members joined yet.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <form id="adminForm" onsubmit="event.preventDefault();" class="space-y-6">
-            <!-- Today's Market Details -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm">Today's Market Analysis</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-[11px] text-gray-600 mb-1">Date</label>
-                        <input type="date" id="adm-date" class="w-full bg-white p-2.5 rounded-lg border border-gray-300 text-sm text-gray-800 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-600 mb-1">Updated Time</label>
-                        <input type="text" id="adm-time" placeholder="--:-- --" class="w-full bg-white p-2.5 rounded-lg border border-gray-300 text-sm text-gray-800 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-600 mb-1">Sensex Spot</label>
-                        <input type="text" id="adm-spot" placeholder="Enter Sensex Spot" class="w-full bg-white p-2.5 rounded-lg border border-gray-300 text-sm text-gray-800 outline-none">
-                    </div>
+                <div class="flex gap-2 items-center justify-center">
+                    <button id="btn-back-to-admin" onclick="showPage('admin')" class="hidden bg-[#0099FF] text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-600 transition">🔙 Back to Admin</button>
+                    <button onclick="memberLogout()" class="bg-red-500 px-3 py-1.5 rounded text-white text-xs font-bold hover:bg-red-600 transition">Logout</button>
                 </div>
             </div>
 
             <!-- SENSEX INDEX Analysis -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-center">
-                <h2 class="text-xl font-bold text-black mb-3">Sensex INDEX Analysis</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                    <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">Supports</p>
-                        
-                        <input type="text" id="adm-sup-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-sup-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+            <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4 text-center">
+                <h2 class="text-xl font-bold text-black mb-3 text-center">Sensex INDEX Analysis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-p-s1">Target 1 : --</div>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-p-s2">Target 2 : --</div>
                     </div>
-                    <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">Resistances</p>
-                        
-                        <input type="text" id="adm-res-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-res-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                    <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-p-r1">Target 1 : --</div>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-p-r2">Target 2 : --</div>
                     </div>
                 </div>
             </div>
 
             <!-- CE Analysis -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm text-center">CE Analysis</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">Supports</p>
-                        <input type="text" id="adm-ce-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-ce-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+            <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="text-black font-bold text-center text-lg">CE Analysis</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-ce-s1">Support 1 : --</div>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-ce-s2">Support 2 : --</div>
                     </div>
-                    <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">Resistances</p>
-                        <input type="text" id="adm-ce-r1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-ce-r2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                    <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-ce-r1">Target 1 : --</div>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-ce-r2">Target 2 : --</div>
                     </div>
                 </div>
             </div>
 
             <!-- PE Analysis -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm text-center">PE Analysis</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="text-black font-bold text-center text-lg">PE Analysis</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="border border-green-400 bg-green-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-pe-s1">Support 1 : --</div>
+                        <div class="bg-white border border-green-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-pe-s2">Support 2 : --</div>
+                    </div>
+                    <div class="border border-red-400 bg-red-50/50 p-3 rounded-xl space-y-2">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-pe-r1">Target 1 : --</div>
+                        <div class="bg-white border border-red-200 p-2 rounded text-sm text-gray-800 font-medium text-center" id="lbl-pe-r2">Target 2 : --</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN INPUT CONTROLS SECTION -->
+        <div id="admin-inputs" class="space-y-4">
+            <!-- SENSEX INDEX Input Analysis -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-center">
+                <h2 class="text-xl font-bold text-black mb-3 text-center">Sensex INDEX Analysis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                     <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-green-700 font-bold text-sm">Supports</p>
-                        <input type="text" id="adm-pe-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-pe-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <input type="text" id="adm-sup-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-sup-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
                     </div>
                     <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
-                        <p class="text-red-700 font-bold text-sm">Resistances</p>
-                        <input type="text" id="adm-pe-r1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
-                        <input type="text" id="adm-pe-r2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <input type="text" id="adm-res-t1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-res-t2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
                     </div>
                 </div>
             </div>
 
-            <!-- Upload Results Screenshot -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-                <h3 class="text-black font-bold text-sm">Upload Results Screenshot</h3>
-                <input type="file" id="adm-screenshot" accept="image/*" class="w-full bg-white p-2 rounded-lg border border-gray-300 text-sm text-gray-600">
+            <!-- CE Input Analysis -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-center">
+                <h3 class="text-black font-bold text-sm text-center">CE Analysis</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <input type="text" id="adm-ce-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-ce-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                    </div>
+                    <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <input type="text" id="adm-ce-r1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-ce-r2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                    </div>
+                </div>
             </div>
 
-            <!-- Buttons -->
-            <div class="flex flex-wrap gap-3 pt-2">
-                <button type="button" onclick="clearAdminForm()" class="flex-1 bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl text-sm hover:bg-gray-300">🗑️ Clear Form</button>
-                <button type="button" onclick="previewPremiumPage()" class="flex-1 bg-[#4A5866] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-[#394450]">👁️ Preview</button>
-                <button type="button" onclick="saveAdminLevels()" class="flex-1 bg-[#0099FF] text-white font-bold py-3 px-4 rounded-xl text-sm hover:bg-blue-600 shadow">💾 Publish Levels</button>
+            <!-- PE Input Analysis -->
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3 text-center">
+                <h3 class="text-black font-bold text-center text-sm">PE Analysis</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="border border-green-300 bg-white p-3 rounded-lg space-y-2">
+                        <p class="text-green-700 font-bold text-sm text-center">Supports</p>
+                        <input type="text" id="adm-pe-s1" placeholder="Support 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-pe-s2" placeholder="Support 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                    </div>
+                    <div class="border border-red-300 bg-white p-3 rounded-lg space-y-2">
+                        <p class="text-red-700 font-bold text-sm text-center">Resistances</p>
+                        <input type="text" id="adm-pe-r1" placeholder="Target 1" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                        <input type="text" id="adm-pe-r2" placeholder="Target 2" class="w-full bg-gray-50 p-2 rounded text-sm text-gray-800 border border-gray-300 outline-none text-center">
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="text-center text-xs text-gray-500 py-4 border-t border-gray-200 space-y-1">
+            <p class="text-black font-bold text-center">Sensex Edge Telugu</p>
+            <p class="text-center">తెలుగు వారి ఆర్థిక స్వేచ్ఛకు విశ్వసనీయ మార్గదర్శి</p>
+            <p class="text-[10px] text-gray-400 pt-2 text-center">© 2026 Sensex Edge Telugu. All Rights Reserved.</p>
+        </div>
+
     </div>
 
-<!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Global State & Local Storage Initialization
+        let members = JSON.parse(localStorage.getItem('set_members')) || [];
+        let levelsData = JSON.parse(localStorage.getItem('set_levels')) || {};
+        let galleryData = JSON.parse(localStorage.getItem('set_gallery')) || [];
 
-    // =========================================================
-    // DATA STORE
-    // =========================================================
-    let members = JSON.parse(localStorage.getItem('set_members') || '[]');
-    let levelsData = JSON.parse(localStorage.getItem('set_levels') || '{}');
-    let galleryData = JSON.parse(localStorage.getItem('set_gallery') || '[]');
-
-    let currentAdminPreview = false;
-    let generatedOtp = "";
-
-
-    // =========================================================
-    // SPLASH SCREEN
-    // =========================================================
-    window.addEventListener('load', () => {
-
-        setTimeout(() => {
-            const s1 = document.getElementById('splash-slide-1');
-            const s2 = document.getElementById('splash-slide-2');
-
-            if (s1) s1.classList.remove('active');
-            if (s2) s2.classList.add('active');
-
-        }, 3000);
-
-
-        setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-
-            if (splash) {
-                splash.style.opacity = '0';
-
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                }, 800);
-            }
-
-        }, 5000);
-
-
-        // Set today's date in Admin form
-        const today = new Date().toISOString().split('T')[0];
-        const admDate = document.getElementById('adm-date');
-
-        if (admDate && !admDate.value) {
-            admDate.value = today;
+        function getValue(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
         }
 
-
-        renderMembersTable();
-        renderLevels();
-        renderGallery();
-    });
-
-
-    // =========================================================
-    // PAGE NAVIGATION
-    // =========================================================
-    function showPage(pageId) {
-
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.add('hidden');
-        });
-
-        const target = document.getElementById(pageId);
-
-        if (target) {
-            target.classList.remove('hidden');
-
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = value;
         }
 
-
-        // Back to Admin button
-        const backAdminBtn =
-            document.getElementById('btn-back-to-admin');
-
-        if (backAdminBtn) {
-
-            if (pageId === 'premium' && currentAdminPreview) {
-                backAdminBtn.classList.remove('hidden');
-            } else {
-                backAdminBtn.classList.add('hidden');
-            }
-        }
-    }
-
-
-    function scrollToContact() {
-
-        showPage('home');
-
-        setTimeout(() => {
-
-            const contact =
-                document.getElementById('contact-section');
-
-            if (contact) {
-                contact.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-
-        }, 150);
-    }
-
-
-    // =========================================================
-    // ADMIN MODAL
-    // =========================================================
-    function openAdminModal() {
-
-        const modal = document.getElementById('adminModal');
-
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-    }
-
-
-    function closeAdminModal() {
-
-        const modal = document.getElementById('adminModal');
-
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        const input =
-            document.getElementById('adminPassInput');
-
-        if (input) {
-            input.value = '';
-        }
-    }
-
-
-    function verifyAdminPassword() {
-
-        const input =
-            document.getElementById('adminPassInput');
-
-        const pass = input ? input.value : '';
-
-        /*
-         * Keep your existing password values here if required.
-         * For better security, admin authentication should
-         * eventually be moved to a server/backend.
-         */
-        if (
-            pass === 'admin123' ||
-            pass === 'sensex123' ||
-            pass === 'baba@123'
-        ) {
-
-            closeAdminModal();
-
-            currentAdminPreview = true;
-
-            showPage('admin');
-
-            renderMembersTable();
-            renderLevels();
-
-        } else {
-
-            alert(
-                'ఇచ్చిన పాస్‌వర్డ్ తప్పు! దయచేసి సరిచూసుకోండి.'
-            );
-        }
-    }
-
-
-    // =========================================================
-    // MEMBER STATUS
-    // =========================================================
-    function checkMemberStatus() {
-
-        const input =
-            document.getElementById('login-cell');
-
-        if (!input) return;
-
-        const mobile = input.value.trim();
-
-        const member =
-            members.find(m => m.mobile === mobile);
-
-        const otpSec =
-            document.getElementById('otp-section');
-
-        const passSec =
-            document.getElementById('password-section');
-
-        if (!otpSec || !passSec) return;
-
-
-        if (mobile.length === 10) {
-
-            if (member) {
-
-                if (member.registered) {
-
-                    otpSec.classList.add('hidden');
-                    passSec.classList.remove('hidden');
-
-                } else {
-
-                    otpSec.classList.remove('hidden');
-                    passSec.classList.add('hidden');
-                }
-
-            } else {
-
-                otpSec.classList.add('hidden');
-                passSec.classList.remove('hidden');
-            }
-
-        } else {
-
-            otpSec.classList.add('hidden');
-            passSec.classList.remove('hidden');
-        }
-    }
-
-
-    // =========================================================
-    // OTP
-    // =========================================================
-    function sendOtp() {
-
-        generatedOtp =
-            Math.floor(
-                1000 + Math.random() * 9000
-            ).toString();
-
-        alert(
-            `మీ OTP సంఖ్య: ${generatedOtp} (డెమో కోసం దయచేసి దీనినే ఎంటర్ చేయండి)`
-        );
-    }
-
-
-    // =========================================================
-    // MEMBER LOGIN
-    // =========================================================
-    function handleMemberLogin() {
-
-        const mobileInput =
-            document.getElementById('login-cell');
-
-        const mobile =
-            mobileInput ? mobileInput.value.trim() : '';
-
-        if (!mobile || mobile.length !== 10) {
-
-            alert(
-                'దయచేసి 10 అంకెల మొబైల్ సంఖ్యను నమోదు చేయండి.'
-            );
-
-            return;
-        }
-
-
-        const member =
-            members.find(m => m.mobile === mobile);
-
-
-        if (!member) {
-
-            alert(
-                'ఈ నంబర్‌తో మెంబర్‌షిప్ లేదు. దయచేసి మొదట Join బటన్ క్లిక్ చేసి రిజిస్టర్ చేసుకోండి.'
-            );
-
-            return;
-        }
-
-
-        if (!member.approved) {
-
-            alert(
-                'మీ అకౌంట్ ఇంకా అడ్మిన్ ద్వారా అప్రూవ్ కాలేదు. దయచేసి కొద్దిసేపు వేచి ఉండండి లేదా WhatsApp లో సంప్రదించండి.'
-            );
-
-            return;
-        }
-
-
-        if (!member.registered) {
-
-            const otp =
-                document.getElementById('login-otp');
-
-            const newPass =
-                document.getElementById('login-new-pass');
-
-            const confPass =
-                document.getElementById('login-conf-pass');
-
-
-            const enteredOtp =
-                otp ? otp.value.trim() : '';
-
-            const password =
-                newPass ? newPass.value : '';
-
-            const confirmPassword =
-                confPass ? confPass.value : '';
-
-
-            if (
-                !generatedOtp ||
-                enteredOtp !== generatedOtp
-            ) {
-
-                alert('తప్పు OTP నమోదైనది!');
-
-                return;
-            }
-
-
-            if (
-                !password ||
-                password !== confirmPassword
-            ) {
-
-                alert(
-                    'పాస్‌వర్డ్‌లు మ్యాచ్ అవ్వడం లేదు.'
-                );
-
-                return;
-            }
-
-
-            member.registered = true;
-            member.password = password;
-
-            localStorage.setItem(
-                'set_members',
-                JSON.stringify(members)
-            );
-
-            alert(
-                'రిజిస్ట్రేషన్ విజయవంతమైంది!'
-            );
-
-        } else {
-
-            const passInput =
-                document.getElementById('login-pass');
-
-            const pass =
-                passInput ? passInput.value : '';
-
-            if (pass !== member.password) {
-
-                alert('తప్పు పాస్‌వర్డ్!');
-
-                return;
-            }
-        }
-
-
-        currentAdminPreview = false;
-
-        showPage('premium');
-    }
-
-
-    // =========================================================
-    // PAYMENT / MEMBERSHIP
-    // =========================================================
-    function submitPaymentAndRegister() {
-
-        const nameInput =
-            document.getElementById('pay-name');
-
-        const mobileInput =
-            document.getElementById('pay-mobile');
-
-        const txidInput =
-            document.getElementById('pay-txid');
-
-
-        const name =
-            nameInput ? nameInput.value.trim() : '';
-
-        const mobile =
-            mobileInput ? mobileInput.value.trim() : '';
-
-        const txid =
-            txidInput ? txidInput.value.trim() : '';
-
-
-        if (!name || !mobile || !txid) {
-
-            alert(
-                'దయచేసి అన్ని వివరాలు నింపండి.'
-            );
-
-            return;
-        }
-
-
-        if (!/^\d{10}$/.test(mobile)) {
-
-            alert(
-                'దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.'
-            );
-
-            return;
-        }
-
-
-        if (
-            members.some(
-                m => m.mobile === mobile
-            )
-        ) {
-
-            alert(
-                'ఈ మొబైల్ నంబర్ ఇప్పటికే రిజిస్టర్ అయి ఉంది.'
-            );
-
-            return;
-        }
-
-
-        const newMember = {
-
-            name: name,
-            mobile: mobile,
-            txid: txid,
-
-            approved: false,
-            registered: false,
-            password: ''
-        };
-
-
-        members.push(newMember);
-
-        localStorage.setItem(
-            'set_members',
-            JSON.stringify(members)
-        );
-
-
-        renderMembersTable();
-
-
-        alert(
-            'మీ వివరాలు సమర్పించబడ్డాయి! అడ్మిన్ అప్రూవ్ చేసిన తర్వాత మీరు లాగిన్ కావచ్చు.'
-        );
-
-
-        showPage('home');
-    }
-
-
-    function memberLogout() {
-
-        currentAdminPreview = false;
-
-        showPage('home');
-    }
-
-
-    // =========================================================
-    // MEMBERS TABLE
-    // =========================================================
-    function renderMembersTable() {
-
-        const tbody =
-            document.getElementById(
-                'members-table-body'
-            );
-
-        if (!tbody) return;
-
-
-        if (members.length === 0) {
-
-            tbody.innerHTML =
-                `<tr>
-                    <td colspan="4"
-                        class="p-3 text-center text-gray-500">
-                        No members joined yet.
-                    </td>
-                </tr>`;
-
-            return;
-        }
-
-
-        tbody.innerHTML =
-            members.map((m, index) => `
-
-                <tr class="border-b border-gray-200">
-
-                    <td class="p-2">
-                        ${m.name || ''}
-                    </td>
-
-                    <td class="p-2">
-                        ${m.mobile || ''}
-                    </td>
-
-                    <td class="p-2">
-                        ${m.txid || ''}
-                    </td>
-
-                    <td class="p-2 text-center space-x-1">
-
-                        <button
-                            onclick="toggleApprove(${index})"
-                            class="px-2 py-1 text-[11px] rounded font-bold
-                            ${m.approved
-                                ? 'bg-green-600 text-white'
-                                : 'bg-yellow-500 text-white'}">
-
-                            ${m.approved
-                                ? 'Approved'
-                                : 'Approve'}
-
-                        </button>
-
-
-                        <button
-                            onclick="deleteMember(${index})"
-                            class="px-2 py-1 text-[11px]
-                            bg-red-600 text-white rounded font-bold">
-
-                            Delete
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            `).join('');
-    }
-
-
-    function toggleApprove(index) {
-
-        if (!members[index]) return;
-
-        members[index].approved =
-            !members[index].approved;
-
-
-        localStorage.setItem(
-            'set_members',
-            JSON.stringify(members)
-        );
-
-
-        renderMembersTable();
-    }
-
-
-    function deleteMember(index) {
-
-        if (!members[index]) return;
-
-
-        if (
-            confirm(
-                'ఈ మెంబర్‌ను తొలగించాలా?'
-            )
-        ) {
-
-            members.splice(index, 1);
-
-            localStorage.setItem(
-                'set_members',
-                JSON.stringify(members)
-            );
-
-            renderMembersTable();
-        }
-    }
-
-
-    // =========================================================
-    // DOWNLOAD MEMBERS CSV
-    // =========================================================
-    function downloadExcel() {
-
-        let csvContent =
-            "data:text/csv;charset=utf-8,Name,Mobile,TxnID,Approved\n";
-
-
-        members.forEach(m => {
-
-            csvContent +=
-                `"${m.name || ''}","${m.mobile || ''}","${m.txid || ''}","${m.approved}"\n`;
-
-        });
-
-
-        const encodedUri =
-            encodeURI(csvContent);
-
-        const link =
-            document.createElement('a');
-
-        link.setAttribute(
-            'href',
-            encodedUri
-        );
-
-        link.setAttribute(
-            'download',
-            'sensex_edge_members.csv'
-        );
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-    }
-
-
-    // =========================================================
-    // SAVE ADMIN LEVELS
-    // =========================================================
-    function saveAdminLevels() {
-
-        const getValue = id => {
-
-            const element =
-                document.getElementById(id);
-
-            return element
-                ? element.value
-                : '';
-        };
-
-
-        levelsData = {
-
-            date: getValue('adm-date'),
-
-            time: getValue('adm-time'),
-
-            spot: getValue('adm-spot'),
-
-
-            supLvl:
-                getValue('adm-sup-lvl'),
-
-            supT1:
-                getValue('adm-sup-t1'),
-
-            supT2:
-                getValue('adm-sup-t2'),
-
-
-            resLvl:
-                getValue('adm-res-lvl'),
-
-            resT1:
-                getValue('adm-res-t1'),
-
-            resT2:
-                getValue('adm-res-t2'),
-
-
-            ceS1:
-                getValue('adm-ce-s1'),
-
-            ceS2:
-                getValue('adm-ce-s2'),
-
-            ceR1:
-                getValue('adm-ce-r1'),
-
-            ceR2:
-                getValue('adm-ce-r2'),
-
-
-            peS1:
-                getValue('adm-pe-s1'),
-
-            peS2:
-                getValue('adm-pe-s2'),
-
-            peR1:
-                getValue('adm-pe-r1'),
-
-            peR2:
-                getValue('adm-pe-r2')
-        };
-
-
-        localStorage.setItem(
-            'set_levels',
-            JSON.stringify(levelsData)
-        );
-
-
-        // Screenshot upload
-        const fileInput =
-            document.getElementById(
-                'adm-screenshot'
-            );
-
-
-        if (
-            fileInput &&
-            fileInput.files &&
-            fileInput.files[0]
-        ) {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload = function(e) {
-
-                const newItem = {
-
-                    img: e.target.result,
-
-                    date:
-                        levelsData.date ||
-                        new Date()
-                            .toISOString()
-                            .split('T')[0]
-                };
-
-
-                galleryData.unshift(
-                    newItem
-                );
-
-
-                localStorage.setItem(
-                    'set_gallery',
-                    JSON.stringify(galleryData)
-                );
-
-
-                renderGallery();
-            };
-
-
-            reader.readAsDataURL(
-                fileInput.files[0]
-            );
-        }
-
-
-        renderLevels();
-
-        alert(
-            'లెవెల్స్ విజయవంతంగా సేవ్ చేయబడ్డాయి!'
-        );
-    }
-
-
-    // =========================================================
-    // PREVIEW
-    // =========================================================
-    function previewPremiumPage() {
-
-        saveAdminLevels();
-
-        currentAdminPreview = true;
-
-        const btn =
-            document.getElementById(
-                'btn-back-to-admin'
-            );
-
-        if (btn) {
-            btn.classList.remove('hidden');
-        }
-
-
-        showPage('premium');
-    }
-
-
-    // =========================================================
-    // CLEAR ADMIN FORM
-    // =========================================================
-    function clearAdminForm() {
-
-        const form =
-            document.getElementById(
-                'adminForm'
-            );
-
-        if (form) {
-            form.reset();
-        }
-
-
-        levelsData = {};
-
-        localStorage.removeItem(
-            'set_levels'
-        );
-
-
-        renderLevels();
-
-
-        alert(
-            'ఫారమ్ క్లియర్ చేయబడింది.'
-        );
-    }
-
-
-    // =========================================================
-    // RENDER PREMIUM LEVELS
-    // =========================================================
-    function renderLevels() {
-
-        const setText = (
-            id,
-            text
-        ) => {
-
-            const element =
-                document.getElementById(id);
-
-            if (element) {
-                element.innerText = text;
-            }
-        };
-
-
-        setText(
-            'display-date-time',
-
-            `Date: ${levelsData.date || '--'} | ` +
-            `Time: ${levelsData.time || '--'} | ` +
-            `Spot: ${levelsData.spot || '--'}`
-        );
-
-
-        /*
-         * Your Premium HTML currently has no
-         * lbl-p-sup / lbl-p-res elements.
-         * Therefore these are safely ignored.
-         */
-
-
-        setText(
-            'lbl-p-s1',
-            `Target 1 : ${levelsData.supT1 || '--'}`
-        );
-
-        setText(
-            'lbl-p-s2',
-            `Target 2 : ${levelsData.supT2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-p-r1',
-            `Target 1 : ${levelsData.resT1 || '--'}`
-        );
-
-        setText(
-            'lbl-p-r2',
-            `Target 2 : ${levelsData.resT2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-ce-s1',
-            `Support 1 : ${levelsData.ceS1 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-s2',
-            `Support 2 : ${levelsData.ceS2 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-r1',
-            `Resistance 1 : ${levelsData.ceR1 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-r2',
-            `Resistance 2 : ${levelsData.ceR2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-pe-s1',
-            `Support 1 : ${levelsData.peS1 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-s2',
-            `Support 2 : ${levelsData.peS2 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-r1',
-            `Resistance 1 : ${levelsData.peR1 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-r2',
-            `Resistance 2 : ${levelsData.peR2 || '--'}`
-        );
-    }
-
-
-    // =========================================================
-    // RENDER GALLERY
-    // =========================================================
-    function renderGallery() {
-
-        const todayContainer =
-            document.getElementById(
-                'today-gallery-container'
-            );
-
-        const historyContainer =
-            document.getElementById(
-                'history-gallery-container'
-            );
-
-
-        if (
-            !todayContainer ||
-            !historyContainer
-        ) {
-            return;
-        }
-
-
-        if (galleryData.length === 0) {
-
-            todayContainer.innerHTML =
-                `<p class="text-gray-500 text-xs text-center">
-                    No screenshot uploaded for today yet.
-                </p>`;
-
-            historyContainer.innerHTML =
-                `<p class="text-gray-500 text-xs text-center">
-                    No history screenshots available.
-                </p>`;
-
-            return;
-        }
-
-
-        const todayItem =
-            galleryData[0];
-
-
-        todayContainer.innerHTML = `
-
-            <div class="space-y-1">
-
-                <p class="text-[10px]
-                    highlight-blue font-bold">
-
-                    Date: ${todayItem.date || '--'}
-
-                </p>
-
-                <img
-                    src="${todayItem.img}"
-                    alt="Today's Result"
-                    class="w-full rounded-lg
-                    border border-gray-300">
-
-            </div>
-
-        `;
-
-
-        if (galleryData.length > 1) {
-
-            historyContainer.innerHTML =
-
-                galleryData
-                .slice(1)
-                .map(item => `
-
-                    <div
-                        class="space-y-1 mb-3
-                        bg-gray-50 p-2 rounded
-                        border border-gray-200">
-
-                        <p class="text-[10px]
-                            highlight-blue font-bold">
-
-                            Date: ${item.date || '--'}
-
-                        </p>
-
-                        <img
-                            src="${item.img}"
-                            alt="History Result"
-                            class="w-full rounded
-                            border border-gray-300">
-
-                    </div>
-
-                `)
-                .join('');
-
-        } else {
-
-            historyContainer.innerHTML =
-                `<p class="text-gray-500
-                    text-xs text-center">
-                    No history screenshots available.
-                </p>`;
-        }
-    }
-
-    </script>
-        // Data Store Initialization
-        
-    
-
-        // Splash Screen Transition
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const s1 = document.getElementById('splash-slide-1');
-                const s2 = document.getElementById('splash-slide-2');
-                if(s1) s1.classList.remove('active');
-                if(s2) s2.classList.add('active');
-            }, 3000);
-
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if(splash) {
-                    splash.style.opacity = '0';
-                    setTimeout(() => splash.style.display = 'none', 800);
-                }
-            }, 5000);
-
-            // Set today's date in Admin form by default
-            const today = new Date().toISOString().split('T')[0];
-            const admDate = document.getElementById('adm-date');
-            if (admDate) admDate.value = today;
-
-            renderMembersTable();
-            renderLevels();
-            renderGallery();
-        });
-
-        // Navigation Engine
         function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.add('hidden'));
             const target = document.getElementById(pageId);
             if (target) {
                 target.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-
-            // Hide back to admin button when viewing as member
-            if (pageId === 'premium' && !currentAdminPreview) {
-                const btn = document.getElementById('btn-back-to-admin');
-                if(btn) btn.classList.add('hidden');
-            }
         }
 
-        function scrollToContact() {
-            showPage('home');
-            setTimeout(() => {
-                const cSection = document.getElementById('contact-section');
-                if (cSection) cSection.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        // Admin Auth Modal
-        function openAdminModal() {
-            const modal = document.getElementById('adminModal');
-            if(modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        }
-
-        function closeAdminModal() {
-            const modal = document.getElementById('adminModal');
-            if(modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-            const inp = document.getElementById('adminPassInput');
-            if(inp) inp.value = '';
-        }
-
-        function verifyAdminPassword() {
-            const pass = document.getElementById('adminPassInput').value;
-            if (pass === 'admin123' || pass === 'sensex123' || pass === 'baba@123') {
-                closeAdminModal();
-                showPage('admin');
-            } else {
-                alert('ఇచ్చిన పాస్‌వర్డ్ తప్పు! దయచేసి సరిచూసుకోండి.');
-            }
-        }
-
-        // Member Login Logic
-        function checkMemberStatus() {
-            const mobile = document.getElementById('login-cell').value.trim();
-            const member = members.find(m => m.mobile === mobile);
-            
-            const otpSec = document.getElementById('otp-section');
-            const passSec = document.getElementById('password-section');
-
-            if (mobile.length === 10) {
-                if (member) {
-                    if (member.registered) {
-                        otpSec.classList.add('hidden');
-                        passSec.classList.remove('hidden');
-                    } else {
-                        otpSec.classList.remove('hidden');
-                        passSec.classList.add('hidden');
-                    }
-                } else {
-                    otpSec.classList.add('hidden');
-                    passSec.classList.remove('hidden');
-                }
-            }
-        }
-
-        function sendOtp() {
-            generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-            alert(`మీ OTP సంఖ్య: ${generatedOtp} (డెమో కోసం దయచేసి దీనినే ఎంటర్ చేయండి)`);
-        }
-
-        function handleMemberLogin() {
-            const mobile = document.getElementById('login-cell').value.trim();
-
-            if (!mobile || mobile.length < 10) {
-                alert('దయచేసి 10 అంకెల మొబైల్ సంఖ్యను నమోదు చేయండి.');
-                return;
-            }
-
-            let member = members.find(m => m.mobile === mobile);
-
-            if (!member) {
-                alert('ఈ నంబర్‌తో మెంబర్‌షిప్ లేదు. దయచేసి మొదట Join బటన్ క్లిక్ చేసి రిజిస్టర్ చేసుకోండి.');
-                return;
-            }
-
-            if (!member.approved) {
-                alert('మీ అకౌంట్ ఇంకా అడ్మిన్ ద్వారా అప్రూవ్ కాలేదు. దయచేసి కొద్దిసేపు వేచి ఉండండి లేదా WhatsApp లో సంప్రదించండి.');
-                return;
-            }
-
-            if (!member.registered) {
-                // First-time setup validation
-                const enteredOtp = document.getElementById('login-otp').value.trim();
-                const newPass = document.getElementById('login-new-pass').value;
-                const confPass = document.getElementById('login-conf-pass').value;
-
-                if (enteredOtp !== generatedOtp || !generatedOtp) {
-                    alert('తప్పు OTP నమోదైనది!');
-                    return;
-                }
-                if (!newPass || newPass !== confPass) {
-                    alert('పాస్‌వర్డ్‌లు మ్యాచ్ అవ్వడం లేదు.');
-                    return;
-                }
-
-                member.registered = true;
-                member.password = newPass;
-                localStorage.setItem('set_members', JSON.stringify(members));
-                alert('రిజిస్ట్రేషన్ విజయవంతమైంది!');
-            } else {
-                const pass = document.getElementById('login-pass').value;
-                if (pass !== member.password) {
-                    alert('తప్పు పాస్‌వర్డ్!');
-                    return;
-                }
-            }
-
-            currentAdminPreview = false;
-            showPage('premium');
-        }
-
-        function submitPaymentAndRegister() {
-            const name = document.getElementById('pay-name').value.trim();
-            const mobile = document.getElementById('pay-mobile').value.trim();
-            const txid = document.getElementById('pay-txid').value.trim();
-
-            if (!name || !mobile || !txid) {
-                alert('దయచేసి అన్ని వివరాలు నింపండి.');
-                return;
-            }
-
-            if (members.some(m => m.mobile === mobile)) {
-                alert('ఈ మొబైల్ నంబర్ ఇప్పటికే రిజిస్టర్ అయి ఉంది.');
-                return;
-            }
-
-            const newMember = {
-                name,
-                mobile,
-                txid,
-                approved: false,
-                registered: false,
-                password: ''
-            };
-
-            members.push(newMember);
-            localStorage.setItem('set_members', JSON.stringify(members));
-            renderMembersTable();
-
-            alert('మీ వివరాలు సమర్పించబడ్డాయి! అడ్మిన్ అప్రూవ్ చేసిన తర్వాత మీరు లాగిన్ కావచ్చు.');
-            showPage('home');
-        }
-
-        function memberLogout() {
-            showPage('home');
-        }
-
-        // Admin Table Functions
         function renderMembersTable() {
-            const tbody = document.getElementById('members-table-body');
+            const tbody = document.getElementById('members-tbody');
             if (!tbody) return;
 
             if (members.length === 0) {
@@ -1756,9 +259,9 @@
 
             tbody.innerHTML = members.map((m, index) => `
                 <tr class="border-b border-gray-200">
-                    <td class="p-2">${m.name}</td>
-                    <td class="p-2">${m.mobile}</td>
-                    <td class="p-2">${m.txid}</td>
+                    <td class="p-2 text-center">${m.name || ''}</td>
+                    <td class="p-2 text-center">${m.mobile || ''}</td>
+                    <td class="p-2 text-center">${m.txid || ''}</td>
                     <td class="p-2 text-center space-x-1">
                         <button onclick="toggleApprove(${index})" class="px-2 py-1 text-[11px] rounded font-bold ${m.approved ? 'bg-green-600 text-white' : 'bg-yellow-500 text-white'}">
                             ${m.approved ? 'Approved' : 'Approve'}
@@ -1788,7 +291,7 @@
         function downloadExcel() {
             let csvContent = "data:text/csv;charset=utf-8,Name,Mobile,TxnID,Approved\n";
             members.forEach(m => {
-                csvContent += `${m.name},${m.mobile},${m.txid},${m.approved}\n`;
+                csvContent += `"${m.name || ''}","${m.mobile || ''}","${m.txid || ''}","${m.approved}"\n`;
             });
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
@@ -1799,963 +302,114 @@
             document.body.removeChild(link);
         }
 
-        // Admin Save & Preview Levels
         function saveAdminLevels() {
             levelsData = {
-                date: document.getElementById('adm-date').value,
-                time: document.getElementById('adm-time').value,
-                spot: document.getElementById('adm-spot').value,
-                supLvl: document.getElementById('adm-sup-lvl').value,
-                supT1: document.getElementById('adm-sup-t1').value,
-                supT2: document.getElementById('adm-sup-t2').value,
-                resLvl: document.getElementById('adm-res-lvl').value,
-                resT1: document.getElementById('adm-res-t1').value,
-                resT2: document.getElementById('adm-res-t2').value,
-                ceS1: document.getElementById('adm-ce-s1').value,
-                ceS2: document.getElementById('adm-ce-s2').value,
-                ceR1: document.getElementById('adm-ce-r1').value,
-                ceR2: document.getElementById('adm-ce-r2').value,
-                peS1: document.getElementById('adm-pe-s1').value,
-                peS2: document.getElementById('adm-pe-s2').value,
-                peR1: document.getElementById('adm-pe-r1').value,
-                peR2: document.getElementById('adm-pe-r2').value
+                date: getValue('adm-date'),
+                time: getValue('adm-time'),
+                spot: getValue('adm-spot'),
+                supLvl: getValue('adm-sup-lvl'),
+                supT1: getValue('adm-sup-t1'),
+                supT2: getValue('adm-sup-t2'),
+                resLvl: getValue('adm-res-lvl'),
+                resT1: getValue('adm-res-t1'),
+                resT2: getValue('adm-res-t2'),
+                ceS1: getValue('adm-ce-s1'),
+                ceS2: getValue('adm-ce-s2'),
+                ceR1: getValue('adm-ce-r1'),
+                ceR2: getValue('adm-ce-r2'),
+                peS1: getValue('adm-pe-s1'),
+                peS2: getValue('adm-pe-s2'),
+                peR1: getValue('adm-pe-r1'),
+                peR2: getValue('adm-pe-r2')
             };
 
             localStorage.setItem('set_levels', JSON.stringify(levelsData));
 
-            // Handle Screenshot Upload
-<!-- ================= JAVASCRIPT ================= -->
-<script>
+            const fileInput = document.getElementById('adm-screenshot');
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newItem = {
+                        img: e.target.result,
+                        date: levelsData.date || new Date().toISOString().split('T')[0]
+                    };
+                    galleryData.unshift(newItem);
+                    localStorage.setItem('set_gallery', JSON.stringify(galleryData));
+                    renderGallery();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
 
-    // ================= DATA STORE =================
-    let members = JSON.parse(localStorage.getItem('set_members') || '[]');
-    let levelsData = JSON.parse(localStorage.getItem('set_levels') || '{}');
-    let galleryData = JSON.parse(localStorage.getItem('set_gallery') || '[]');
-
-    let currentAdminPreview = false;
-    let generatedOtp = "";
-
-
-    // ================= PAGE NAVIGATION =================
-    function showPage(pageId) {
-
-        document.querySelectorAll('.page').forEach(function(page) {
-            page.classList.add('hidden');
-        });
-
-        const target = document.getElementById(pageId);
-
-        if (target) {
-            target.classList.remove('hidden');
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            renderLevels();
+            alert('లెవెల్స్ విజయవంతంగా సేవ్ చేయబడ్డాయి!');
         }
 
-        const backAdmin = document.getElementById('btn-back-to-admin');
+        function renderLevels() {
+            setText('display-date-time', `Date: ${levelsData.date || '--'} | Time: ${levelsData.time || '--'} | Spot: ${levelsData.spot || '--'}`);
+            
+            setText('lbl-p-s1', `Target 1 : ${levelsData.supT1 || '--'}`);
+            setText('lbl-p-s2', `Target 2 : ${levelsData.supT2 || '--'}`);
+            setText('lbl-p-r1', `Target 1 : ${levelsData.resT1 || '--'}`);
+            setText('lbl-p-r2', `Target 2 : ${levelsData.resT2 || '--'}`);
 
-        if (backAdmin) {
-            if (pageId === 'premium' && currentAdminPreview) {
-                backAdmin.classList.remove('hidden');
+            setText('lbl-ce-s1', `Support 1 : ${levelsData.ceS1 || '--'}`);
+            setText('lbl-ce-s2', `Support 2 : ${levelsData.ceS2 || '--'}`);
+            setText('lbl-ce-r1', `Resistance 1 : ${levelsData.ceR1 || '--'}`);
+            setText('lbl-ce-r2', `Resistance 2 : ${levelsData.ceR2 || '--'}`);
+
+            setText('lbl-pe-s1', `Support 1 : ${levelsData.peS1 || '--'}`);
+            setText('lbl-pe-s2', `Support 2 : ${levelsData.peS2 || '--'}`);
+            setText('lbl-pe-r1', `Resistance 1 : ${levelsData.peR1 || '--'}`);
+            setText('lbl-pe-r2', `Resistance 2 : ${levelsData.peR2 || '--'}`);
+        }
+
+        function renderGallery() {
+            const historyContainer = document.getElementById('gallery-container');
+            if (!historyContainer) return;
+
+            if (galleryData.length > 0) {
+                historyContainer.innerHTML = galleryData.map(function(item) {
+                    return `
+                        <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-200 text-center">
+                            <p class="text-[10px] text-blue-600 font-bold text-center">
+                                Date: ${item.date}
+                            </p>
+                            <img src="${item.img}" alt="History Result" class="w-full rounded border border-gray-300 mx-auto">
+                        </div>
+                    `;
+                }).join('');
             } else {
-                backAdmin.classList.add('hidden');
+                historyContainer.innerHTML = '<p class="text-gray-500 text-xs text-center">No history screenshots available.</p>';
             }
         }
-    }
 
+        // Splash Screen & Page Setup on Load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const s1 = document.getElementById('splash-slide-1');
+                const s2 = document.getElementById('splash-slide-2');
+                if (s1) s1.classList.remove('active');
+                if (s2) s2.classList.add('active');
+            }, 3000);
 
-    // ================= CONTACT =================
-    function scrollToContact() {
+            setTimeout(function() {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(function() {
+                        splash.style.display = 'none';
+                    }, 800);
+                }
+            }, 5000);
 
-        showPage('home');
-
-        setTimeout(function() {
-
-            const contact = document.getElementById('contact-section');
-
-            if (contact) {
-                contact.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-
-        }, 150);
-    }
-
-
-    // ================= ADMIN MODAL =================
-    function openAdminModal() {
-
-        const modal = document.getElementById('adminModal');
-
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-    }
-
-
-    function closeAdminModal() {
-
-        const modal = document.getElementById('adminModal');
-
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        const input = document.getElementById('adminPassInput');
-
-        if (input) {
-            input.value = '';
-        }
-    }
-
-
-    // ================= ADMIN LOGIN =================
-    function verifyAdminPassword() {
-
-        const input = document.getElementById('adminPassInput');
-
-        if (!input) return;
-
-        const pass = input.value.trim();
-
-        /*
-         * మీ existing passwords ఇక్కడ ఉన్నాయి.
-         * కావాలంటే తర్వాత ఒక password కి మార్చుకోవచ్చు.
-         */
-        if (
-            pass === 'admin123' ||
-            pass === 'sensex123' ||
-            pass === 'baba@123'
-        ) {
-
-            closeAdminModal();
-
-            currentAdminPreview = false;
-
-            showPage('admin');
+            const today = new Date().toISOString().split('T')[0];
+            const admDate = document.getElementById('adm-date');
+            if (admDate) admDate.value = today;
 
             renderMembersTable();
             renderLevels();
             renderGallery();
-
-        } else {
-
-            alert('ఇచ్చిన పాస్‌వర్డ్ తప్పు! దయచేసి సరిచూసుకోండి.');
-
-        }
-    }
-
-
-    // ================= MEMBER STATUS =================
-    function checkMemberStatus() {
-
-        const mobileInput = document.getElementById('login-cell');
-
-        if (!mobileInput) return;
-
-        const mobile = mobileInput.value.trim();
-
-        const member = members.find(function(m) {
-            return m.mobile === mobile;
         });
-
-        const otpSec = document.getElementById('otp-section');
-        const passSec = document.getElementById('password-section');
-
-        if (!otpSec || !passSec) return;
-
-        if (mobile.length === 10) {
-
-            if (member) {
-
-                if (member.registered) {
-
-                    otpSec.classList.add('hidden');
-                    passSec.classList.remove('hidden');
-
-                } else {
-
-                    otpSec.classList.remove('hidden');
-                    passSec.classList.add('hidden');
-
-                }
-
-            } else {
-
-                otpSec.classList.add('hidden');
-                passSec.classList.remove('hidden');
-
-            }
-
-        }
-    }
-
-
-    // ================= OTP =================
-    function sendOtp() {
-
-        generatedOtp = Math.floor(
-            1000 + Math.random() * 9000
-        ).toString();
-
-        alert(
-            'మీ OTP సంఖ్య: ' +
-            generatedOtp +
-            '\n\nడెమో కోసం ఈ OTPని నమోదు చేయండి.'
-        );
-    }
-
-
-    // ================= MEMBER LOGIN =================
-    function handleMemberLogin() {
-
-        const mobileInput = document.getElementById('login-cell');
-
-        if (!mobileInput) return;
-
-        const mobile = mobileInput.value.trim();
-
-        if (!/^\d{10}$/.test(mobile)) {
-
-            alert('దయచేసి 10 అంకెల మొబైల్ సంఖ్యను నమోదు చేయండి.');
-
-            return;
-        }
-
-        const member = members.find(function(m) {
-            return m.mobile === mobile;
-        });
-
-        if (!member) {
-
-            alert(
-                'ఈ నంబర్‌తో మెంబర్‌షిప్ లేదు.\n' +
-                'దయచేసి మొదట Join బటన్ క్లిక్ చేసి రిజిస్టర్ చేసుకోండి.'
-            );
-
-            return;
-        }
-
-
-        // Admin Approval Check
-        if (!member.approved) {
-
-            alert(
-                'మీ అకౌంట్ ఇంకా అడ్మిన్ ద్వారా అప్రూవ్ కాలేదు.\n\n' +
-                'దయచేసి కొద్దిసేపు వేచి ఉండండి లేదా WhatsApp లో సంప్రదించండి.'
-            );
-
-            return;
-        }
-
-
-        // First Time Registration
-        if (!member.registered) {
-
-            const otp = document.getElementById('login-otp');
-            const newPass = document.getElementById('login-new-pass');
-            const confPass = document.getElementById('login-conf-pass');
-
-            if (!otp || !newPass || !confPass) return;
-
-            if (
-                !generatedOtp ||
-                otp.value.trim() !== generatedOtp
-            ) {
-
-                alert('తప్పు OTP నమోదైనది!');
-
-                return;
-            }
-
-            if (
-                !newPass.value ||
-                newPass.value !== confPass.value
-            ) {
-
-                alert('పాస్‌వర్డ్‌లు మ్యాచ్ అవ్వడం లేదు.');
-
-                return;
-            }
-
-            member.registered = true;
-            member.password = newPass.value;
-
-            localStorage.setItem(
-                'set_members',
-                JSON.stringify(members)
-            );
-
-            alert('రిజిస్ట్రేషన్ విజయవంతమైంది!');
-
-        } else {
-
-            // Existing Member Login
-            const passInput = document.getElementById('login-pass');
-
-            if (!passInput) return;
-
-            if (passInput.value !== member.password) {
-
-                alert('తప్పు పాస్‌వర్డ్!');
-
-                return;
-            }
-        }
-
-
-        currentAdminPreview = false;
-
-        showPage('premium');
-
-        renderLevels();
-        renderGallery();
-    }
-
-
-    // ================= PAYMENT / MEMBERSHIP =================
-    function submitPaymentAndRegister() {
-
-        const nameEl = document.getElementById('pay-name');
-        const mobileEl = document.getElementById('pay-mobile');
-        const txidEl = document.getElementById('pay-txid');
-
-        if (!nameEl || !mobileEl || !txidEl) return;
-
-        const name = nameEl.value.trim();
-        const mobile = mobileEl.value.trim();
-        const txid = txidEl.value.trim();
-
-
-        if (!name || !mobile || !txid) {
-
-            alert('దయచేసి అన్ని వివరాలు నింపండి.');
-
-            return;
-        }
-
-
-        if (!/^\d{10}$/.test(mobile)) {
-
-            alert('దయచేసి సరైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.');
-
-            return;
-        }
-
-
-        if (
-            members.some(function(m) {
-                return m.mobile === mobile;
-            })
-        ) {
-
-            alert('ఈ మొబైల్ నంబర్ ఇప్పటికే రిజిస్టర్ అయి ఉంది.');
-
-            return;
-        }
-
-
-        const newMember = {
-
-            name: name,
-            mobile: mobile,
-            txid: txid,
-            approved: false,
-            registered: false,
-            password: ''
-
-        };
-
-
-        members.push(newMember);
-
-        localStorage.setItem(
-            'set_members',
-            JSON.stringify(members)
-        );
-
-        renderMembersTable();
-
-        alert(
-            'మీ వివరాలు విజయవంతంగా సమర్పించబడ్డాయి!\n\n' +
-            'అడ్మిన్ అప్రూవ్ చేసిన తర్వాత మీరు Member Login ద్వారా Login చేయవచ్చు.'
-        );
-
-        showPage('home');
-    }
-
-
-    // ================= MEMBER LOGOUT =================
-    function memberLogout() {
-
-        currentAdminPreview = false;
-
-        showPage('home');
-    }
-
-
-    // ================= ADMIN MEMBERS TABLE =================
-    function renderMembersTable() {
-
-        const tbody =
-            document.getElementById('members-table-body');
-
-        if (!tbody) return;
-
-
-        if (members.length === 0) {
-
-            tbody.innerHTML =
-                '<tr>' +
-                '<td colspan="4" class="p-3 text-center text-gray-500">' +
-                'No members joined yet.' +
-                '</td>' +
-                '</tr>';
-
-            return;
-        }
-
-
-        tbody.innerHTML = members.map(function(m, index) {
-
-            return `
-                <tr class="border-b border-gray-200">
-
-                    <td class="p-2">${m.name || ''}</td>
-
-                    <td class="p-2">${m.mobile || ''}</td>
-
-                    <td class="p-2">${m.txid || ''}</td>
-
-                    <td class="p-2 text-center">
-
-                        <button
-                            onclick="toggleApprove(${index})"
-                            class="px-2 py-1 text-[11px] rounded font-bold ${
-                                m.approved
-                                ? 'bg-green-600 text-white'
-                                : 'bg-yellow-500 text-white'
-                            }"
-                        >
-                            ${
-                                m.approved
-                                ? 'Approved'
-                                : 'Approve'
-                            }
-                        </button>
-
-                        <button
-                            onclick="deleteMember(${index})"
-                            class="px-2 py-1 text-[11px] bg-red-600 text-white rounded font-bold ml-1"
-                        >
-                            Delete
-                        </button>
-
-                    </td>
-
-                </tr>
-            `;
-
-        }).join('');
-    }
-
-
-    function toggleApprove(index) {
-
-        if (!members[index]) return;
-
-        members[index].approved =
-            !members[index].approved;
-
-        localStorage.setItem(
-            'set_members',
-            JSON.stringify(members)
-        );
-
-        renderMembersTable();
-    }
-
-
-    function deleteMember(index) {
-
-        if (!members[index]) return;
-
-        if (
-            confirm('ఈ మెంబర్‌ను తొలగించాలా?')
-        ) {
-
-            members.splice(index, 1);
-
-            localStorage.setItem(
-                'set_members',
-                JSON.stringify(members)
-            );
-
-            renderMembersTable();
-        }
-    }
-
-
-    // ================= DOWNLOAD MEMBERS =================
-    function downloadExcel() {
-
-        let csvContent =
-            'data:text/csv;charset=utf-8,' +
-            'Name,Mobile,TxnID,Approved\n';
-
-        members.forEach(function(m) {
-
-            csvContent +=
-                '"' + (m.name || '') + '",' +
-                '"' + (m.mobile || '') + '",' +
-                '"' + (m.txid || '') + '",' +
-                '"' + (m.approved ? 'Yes' : 'No') + '"\n';
-
-        });
-
-
-        const encodedUri =
-            encodeURI(csvContent);
-
-        const link =
-            document.createElement('a');
-
-        link.setAttribute(
-            'href',
-            encodedUri
-        );
-
-        link.setAttribute(
-            'download',
-            'sensex_edge_members.csv'
-        );
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-    }
-
-
-    // ================= HELPER =================
-    function getValue(id) {
-
-        const el = document.getElementById(id);
-
-        return el ? el.value : '';
-    }
-
-
-    // ================= SAVE ADMIN LEVELS =================
-    function saveAdminLevels() {
-
-        levelsData = {
-
-            date: getValue('adm-date'),
-            time: getValue('adm-time'),
-            spot: getValue('adm-spot'),
-
-            supLvl: getValue('adm-sup-lvl'),
-            supT1: getValue('adm-sup-t1'),
-            supT2: getValue('adm-sup-t2'),
-
-            resLvl: getValue('adm-res-lvl'),
-            resT1: getValue('adm-res-t1'),
-            resT2: getValue('adm-res-t2'),
-
-            ceS1: getValue('adm-ce-s1'),
-            ceS2: getValue('adm-ce-s2'),
-            ceR1: getValue('adm-ce-r1'),
-            ceR2: getValue('adm-ce-r2'),
-
-            peS1: getValue('adm-pe-s1'),
-            peS2: getValue('adm-pe-s2'),
-            peR1: getValue('adm-pe-r1'),
-            peR2: getValue('adm-pe-r2')
-        };
-
-
-        localStorage.setItem(
-            'set_levels',
-            JSON.stringify(levelsData)
-        );
-
-
-        // Screenshot Upload
-        const fileInput =
-            document.getElementById('adm-screenshot');
-
-
-        if (
-            fileInput &&
-            fileInput.files &&
-            fileInput.files[0]
-        ) {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload = function(e) {
-
-                const newItem = {
-
-                    img: e.target.result,
-
-                    date:
-                        levelsData.date ||
-                        new Date()
-                            .toISOString()
-                            .split('T')[0]
-                };
-
-
-                galleryData.unshift(newItem);
-
-
-                localStorage.setItem(
-                    'set_gallery',
-                    JSON.stringify(galleryData)
-                );
-
-
-                renderGallery();
-            };
-
-
-            reader.readAsDataURL(
-                fileInput.files[0]
-            );
-        }
-
-
-        renderLevels();
-
-        alert(
-            'లెవెల్స్ విజయవంతంగా సేవ్ చేయబడ్డాయి!'
-        );
-    }
-
-
-    // ================= PREVIEW =================
-    function previewPremiumPage() {
-
-        saveAdminLevels();
-
-        currentAdminPreview = true;
-
-        const backAdmin =
-            document.getElementById(
-                'btn-back-to-admin'
-            );
-
-        if (backAdmin) {
-            backAdmin.classList.remove('hidden');
-        }
-
-        showPage('premium');
-
-        renderLevels();
-        renderGallery();
-    }
-
-
-    // ================= CLEAR ADMIN FORM =================
-    function clearAdminForm() {
-
-        const form =
-            document.getElementById('adminForm');
-
-        if (form) {
-            form.reset();
-        }
-
-
-        levelsData = {};
-
-        localStorage.removeItem(
-            'set_levels'
-        );
-
-        renderLevels();
-
-        alert(
-            'ఫారమ్ క్లియర్ చేయబడింది.'
-        );
-    }
-
-
-    // ================= RENDER LEVELS =================
-    function setText(id, text) {
-
-        const el =
-            document.getElementById(id);
-
-        if (el) {
-            el.innerText = text;
-        }
-    }
-
-
-    function renderLevels() {
-
-        setText(
-            'display-date-time',
-            `Date: ${levelsData.date || '--'} | Time: ${levelsData.time || '--'} | Spot: ${levelsData.spot || '--'}`
-        );
-
-
-        setText(
-            'lbl-p-sup',
-            `Support Level : ${levelsData.supLvl || '--'}`
-        );
-
-        setText(
-            'lbl-p-s1',
-            `Target 1 : ${levelsData.supT1 || '--'}`
-        );
-
-        setText(
-            'lbl-p-s2',
-            `Target 2 : ${levelsData.supT2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-p-res',
-            `Resistance Level : ${levelsData.resLvl || '--'}`
-        );
-
-        setText(
-            'lbl-p-r1',
-            `Target 1 : ${levelsData.resT1 || '--'}`
-        );
-
-        setText(
-            'lbl-p-r2',
-            `Target 2 : ${levelsData.resT2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-ce-s1',
-            `Support 1 : ${levelsData.ceS1 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-s2',
-            `Support 2 : ${levelsData.ceS2 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-r1',
-            `Resistance 1 : ${levelsData.ceR1 || '--'}`
-        );
-
-        setText(
-            'lbl-ce-r2',
-            `Resistance 2 : ${levelsData.ceR2 || '--'}`
-        );
-
-
-        setText(
-            'lbl-pe-s1',
-            `Support 1 : ${levelsData.peS1 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-s2',
-            `Support 2 : ${levelsData.peS2 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-r1',
-            `Resistance 1 : ${levelsData.peR1 || '--'}`
-        );
-
-        setText(
-            'lbl-pe-r2',
-            `Resistance 2 : ${levelsData.peR2 || '--'}`
-        );
-    }
-
-
-    // ================= RENDER GALLERY =================
-    function renderGallery() {
-
-        const todayContainer =
-            document.getElementById(
-                'today-gallery-container'
-            );
-
-        const historyContainer =
-            document.getElementById(
-                'history-gallery-container'
-            );
-
-
-        if (!todayContainer || !historyContainer) {
-            return;
-        }
-
-
-        if (galleryData.length === 0) {
-
-            todayContainer.innerHTML =
-                '<p class="text-gray-500 text-xs text-center">' +
-                'No screenshot uploaded for today yet.' +
-                '</p>';
-
-
-            historyContainer.innerHTML =
-                '<p class="text-gray-500 text-xs text-center">' +
-                'No history screenshots available.' +
-                '</p>';
-
-            return;
-        }
-
-
-        const todayItem =
-            galleryData[0];
-
-
-        todayContainer.innerHTML = `
-
-            <div class="space-y-1">
-
-                <p class="text-[10px] highlight-blue font-bold">
-                    Date: ${todayItem.date}
-                </p>
-
-                <img
-                    src="${todayItem.img}"
-                    alt="Today's Result"
-                    class="w-full rounded-lg border border-gray-300"
-                >
-
-            </div>
-
-        `;
-
-
-        if (galleryData.length > 1) {
-
-            historyContainer.innerHTML =
-                galleryData
-                .slice(1)
-                .map(function(item) {
-
-                    return `
-
-                        <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-200">
-
-                            <p class="text-[10px] highlight-blue font-bold">
-                                Date: ${item.date}
-                            </p>
-
-                            <img
-                                src="${item.img}"
-                                alt="History Result"
-                                class="w-full rounded border border-gray-300"
-                            >
-
-                        </div>
-
-                    `;
-
-                })
-                .join('');
-
-        } else {
-
-            historyContainer.innerHTML =
-                '<p class="text-gray-500 text-xs text-center">' +
-                'No history screenshots available.' +
-                '</p>';
-        }
-    }
-
-
-    // ================= SPLASH SCREEN =================
-    window.addEventListener('load', function() {
-
-        setTimeout(function() {
-
-            const s1 =
-                document.getElementById(
-                    'splash-slide-1'
-                );
-
-            const s2 =
-                document.getElementById(
-                    'splash-slide-2'
-                );
-
-
-            if (s1) {
-                s1.classList.remove('active');
-            }
-
-            if (s2) {
-                s2.classList.add('active');
-            }
-
-        }, 3000);
-
-
-        setTimeout(function() {
-
-            const splash =
-                document.getElementById(
-                    'splash-screen'
-                );
-
-
-            if (splash) {
-
-                splash.style.opacity = '0';
-
-
-                setTimeout(function() {
-
-                    splash.style.display =
-                        'none';
-
-                }, 800);
-            }
-
-        }, 5000);
-
-
-        // Today's date
-        const today =
-            new Date()
-            .toISOString()
-            .split('T')[0];
-
-
-        const admDate =
-            document.getElementById(
-                'adm-date'
-            );
-
-
-        if (admDate) {
-            admDate.value = today;
-        }
-
-
-        // Initial rendering
-        renderMembersTable();
-        renderLevels();
-        renderGallery();
-
-    });
-
     </script>
+</body>
+</html>
