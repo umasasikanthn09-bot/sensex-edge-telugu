@@ -146,55 +146,71 @@
     </div>
 
     <script>
-        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
+        
+    const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
-        async function startAutoTrader() {
-            const broker = document.getElementById('brokerSelect').value;
-            const apiKey = document.getElementById('apiKey').value;
-            const apiSecret = document.getElementById('apiSecret').value;
-            const lotSize = document.getElementById('lotSelect').value;
-            const isChecked = document.getElementById('disclaimerCheck').checked;
+    // పేజీ ఓపెన్ అవ్వగానే సేవ్ అయిన వివరాలు ఆటోమేటిక్‌గా బాక్సుల్లో లోడ్ అవుతాయి
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedBroker = localStorage.getItem("saved_broker");
+        const savedApiKey = localStorage.getItem("saved_api_key");
+        const savedApiSecret = localStorage.getItem("saved_api_secret");
 
-            if (!isChecked) {
-                alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
-                return;
-            }
+        if (savedBroker) document.getElementById('brokerSelect').value = savedBroker;
+        if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
+        if (savedApiSecret) document.getElementById('apiSecret').value = savedApiSecret;
+    });
 
-            if (!apiKey || !apiSecret) {
-                alert("దయచేసి API Key మరియు Secret రెంటిని ఎంటర్ చేయండి.");
-                return;
-            }
+    async function startAutoTrader() {
+        const broker = document.getElementById('brokerSelect').value;
+        const apiKey = document.getElementById('apiKey').value;
+        const apiSecret = document.getElementById('apiSecret').value;
+        const lotSize = document.getElementById('lotSelect').value;
+        const isChecked = document.getElementById('disclaimerCheck').checked;
 
-            try {
-                const response = await fetch(`${BACKEND_URL}/start-strategy`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        broker: broker,
-                        api_key: apiKey,
-                        api_secret: apiSecret,
-                        lots: parseInt(lotSize)
-                    })
-                });
-
-                const res = await response.json();
-                if(response.ok) {
-                    document.getElementById('statusText').innerText = "Active & Auto Engine Running";
-                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
-                    alert(res.message);
-                } else {
-                    alert("Error: " + res.detail);
-                }
-            } catch (err) {
-                alert("బ్యాకెండ్ ఇంజిన్ అందుబాటులో లేదు. ఉదాహరణకు Python Server రన్ అవుతుందో లేదో చూడండి.");
-            }
+        if (!isChecked) {
+            alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
+            return;
         }
 
-        function stopAutoTrader() {
-            document.getElementById('statusText').innerText = "Stopped";
-            document.getElementById('statusText').className = "text-red-400 font-bold";
-            alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
+        if (!apiKey || !apiSecret) {
+            alert("దయచేసి API Key మరియు Secret రెంటిని ఎంటర్ చేయండి.");
+            return;
         }
-    </script>
-</body>
-                </html>
+
+        // ప్రతిసారి మళ్లీ టైప్ చేయకుండా ఉండటానికి బ్రౌజర్ లోకల్ స్టోరేజ్‌లో వివరాలను భద్రపరుస్తుంది
+        localStorage.setItem("saved_broker", broker);
+        localStorage.setItem("saved_api_key", apiKey);
+        localStorage.setItem("saved_api_secret", apiSecret);
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/start-strategy`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    broker: broker,
+                    api_key: apiKey,
+                    api_secret: apiSecret,
+                    lots: parseInt(lotSize)
+                })
+            });
+
+            const res = await response.json();
+            if (response.ok) {
+                document.getElementById('statusText').innerText = "Active & Auto Engine Running";
+                document.getElementById('statusText').className = "text-emerald-400 font-bold";
+                alert(res.message);
+            } else {
+                alert("Error: " + res.detail);
+            }
+        } catch (err) {
+            alert("బ్యాకెండ్ ఇంజిన్ అందుబాటులో లేదు. ఉదాహరణకు Python Server రన్ అవుతుందో లేదో చూడండి.");
+        }
+    }
+
+    function stopAutoTrader() {
+        document.getElementById('statusText').innerText = "Stopped";
+        document.getElementById('statusText').className = "text-red-400 font-bold";
+        alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
+    }
+</script>
+        
