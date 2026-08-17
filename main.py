@@ -1,9 +1,20 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import datetime
 import time
 
 app = FastAPI(title="SENSEX Edge Algo Engine")
+
+# --- ఈ భాగం కొత్తగా చేర్చబడింది (CORS Permission) ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# --------------------------------------------------
 
 class StrategyParams(BaseModel):
     broker: str
@@ -17,24 +28,14 @@ execution_state = {
     "current_position": None
 }
 
-def sensex_strategy_engine(broker: str, api_key: str, api_secret: str, lots: int):
-    print(f"[{datetime.datetime.now()}] {broker.upper()} పై ఆటో స్ట్రాటజీ ప్రారంభమైంది...")
-    
-    # 1. 15 Min Sensex Index 9:15 Candle High & Low గెట్ చేయడం
-    # 2. High కి తగ్గ CE Strike, Low కి తగ్గ PE Strike సిస్టమ్ ఆటోమేటిక్ గా ఎంచుకుంటుంది.
-    
-    # 3. నిన్నటి రోజటి 1:15 PM నుండి 1:45 PM మధ్య గల 15 min candles (13:15, 13:30) రేంజ్ (Range = High - Low)
-    prev_day_range = 45.0  # ఉదాహరణ కిరణం క్యాలిక్యులేషన్
+@app.get("/")
+def home():
+    return {"status": "Backend Engine is Running!"}
 
-    # Today 9:15 Candle Low
-    today_915_low = 210.0
-    today_915_high = 255.0
-
-    # Entry point & Target Calculation
-    entry_level = today_915_low - prev_day_range  # Rule 3
-    target_level = today_915_high + prev_day_range # Rule 6
-    stoploss_points = 30.0
-
+@app.post("/start-strategy")
+def start_strategy(params: StrategyParams):
+    execution_state["active"] = True
+    return {"message": f"{params.broker} Auto Algo Started Successfully for {params.lots} Lot(s)!"}
     print(f"Calculated Entry Level: {entry_level}, Target Level: {target_level}")
 
     # Monitoring Loop
