@@ -2,3 +2,8 @@ fastapi
 uvicorn
 pydantic
 requests
+upstox-python-sdk
+smartapi-python
+kiteconnect
+dhanhq
+fyers-apiv3
