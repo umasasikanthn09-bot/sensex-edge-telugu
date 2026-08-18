@@ -3,89 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENSEX Edge Auto-Trader</title>
+    <title>SENSEX Edge Trading Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-950 text-white min-h-screen p-4 md:p-8">
+<body class="bg-gray-900 text-white font-sans">
+    <div class="max-w-xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+        <h2 class="text-xl font-bold mb-4 text-center text-blue-400">SENSEX Edge Auto Engine</h2>
 
-    <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl">
-        <h1 class="text-2xl font-bold text-sky-400 mb-6 text-center">🚀 SENSEX Edge Trading Engine</h1>
-
-        <!-- 1. BROKER INTEGRATION SECTION -->
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6">
-            <h2 class="text-md font-semibold text-sky-400 mb-3">🔑 Broker API Settings</h2>
-            
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Select Broker</label>
-                    <select id="brokerSelect" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                        <option value="upstox">Upstox</option>
-                        <option value="angelone">AngelOne</option>
-                        <option value="zerodha">Zerodha</option>
-                        <option value="dhan">Dhan</option>
-                        <option value="fyers">Fyers</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">API Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter API Key" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                </div>
-
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">API Secret / Access Token</label>
-                    <input type="password" id="apiSecret" placeholder="Enter Access Token" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                </div>
-
-                <div>
-                    <label class="text-xs text-slate-400 block mb-1">Select Lot Size</label>
-                    <select id="lotSelect" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
-                        <option value="1">1 Lot (10 Qty)</option>
-                        <option value="2">2 Lots (20 Qty)</option>
-                        <option value="5">5 Lots (50 Qty)</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center space-x-2 pt-2">
-                    <input type="checkbox" id="disclaimerCheck" class="rounded bg-slate-900 border-slate-700 text-sky-500">
-                    <label for="disclaimerCheck" class="text-xs text-slate-400">నేను అల్గో నియమాలు మరియు మార్కెట్ రిస్క్‌ను అంగీకరిస్తున్నాను.</label>
-                </div>
-
-                <div class="pt-2">
-                    <button onclick="startAutoTrader()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded transition duration-200">
-                        Connect & Start Auto Algo
-                    </button>
-                </div>
-            </div>
+        <!-- BROKER SELECTION & API INPUTS -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Select Broker:</label>
+            <select id="brokerSelect" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none">
+                <option value="upstox">Upstox</option>
+                <option value="angelone">AngelOne</option>
+                <option value="zerodha">Zerodha</option>
+                <option value="dhan">Dhan</option>
+                <option value="fyers">Fyers</option>
+            </select>
         </div>
 
-        <!-- STATUS DISPLAY -->
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6 flex justify-between items-center">
-            <span class="text-sm text-slate-400">Engine Status:</span>
-            <span id="statusText" class="text-slate-500 font-bold">Inactive</span>
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">API Key / App Key:</label>
+            <input type="text" id="apiKey" placeholder="Enter API Key" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
         </div>
 
-        <!-- 2. EXECUTED ORDERS HISTORY TABLE -->
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">API Secret / Access Token:</label>
+            <input type="password" id="apiSecret" placeholder="Enter Access Token" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Select Lots:</label>
+            <select id="lotSelect" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
+                <option value="1">1 Lot</option>
+                <option value="2">2 Lots</option>
+                <option value="5">5 Lots</option>
+            </select>
+        </div>
+
+        <div class="mb-4 flex items-center">
+            <input type="checkbox" id="disclaimerCheck" class="mr-2">
+            <label for="disclaimerCheck" class="text-xs text-gray-300">నేను నిబంధనలు మరియు మార్కెట్ రిస్క్‌ను అంగీకరిస్తున్నాను.</label>
+        </div>
+
+        <button onclick="startAutoTrader()" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2 px-4 rounded mb-2">
+            Connect & Start Auto Algo
+        </button>
+        <button onclick="stopAutoTrader()" class="w-full bg-red-600 hover:bg-red-500 font-bold py-2 px-4 rounded mb-4">
+            Stop Algo
+        </button>
+
+        <div class="p-3 bg-gray-700 rounded text-center mb-6">
+            Status: <span id="statusText" class="font-bold text-yellow-400">Not Started</span>
+        </div>
+
+        <!-- EXECUTED ORDERS HISTORY TABLE -->
+        <div class="mt-6 border-t border-gray-700 pt-4">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="text-md font-semibold text-sky-400">📜 Executed Orders History</h3>
-                <span id="slCountBadge" class="bg-slate-800 text-amber-400 text-xs px-2 py-1 rounded">SL Hits: 0/2</span>
+                <h3 class="font-bold text-sm text-blue-400">📜 Executed Orders History</h3>
+                <span id="slCountBadge" class="bg-gray-700 text-yellow-400 text-xs px-2 py-1 rounded">SL Hits: 0/2</span>
             </div>
-
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
-                        <tr>
-                            <th class="p-2">Date & Time</th>
-                            <th class="p-2">Symbol</th>
-                            <th class="p-2">Type</th>
-                            <th class="p-2">Price</th>
-                            <th class="p-2">Status</th>
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="border-b border-gray-700 text-gray-400">
+                            <th class="py-2">Date & Time</th>
+                            <th class="py-2">Symbol</th>
+                            <th class="py-2">Type</th>
+                            <th class="py-2">Price</th>
+                            <th class="py-2">Status</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody">
                         <tr>
-                            <td colspan="5" class="p-4 text-center text-slate-600">No trades executed yet.</td>
+                            <td colspan="5" class="py-3 text-center text-gray-500">No trades executed yet.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -93,7 +84,6 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT ENGINE -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
@@ -145,9 +135,9 @@
 
                 const res = await response.json();
                 if (response.ok) {
-                    document.getElementById('statusText').innerText = "Active & Running";
-                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
-                    alert(res.message || "బ్యాకెండ్ ఇంజిన్ సక్సెస్‌ఫుల్‌గా రన్ అయ్యింది!");
+                    document.getElementById('statusText').innerText = "Active & Auto Engine Running";
+                    document.getElementById('statusText').className = "font-bold text-green-400";
+                    alert(res.message || "బ్యాకెండ్ ఇంజిన్ విజయవంతంగా ప్రారంభమైంది!");
                     fetchTradeHistory();
                 } else {
                     alert("Error: " + res.detail);
@@ -155,6 +145,12 @@
             } catch (err) {
                 alert("బ్యాకెండ్ సర్వర్ అందుబాటులో లేదు.");
             }
+        }
+
+        function stopAutoTrader() {
+            document.getElementById('statusText').innerText = "Stopped";
+            document.getElementById('statusText').className = "font-bold text-red-400";
+            alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
         }
 
         async function fetchTradeHistory() {
@@ -171,28 +167,28 @@
                 if (!tbody) return;
 
                 if (!data.history || data.history.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-600">No trades executed yet today.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-gray-500">No trades executed yet today.</td></tr>`;
                     return;
                 }
 
                 tbody.innerHTML = "";
                 data.history.slice().reverse().forEach(trade => {
-                    const typeColor = trade.type === 'BUY' ? 'text-emerald-400' : 'text-rose-400';
+                    const typeColor = trade.type === 'BUY' ? 'text-green-400' : 'text-red-400';
                     const row = `
-                        <tr class="border-b border-slate-800">
-                            <td class="p-2">${trade.datetime}</td>
-                            <td class="p-2 font-bold">${trade.symbol}</td>
-                            <td class="p-2 font-bold ${typeColor}">${trade.type}</td>
-                            <td class="p-2">${trade.price}</td>
-                            <td class="p-2"><span class="bg-slate-800 px-2 py-0.5 rounded text-[10px]">${trade.status}</span></td>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2">${trade.datetime}</td>
+                            <td class="py-2 font-bold">${trade.symbol}</td>
+                            <td class="py-2 font-bold ${typeColor}">${trade.type}</td>
+                            <td class="py-2">${trade.price}</td>
+                            <td class="py-2"><span class="bg-gray-700 px-2 py-0.5 rounded text-xs">${trade.status}</span></td>
                         </tr>
                     `;
                     tbody.innerHTML += row;
                 });
             } catch (err) {
-                console.error("History error:", err);
+                console.error("History fetch error:", err);
             }
         }
     </script>
 </body>
-            </html>
+</html>
