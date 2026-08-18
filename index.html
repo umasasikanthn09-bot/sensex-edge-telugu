@@ -3,239 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENSEX EDGE TELUGU - Auto Trading Platform</title>
+    <title>SENSEX Edge Auto-Trader</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen pb-12 text-sm">
+<body class="bg-slate-950 text-white min-h-screen p-4 md:p-8">
 
-    <!-- Main Container -->
-    <div class="max-w-lg mx-auto px-4 pt-6 space-y-6">
+    <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl">
+        <h1 class="text-2xl font-bold text-sky-400 mb-6 text-center">🚀 SENSEX Edge Trading Engine</h1>
 
-        <!-- Main Heading Section (Lemon Yellow) -->
-        <header class="text-center space-y-1">
-            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-wider text-yellow-300 drop-shadow-md">
-                SENSEX EDGE TELUGU
-            </h1>
-            <p class="text-xs sm:text-sm font-medium text-gray-400 tracking-widest uppercase">
-                Learn • Practice • Grow
-            </p>
-        </header>
-
-        <!-- Thick Divider Line -->
-        <hr class="border-t-2 border-gray-800">
-
-        <!-- Sensex Options Dashboard Section -->
-        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl backdrop-blur">
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-white tracking-wide flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line text-cyan-400"></i> Sensex Options
-                    </h2>
-                    <p class="text-xs sm:text-sm text-gray-400 mt-1">Automated Algorithmic Execution</p>
-                </div>
-            </div>
+        <!-- 1. BROKER INTEGRATION SECTION -->
+        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6">
+            <h2 class="text-md font-semibold text-sky-400 mb-3">🔑 Broker API Settings</h2>
             
-            <!-- Connection Status -->
-            <div class="mt-4 p-3 bg-cyan-950/40 border-2 border-cyan-800/80 rounded-xl flex items-center gap-3 text-xs sm:text-sm text-cyan-300">
-                <i class="fa-solid fa-circle-info text-cyan-400 text-base"></i>
-                <span>ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-amber-400">Waiting for Login</strong></span>
-            </div>
-        </section>
-
-        <!-- Thick Divider Line -->
-        <hr class="border-t-2 border-gray-800">
-
-        <!-- Broker API Integration -->
-        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl space-y-4">
-            <div class="flex justify-between items-center">
-                <h3 class="text-sm sm:text-base font-bold text-gray-200 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-key text-cyan-400"></i> Broker API Integration
-                </h3>
-            </div>
-
             <div class="space-y-3">
-                <!-- Select Broker Dropdown -->
                 <div>
-                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">Select Your Broker</label>
-                    <select id="brokerSelect" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-cyan-500 transition">
-                        <option value="zerodha">Zerodha (Kite)</option>
+                    <label class="text-xs text-slate-400 block mb-1">Select Broker</label>
+                    <select id="brokerSelect" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
                         <option value="upstox">Upstox</option>
-                        <option value="fyers">Fyers</option>
+                        <option value="angelone">AngelOne</option>
+                        <option value="zerodha">Zerodha</option>
                         <option value="dhan">Dhan</option>
-                        <option value="angelone">Angel One (SmartAPI)</option>
+                        <option value="fyers">Fyers</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">API Key / App Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-500 transition">
+                    <label class="text-xs text-slate-400 block mb-1">API Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter API Key" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
                 </div>
+
                 <div>
-                    <label class="block text-xs sm:text-sm font-semibold text-gray-400 mb-1">API Secret / Access Token / PIN</label>
-                    <input type="password" id="apiSecret" placeholder="••••••••••••••••••••" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base text-gray-200 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-500 transition">
+                    <label class="text-xs text-slate-400 block mb-1">API Secret / Access Token</label>
+                    <input type="password" id="apiSecret" placeholder="Enter Access Token" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Select Lot Size</label>
+                    <select id="lotSelect" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                        <option value="1">1 Lot (10 Qty)</option>
+                        <option value="2">2 Lots (20 Qty)</option>
+                        <option value="5">5 Lots (50 Qty)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-2 pt-2">
+                    <input type="checkbox" id="disclaimerCheck" class="rounded bg-slate-900 border-slate-700 text-sky-500">
+                    <label for="disclaimerCheck" class="text-xs text-slate-400">నేను అల్గో నియమాలు మరియు మార్కెట్ రిస్క్‌ను అంగీకరిస్తున్నాను.</label>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="startAutoTrader()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded transition duration-200">
+                        Connect & Start Auto Algo
+                    </button>
                 </div>
             </div>
-
-            <div class="flex gap-3 pt-1">
-                <button onclick="startAutoTrader()" class="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-xl text-sm sm:text-base transition shadow-lg shadow-cyan-950/50 flex items-center justify-center gap-2 border-2 border-cyan-500">
-                    <i class="fa-solid fa-right-to-bracket"></i> Connect & Start Auto Algo
-                </button>
-            </div>
-        </section>
-
-        <!-- Thick Divider Line -->
-        <hr class="border-t-2 border-gray-800">
-
-        <!-- Lot Size & Live P&L Section -->
-        <section class="bg-gray-900/80 rounded-2xl p-5 border-2 border-gray-700 shadow-xl space-y-4">
-            <div>
-                <label class="block text-xs sm:text-sm font-semibold text-gray-300 mb-1">
-                    Selected Lot Size <span class="text-gray-400 font-normal">(Recommended 2 Lots Only)</span>
-                </label>
-                <select id="lotSelect" class="w-full bg-gray-950 border-2 border-gray-800 text-sm sm:text-base font-semibold text-gray-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-cyan-500 transition">
-                    <option value="1">1 Lot</option>
-                    <option value="2" selected>2 Lots</option>
-                    <option value="3">3 Lots</option>
-                    <option value="4">4 Lots</option>
-                    <option value="5">5 Lots</option>
-                    <option value="10">10 Lots</option>
-                    <option value="15">15 Lots</option>
-                    <option value="20">20 Lots</option>
-                </select>
-            </div>
-
-            <!-- Live P & L Display Box -->
-            <div class="bg-gray-950 rounded-xl p-4 border-2 border-gray-800 text-center space-y-1">
-                <span class="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider">Today's Realtime P & L</span>
-                <div id="pnlDisplay" class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight flex items-center justify-center gap-1">
-                    <span>₹0.00</span>
-                </div>
-                <span class="text-xs text-gray-500 block">Auto-Syncing with Broker Account</span>
-            </div>
-
-            <!-- Legal Risk Disclaimer Box -->
-            <div class="bg-amber-950/20 border-2 border-amber-800/60 rounded-xl p-3.5 space-y-2">
-                <div class="flex items-start gap-2">
-                    <i class="fa-solid fa-shield-halved text-amber-500 text-sm mt-0.5"></i>
-                    <h4 class="text-xs sm:text-sm font-bold text-amber-400">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</h4>
-                </div>
-                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                    1. ఆటోమేటిక్ ఆర్డర్ ఎగ్జిక్యూషన్ ద్వారా జరిగే లాభనష్టాలకు <strong>యూజరే పూర్తి బాధ్యుడు</strong>.<br>
-                    2. మార్కెట్ వోలాటిలిటీ వల్ల స్లిప్పేజెస్ (Slippage) రావచ్చు.
-                </p>
-
-                <label class="flex items-start gap-2 mt-2 pt-2 border-t-2 border-amber-900/60 cursor-pointer">
-                    <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded border-gray-700 bg-gray-900 text-cyan-500 focus:ring-0">
-                    <span class="text-xs sm:text-sm text-gray-300 font-medium leading-tight">నేను పైన పేర్కొన్న నియమాలు మరియు మార్కెట్ రిస్క్‌లను చదివాను, అంగీకరిస్తున్నాను.</span>
-                </label>
-            </div>
-        </section>
-
-        <!-- Thick Divider Line -->
-        <hr class="border-t-2 border-gray-800">
-
-        <!-- Secure Logout Button -->
-        <div class="text-center pt-2">
-            <button onclick="stopAutoTrader()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 rounded-xl text-sm sm:text-base transition shadow-lg shadow-cyan-950/50 flex items-center justify-center gap-2 border-2 border-cyan-500">
-                <i class="fa-solid fa-power-off"></i> Stop & Secure Logout
-            </button>
-            <p class="text-xs text-gray-500 mt-3">SENSEX EDGE TELUGU Platform • Version 2.0 Secure</p>
         </div>
 
+        <!-- STATUS DISPLAY -->
+        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6 flex justify-between items-center">
+            <span class="text-sm text-slate-400">Engine Status:</span>
+            <span id="statusText" class="text-slate-500 font-bold">Inactive</span>
+        </div>
+
+        <!-- 2. EXECUTED ORDERS HISTORY TABLE -->
+        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-md font-semibold text-sky-400">📜 Executed Orders History</h3>
+                <span id="slCountBadge" class="bg-slate-800 text-amber-400 text-xs px-2 py-1 rounded">SL Hits: 0/2</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                        <tr>
+                            <th class="p-2">Date & Time</th>
+                            <th class="p-2">Symbol</th>
+                            <th class="p-2">Type</th>
+                            <th class="p-2">Price</th>
+                            <th class="p-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-slate-600">No trades executed yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
+    <!-- JAVASCRIPT ENGINE -->
     <script>
-        
-    const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
+        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
-    // పేజీ ఓపెన్ అవ్వగానే సేవ్ అయిన వివరాలు ఆటోమేటిక్‌గా బాక్సుల్లో లోడ్ అవుతాయి
-    document.addEventListener("DOMContentLoaded", function () {
-        const savedBroker = localStorage.getItem("saved_broker");
-        const savedApiKey = localStorage.getItem("saved_api_key");
-        const savedApiSecret = localStorage.getItem("saved_api_secret");
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedBroker = localStorage.getItem("saved_broker");
+            const savedApiKey = localStorage.getItem("saved_api_key");
+            const savedApiSecret = localStorage.getItem("saved_api_secret");
 
-        if (savedBroker) document.getElementById('brokerSelect').value = savedBroker;
-        if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
-        if (savedApiSecret) document.getElementById('apiSecret').value = savedApiSecret;
-    });
+            if (savedBroker) document.getElementById('brokerSelect').value = savedBroker;
+            if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
+            if (savedApiSecret) document.getElementById('apiSecret').value = savedApiSecret;
 
-    async function startAutoTrader() {
-        const broker = document.getElementById('brokerSelect').value;
-        const apiKey = document.getElementById('apiKey').value;
-        const apiSecret = document.getElementById('apiSecret').value;
-        const lotSize = document.getElementById('lotSelect').value;
-        const isChecked = document.getElementById('disclaimerCheck').checked;
+            setInterval(fetchTradeHistory, 3000);
+            fetchTradeHistory();
+        });
 
-        if (!isChecked) {
-            alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
-            return;
-        }
+        async function startAutoTrader() {
+            const broker = document.getElementById('brokerSelect').value;
+            const apiKey = document.getElementById('apiKey').value;
+            const apiSecret = document.getElementById('apiSecret').value;
+            const lotSize = document.getElementById('lotSelect').value;
+            const isChecked = document.getElementById('disclaimerCheck').checked;
 
-        if (!apiKey || !apiSecret) {
-            alert("దయచేసి API Key మరియు Secret రెంటిని ఎంటర్ చేయండి.");
-            return;
-        }
-
-        // ప్రతిసారి మళ్లీ టైప్ చేయకుండా ఉండటానికి బ్రౌజర్ లోకల్ స్టోరేజ్‌లో వివరాలను భద్రపరుస్తుంది
-        localStorage.setItem("saved_broker", broker);
-        localStorage.setItem("saved_api_key", apiKey);
-        localStorage.setItem("saved_api_secret", apiSecret);
-
-        try {
-            const response = await fetch(`${BACKEND_URL}/start-strategy`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    broker: broker,
-                    api_key: apiKey,
-                    api_secret: apiSecret,
-                    lots: parseInt(lotSize)
-                })
-            });
-
-            const res = await response.json();
-            if (response.ok) {
-                document.getElementById('statusText').innerText = "Active & Auto Engine Running";
-                document.getElementById('statusText').className = "text-emerald-400 font-bold";
-                alert(res.message);
-            } else {
-                alert("Error: " + res.detail);
+            if (!isChecked) {
+                alert("దయచేసి నిబంధనల చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
+                return;
             }
-        } catch (err) {
-            alert("బ్యాకెండ్ ఇంజిన్ అందుబాటులో లేదు. ఉదాహరణకు Python Server రన్ అవుతుందో లేదో చూడండి.");
+
+            if (!apiKey || !apiSecret) {
+                alert("దయచేసి API Key మరియు Access Token ఎంటర్ చేయండి.");
+                return;
+            }
+
+            localStorage.setItem("saved_broker", broker);
+            localStorage.setItem("saved_api_key", apiKey);
+            localStorage.setItem("saved_api_secret", apiSecret);
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/start-strategy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        broker: broker,
+                        api_key: apiKey,
+                        api_secret: apiSecret,
+                        lots: parseInt(lotSize)
+                    })
+                });
+
+                const res = await response.json();
+                if (response.ok) {
+                    document.getElementById('statusText').innerText = "Active & Running";
+                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
+                    alert(res.message || "బ్యాకెండ్ ఇంజిన్ సక్సెస్‌ఫుల్‌గా రన్ అయ్యింది!");
+                    fetchTradeHistory();
+                } else {
+                    alert("Error: " + res.detail);
+                }
+            } catch (err) {
+                alert("బ్యాకెండ్ సర్వర్ అందుబాటులో లేదు.");
+            }
         }
-    }
 
-    function stopAutoTrader() {
-        document.getElementById('statusText').innerText = "Stopped";
-        document.getElementById('statusText').className = "text-red-400 font-bold";
-        alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
-    }
-        <!-- EXECUTION STATUS & HISTORY TABLE -->
-<div style="margin-top: 20px; background: #0f172a; padding: 15px; border-radius: 10px; border: 1px solid #1e293b;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h3 style="color: #38bdf8; margin: 0; font-size: 15px;">📜 Executed Orders History</h3>
-        <span id="slCountBadge" style="background: #334155; color: #fbbf24; padding: 3px 8px; border-radius: 4px; font-size: 11px;">SL Hits: 0/2</span>
-    </div>
+        async function fetchTradeHistory() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/get-history`);
+                const data = await response.json();
 
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left; color: #fff; font-size: 12px;">
-            <thead>
-                <tr style="border-bottom: 1px solid #334155; color: #94a3b8;">
-                    <th style="padding: 8px;">Date & Time</th>
-                    <th style="padding: 8px;">Symbol/Option</th>
-                    <th style="padding: 8px;">Type</th>
-                    <th style="padding: 8px;">Price</th>
-                    <th style="padding: 8px;">Status</th>
-                </tr>
-            </thead>
-            <tbody id="historyTableBody">
-                <tr><td colspan="5" style="padding: 10px; text-align: center; color: #64748b;">No trades executed yet.</td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                const slBadge = document.getElementById("slCountBadge");
+                if (slBadge && data.state) {
+                    slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`;
+                }
 
-</script>
-        
+                const tbody = document.getElementById("historyTableBody");
+                if (!tbody) return;
+
+                if (!data.history || data.history.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-slate-600">No trades executed yet today.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                data.history.slice().reverse().forEach(trade => {
+                    const typeColor = trade.type === 'BUY' ? 'text-emerald-400' : 'text-rose-400';
+                    const row = `
+                        <tr class="border-b border-slate-800">
+                            <td class="p-2">${trade.datetime}</td>
+                            <td class="p-2 font-bold">${trade.symbol}</td>
+                            <td class="p-2 font-bold ${typeColor}">${trade.type}</td>
+                            <td class="p-2">${trade.price}</td>
+                            <td class="p-2"><span class="bg-slate-800 px-2 py-0.5 rounded text-[10px]">${trade.status}</span></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (err) {
+                console.error("History error:", err);
+            }
+        }
+    </script>
+</body>
+            </html>
