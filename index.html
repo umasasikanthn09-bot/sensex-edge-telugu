@@ -6,339 +6,79 @@
     <title>SENSEX EDGE TELUGU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #060913;
-            color: #ffffff;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        .card-bg {
-            background-color: #0b1120;
-            border: 1px solid #1e293b;
-        }
-        .inner-box {
-            background-color: #070d19;
-            border: 1px solid #172554;
-        }
-        .btn-cyan {
-            background-color: #0284c7;
-            color: #ffffff;
-        }
-        .btn-cyan:hover {
-            background-color: #0369a1;
-        }
-        .input-bg {
-            background-color: #030712;
-            border: 1px solid #1e293b;
-        }
-        /* Fade transitions */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        body { background-color: #060913; color: #ffffff; font-family: sans-serif; }
+        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
+        .inner-box { background-color: #070d19; border: 1px solid #172554; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
+<body class="min-h-screen p-4 flex justify-center items-center">
 
     <div class="w-full max-w-md space-y-5">
 
-        <!-- ==================== STEP 1: WELCOME CARD (SPLASH SCREEN) ==================== -->
+        <!-- 1. WELCOME -->
         <div id="welcomeScreen" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 fade-in border border-yellow-500/20">
-            <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
-                <span class="text-3xl">🚀</span>
-            </div>
-            <h1 class="text-2xl font-extrabold text-yellow-400 tracking-wide">
-                Sensex Edge Telugu కు స్వాగతం
-            </h1>
-            <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">
-                Learn • Practice • Grow
-            </p>
-            <div class="pt-4 flex justify-center">
-                <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <h1 class="text-2xl font-extrabold text-yellow-400">Sensex Edge Telugu</h1>
+            <p class="text-xs text-slate-400 tracking-widest uppercase">Learn • Practice • Grow</p>
         </div>
 
-        <!-- ==================== STEP 2: YOUTUBE JOIN CARD ==================== -->
-        <div id="youtubeScreen" class="hidden card-bg rounded-2xl p-6 text-center shadow-2xl space-y-5 fade-in border border-red-500/20">
-            <div class="inline-block p-4 bg-red-600/10 rounded-full">
-                <svg class="w-12 h-12 text-red-500 mx-auto" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-            </div>
-
-            <div>
-                <h2 class="text-lg font-bold text-white mb-1">మా YouTube ఛానెల్‌ని చూడండి</h2>
-                <p class="text-xs text-slate-300">పరిశీలించండి, Join అవ్వండి!</p>
-            </div>
-
-            <!-- YOUTUBE LINK BUTTON -->
-            <a href="https://youtube.com/@sensexedgetelugu-w5d?si=YJJ-Nx5izcub36k2" target="_blank" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-lg">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <span>YouTube లో పరిశీలించండి & Join అవ్వండి</span>
-            </a>
-
-            <!-- CONTINUE BUTTON -->
-            <button onclick="openMainApp()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold py-3 px-4 rounded-xl text-xs transition">
-                Continue to App ➔
-            </button>
+        <!-- 2. YOUTUBE -->
+        <div id="youtubeScreen" class="hidden card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 fade-in border border-red-500/20">
+            <h2 class="text-lg font-bold">పరిశీలించండి, Join అవ్వండి!</h2>
+            <a href="https://youtube.com/@sensexedgetelugu-w5d?si=YJJ-Nx5izcub36k2" target="_blank" class="block w-full bg-red-600 p-3 rounded-xl font-bold">YouTube Join</a>
+            <button onclick="showPayment()" class="w-full bg-slate-800 p-3 rounded-xl font-bold">Continue ➔</button>
         </div>
 
-        <!-- ==================== STEP 3: MAIN APP CONTENT ==================== -->
+        <!-- 3. PAYMENT GATEWAY -->
+        <div id="paymentScreen" class="hidden card-bg rounded-2xl p-6 shadow-2xl space-y-4 fade-in border border-emerald-500/20">
+            <h2 class="text-lg font-bold text-emerald-400 text-center">Payment Required</h2>
+            <div class="inner-box p-4 rounded-xl text-center">
+                <p class="text-sm text-slate-300">UPI ID:</p>
+                <p class="text-lg font-bold text-white">umasasikanthn04@okhdfcbank</p>
+                <p class="text-xs text-slate-500 mt-2">Indian Overseas Bank 0761</p>
+            </div>
+            <button onclick="showMainApp()" class="w-full bg-emerald-600 p-3 rounded-xl font-bold text-white">I have paid, Continue</button>
+            <button onclick="adminLogin()" class="w-full text-xs text-slate-500 underline">Admin Access</button>
+        </div>
+
+        <!-- 4. MAIN APP (OLD FORMAT) -->
         <div id="mainApp" class="hidden space-y-5 fade-in">
-            
-            <!-- HEADER -->
-            <div class="text-center py-2">
-                <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
-                <p class="text-[10px] text-slate-400 tracking-widest mt-1 uppercase font-semibold">Learn • Practice • Grow</p>
-            </div>
-
-            <hr class="border-slate-800 my-2">
-
-            <!-- 1. SENSEX OPTIONS STATUS CARD -->
-            <div class="card-bg rounded-xl p-4 shadow-lg">
-                <div class="flex items-center space-x-2 mb-1">
-                    <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                    <h2 class="text-lg font-bold text-white">Sensex Options</h2>
-                </div>
-                <p class="text-xs text-slate-400 mb-3">Automated Algorithmic Execution</p>
-                
-                <div class="inner-box rounded-lg p-3 flex items-center space-x-2">
-                    <div class="bg-sky-500/20 text-sky-400 rounded-full p-1">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <span class="text-xs text-slate-300">ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-yellow-400 font-semibold">Waiting for Login</strong></span>
-                </div>
-            </div>
-
-            <!-- 2. BROKER API INTEGRATION CARD -->
-            <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-4 h-4 text-sky-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H4v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
-                    <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
-                </div>
-
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Select Your Broker</label>
-                    <select id="brokerSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
-                        <option value="upstox">Upstox</option>
-                        <option value="zerodha">Zerodha (Kite)</option>
-                        <option value="angelone">AngelOne</option>
-                        <option value="dhan">Dhan</option>
-                        <option value="fyers">Fyers</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">API Key / App Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
-                </div>
-
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">API Secret / Access Token / PIN</label>
-                    <input type="password" id="apiSecret" placeholder="••••••••••••••••" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
-                </div>
-
-                <button onclick="startAutoTrader()" class="w-full btn-cyan py-2.5 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition shadow">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                    <span>Connect & Start Auto Algo</span>
-                </button>
-            </div>
-
-            <!-- 3. LOT SIZE & REALTIME P&L CARD -->
-            <div class="card-bg rounded-xl p-4 shadow-lg space-y-4">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Selected Lot Size <span class="text-[10px] text-slate-500">(Recommended 2 Lots Only)</span></label>
-                    <select id="lotSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
-                        <option value="1">1 Lot</option>
-                        <option value="2" selected>2 Lots</option>
-                        <option value="5">5 Lots</option>
-                    </select>
-                </div>
-
-                <!-- REALTIME P&L BOX -->
-                <div class="inner-box rounded-lg p-4 text-center">
-                    <p class="text-[10px] font-semibold text-slate-400 tracking-wider mb-1">TODAY'S REALTIME P & L</p>
-                    <p class="text-2xl font-bold text-emerald-400">₹0.00</p>
-                    <p class="text-[9px] text-slate-500 mt-1">Auto-Syncing with Broker Account</p>
-                </div>
-
-                <!-- DISCLAIMER BOX -->
-                <div class="border border-amber-900/40 bg-amber-950/10 rounded-lg p-3 space-y-2">
-                    <p class="text-xs font-bold text-amber-500">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</p>
-                    <ol class="text-[11px] text-slate-400 space-y-1 list-decimal list-inside leading-relaxed">
-                        <li>ఆటోమేటిక్ ఆర్డర్ ఎగ్జిక్యూషన్ ద్వారా జరిగే లాభనష్టాలకు యూజరే పూర్తి బాధ్యుడు.</li>
-                        <li>మార్కెట్ వోలాటిలిటీ వల్ల స్లిప్పేజెస్ (Slippage) రావచ్చు.</li>
-                    </ol>
-                    <div class="flex items-start space-x-2 pt-1">
-                        <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded bg-slate-900 border-slate-700 text-sky-500 focus:ring-0">
-                        <label for="disclaimerCheck" class="text-[10px] text-slate-300 leading-tight">నేను పైన పేర్కొన్న నియమాలు మరియు మార్కెట్ రిస్కులను చదివాను, అంగీకరిస్తున్నాను.</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. EXECUTED ORDERS HISTORY TABLE -->
-            <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm">📜</span>
-                        <h3 class="text-xs font-bold text-sky-400 uppercase tracking-wider">Executed Orders History</h3>
-                    </div>
-                    <span id="slCountBadge" class="bg-slate-900 border border-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-semibold">SL Hits: 0/2</span>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-[11px]">
-                        <thead>
-                            <tr class="text-slate-500 border-b border-slate-800">
-                                <th class="pb-2">Date & Time</th>
-                                <th class="pb-2">Symbol</th>
-                                <th class="pb-2">Type</th>
-                                <th class="pb-2">Price</th>
-                                <th class="pb-2">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTableBody">
-                            <tr>
-                                <td colspan="5" class="py-4 text-center text-slate-600">No trades executed yet today.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 5. LOGOUT BUTTON (RED COLOR) -->
-            <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 transition shadow-lg">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                <span>Stop & Secure Logout</span>
-            </button>
-
-            <!-- FOOTER -->
-            <div class="text-center py-2">
-                <p class="text-[10px] text-slate-600">SENSEX EDGE TELUGU Platform • Version 2.0 Secure</p>
-            </div>
-
+            <!-- మీ పాత ట్రేడింగ్ UI కోడ్ ఇక్కడ ఉంటుంది -->
+            <h1 class="text-center text-xl font-bold text-yellow-400">SENSEX EDGE DASHBOARD</h1>
+            <!-- Trading logic ... -->
+            <button onclick="location.reload()" class="w-full bg-rose-600 p-3 rounded-xl font-bold">Logout</button>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
-
-        // SCREEN TRANSITION LOGIC
-        document.addEventListener("DOMContentLoaded", function () {
-            // 2 సెకన్ల తర్వాత Welcome Screen మాయమై YouTube Screen వస్తుంది
+        // Transition Logic
+        document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 document.getElementById('welcomeScreen').classList.add('hidden');
                 document.getElementById('youtubeScreen').classList.remove('hidden');
             }, 2000);
-
-            const savedBroker = localStorage.getItem("saved_broker");
-            const savedApiKey = localStorage.getItem("saved_api_key");
-            const savedApiSecret = localStorage.getItem("saved_api_secret");
-
-            if (savedBroker) document.getElementById('brokerSelect').value = savedBroker;
-            if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
-            if (savedApiSecret) document.getElementById('apiSecret').value = savedApiSecret;
-
-            setInterval(fetchTradeHistory, 3000);
-            fetchTradeHistory();
         });
 
-        function openMainApp() {
+        function showPayment() {
             document.getElementById('youtubeScreen').classList.add('hidden');
+            document.getElementById('paymentScreen').classList.remove('hidden');
+        }
+
+        function showMainApp() {
+            document.getElementById('paymentScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
         }
 
-        async function startAutoTrader() {
-            const broker = document.getElementById('brokerSelect').value;
-            const apiKey = document.getElementById('apiKey').value;
-            const apiSecret = document.getElementById('apiSecret').value;
-            const lotSize = document.getElementById('lotSelect').value;
-            const isChecked = document.getElementById('disclaimerCheck').checked;
-
-            if (!isChecked) {
-                alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
-                return;
-            }
-
-            if (!apiKey || !apiSecret) {
-                alert("దయచేసి API Key మరియు Access Token ఎంటర్ చేయండి.");
-                return;
-            }
-
-            localStorage.setItem("saved_broker", broker);
-            localStorage.setItem("saved_api_key", apiKey);
-            localStorage.setItem("saved_api_secret", apiSecret);
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/start-strategy`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        broker: broker,
-                        api_key: apiKey,
-                        api_secret: apiSecret,
-                        lots: parseInt(lotSize)
-                    })
-                });
-
-                const res = await response.json();
-                if (response.ok) {
-                    document.getElementById('statusText').innerText = "Active & Running";
-                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
-                    alert(res.message || "ఆటో-ట్రేడింగ్ సిస్టమ్ విజయవంతంగా కనెక్ట్ అయ్యింది!");
-                    fetchTradeHistory();
-                } else {
-                    alert("Error: " + res.detail);
-                }
-            } catch (err) {
-                alert("బ్యాకెండ్ సర్వర్ అందుబాటులో లేదు. Python Server నడుస్తుందో లేదో చూడండి.");
-            }
-        }
-
-        function stopAutoTrader() {
-            document.getElementById('statusText').innerText = "Stopped & Logged Out";
-            document.getElementById('statusText').className = "text-rose-400 font-bold";
-            alert("ఆటో ట్రేడింగ్ నిలిపివేయబడింది.");
-        }
-
-        async function fetchTradeHistory() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/get-history`);
-                const data = await response.json();
-
-                const slBadge = document.getElementById("slCountBadge");
-                if (slBadge && data.state) {
-                    slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`;
-                }
-
-                const tbody = document.getElementById("historyTableBody");
-                if (!tbody) return;
-
-                if (!data.history || data.history.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-slate-600">No trades executed yet today.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = "";
-                data.history.slice().reverse().forEach(trade => {
-                    const typeColor = trade.type === 'BUY' ? 'text-emerald-400' : 'text-rose-400';
-                    const row = `
-                        <tr class="border-b border-slate-800/60 text-slate-300">
-                            <td class="py-2 text-[10px]">${trade.datetime}</td>
-                            <td class="py-2 font-bold text-slate-200">${trade.symbol}</td>
-                            <td class="py-2 font-bold ${typeColor}">${trade.type}</td>
-                            <td class="py-2">${trade.price}</td>
-                            <td class="py-2"><span class="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-[9px] text-slate-400">${trade.status}</span></td>
-                        </tr>
-                    `;
-                    tbody.innerHTML += row;
-                });
-            } catch (err) {
-                console.error("History fetch error:", err);
+        // ADMIN LOGIN
+        function adminLogin() {
+            const pass = prompt("Enter Admin Password:");
+            if (pass === "merababa@123") {
+                alert("Welcome Admin! Access Granted.");
+                showMainApp();
+            } else {
+                alert("Incorrect Password!");
             }
         }
     </script>
