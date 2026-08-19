@@ -359,7 +359,7 @@
             try {
                 const response = await fetch(`${BACKEND_URL}/get-history`);
                 const data = await response.json();
-
+     
                 const slBadge = document.getElementById("slCountBadge");
                 if (slBadge && data.state) {
                     slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`;
@@ -393,6 +393,6 @@
         }
     </script>
 </body>
-                                                                                                                </html>
+                                                                                                           </html>
 
 
