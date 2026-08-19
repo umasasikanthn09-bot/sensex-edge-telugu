@@ -276,15 +276,17 @@
             document.getElementById('youtubeScreen').classList.add('hidden');
             document.getElementById('paymentScreen').classList.remove('hidden');
         }
-
-        function checkUserPayment() {
-            const isApproved = localStorage.getItem("admin_approved");
-            if (isApproved === "true") {
-                showMainApp();
-            } else {
-                alert("మీ పేమెంట్ పరిశీలనలో ఉంది! Admin అప్రూవల్ ఇచ్చిన తర్వాతే యాప్ ఓపెన్ అవుతుంది.");
-            }
-        }
+// బలవంతంగా అప్రూవల్ పాప్-అప్ ఓపెన్ చేసే ఫంక్షన్
+function checkUserPaymentForce() {
+    // స్క్రీన్‌పై ఉన్ పాత Popup ని డిస్‌ప్లే మోడ్ మార్చడం
+    const modal = document.getElementById('approvalModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    } else {
+        alert("Waiting for Admin Approval! అడ్మిన్ పాస్‌వర్డ్ ఎంటర్ చేయండి.");
+        openAdminModal();
+    }
+}
 
         function openAdminModal() {
             const pass = prompt("Enter Admin Password:");
