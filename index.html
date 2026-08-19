@@ -10,6 +10,7 @@
         .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
         .inner-box { background-color: #070d19; border: 1px solid #172554; }
         .btn-cyan { background-color: #0284c7; color: #ffffff; }
+        .btn-cyan:hover { background-color: #0369a1; }
         .input-bg { background-color: #030712; border: 1px solid #1e293b; }
     </style>
 </head>
@@ -22,8 +23,8 @@
             <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
                 <span class="text-3xl">🚀</span>
             </div>
-            <h1 class="text-2xl font-extrabold text-yellow-400">Sensex Edge Telugu</h1>
-            <p class="text-xs text-slate-400 tracking-widest uppercase">Learn • Practice • Grow</p>
+            <h1 class="text-2xl font-extrabold text-yellow-400 tracking-wide">Sensex Edge Telugu</h1>
+            <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Learn • Practice • Grow</p>
             <div class="pt-4 flex justify-center">
                 <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
@@ -66,15 +67,27 @@
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
             </div>
 
-            <!-- USER CONTINUE BUTTON (Checks Approval Only) -->
-            <button onclick="checkUserAccess()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+            <!-- ONLY CONTINUE BUTTON HERE -->
+            <button onclick="onContinueClick()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
                 Continue
             </button>
+        </div>
 
-            <!-- ADMIN ACCESS BUTTON -->
-            <button onclick="openAdminModal()" class="w-full text-xs text-slate-400 hover:text-yellow-400 underline pt-1">
-                Admin Access / Approve User
-            </button>
+        <!-- POPUP BOX FOR ADMIN APPROVAL -->
+        <div id="approvalModal" style="display: none;" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 z-50">
+            <div class="card-bg rounded-2xl p-6 max-w-sm w-full text-center space-y-4 border border-yellow-500/30 shadow-2xl">
+                <div class="text-amber-400 text-4xl">🔒</div>
+                <h3 class="text-base font-bold text-white">అడ్మిన్ అనుమతి అవసరం</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    మీ చెల్లింపు పూర్తయిన తర్వాత, యాప్ ఓపెన్ చేయడానికి అడ్మిన్ Access ద్వారా అనుమతి పొందాలి.
+                </p>
+                <button onclick="openAdminModal()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-extrabold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+                    Admin Access / Approve User
+                </button>
+                <button onclick="closeModal()" class="text-xs text-slate-400 hover:text-white underline">
+                    వెనక్కి వెళ్ళు (Back)
+                </button>
+            </div>
         </div>
 
         <!-- STEP 4: ORIGINAL MAIN APP DASHBOARD -->
@@ -92,7 +105,7 @@
 
             <hr class="border-slate-800 my-2">
 
-            <!-- 1. STATUS -->
+            <!-- 1. STATUS CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg">
                 <div class="flex items-center space-x-2 mb-1">
                     <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
@@ -104,7 +117,7 @@
                 </div>
             </div>
 
-            <!-- 2. BROKER INTEGRATION -->
+            <!-- 2. BROKER API INTEGRATION CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
                 <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
                 <div>
@@ -130,7 +143,7 @@
                 </button>
             </div>
 
-            <!-- 3. LOT SIZE & P&L -->
+            <!-- 3. LOT SIZE & REALTIME P&L CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Selected Lot Size</label>
@@ -153,7 +166,7 @@
                 </div>
             </div>
 
-            <!-- 4. HISTORY -->
+            <!-- 4. EXECUTED ORDERS HISTORY CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2">
                     <h3 class="text-xs font-bold text-sky-400 uppercase">Executed Orders History</h3>
@@ -177,7 +190,7 @@
                 </div>
             </div>
 
-            <!-- 5. LOGOUT -->
+            <!-- 5. LOGOUT BUTTON -->
             <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg">
                 Stop & Secure Logout
             </button>
@@ -185,6 +198,7 @@
 
     </div>
 
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
@@ -212,17 +226,19 @@
             document.getElementById('paymentScreen').style.display = 'block';
         }
 
-        // USER CONTINUE BUTTON ACTION
-        function checkUserAccess() {
+        function onContinueClick() {
             const isApproved = localStorage.getItem("admin_approved");
             if (isApproved === "true") {
                 showMainApp();
             } else {
-                alert("మీ అకౌంట్‌కి అడ్మిన్ అనుమతి (Admin Approval) ఇంకా లభించలేదు. దయచేసి అడ్మిన్‌ను సంప్రదించండి.");
+                document.getElementById('approvalModal').style.display = 'flex';
             }
         }
 
-        // ONLY ADMIN CAN APPROVE AND OPEN APP
+        function closeModal() {
+            document.getElementById('approvalModal').style.display = 'none';
+        }
+
         function openAdminModal() {
             const pass = prompt("Enter Admin Password:");
             if (pass === "merababa@123") {
@@ -231,6 +247,7 @@
                     localStorage.setItem("approval_date", new Date().getTime());
                 }
                 alert("Welcome Admin! ఈ యూజర్‌కి యాక్సెస్ ఇవ్వబడింది.");
+                closeModal();
                 showMainApp();
             } else {
                 alert("తప్పు పాస్‌వర్డ్! అనుమతి నిరాకరించబడింది.");
@@ -327,4 +344,4 @@
         }
     </script>
 </body>
-</html>
+                    </html>
