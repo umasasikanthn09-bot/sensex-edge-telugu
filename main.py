@@ -1,12 +1,11 @@
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
-import datetime
-import time
+import requests
 
-app = FastAPI(title="SENSEX Edge Algo Engine")
+app = FastAPI()
 
-# --- ఈ భాగం కొత్తగా చేర్చబడింది (CORS Permission) ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,85 +13,71 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# --------------------------------------------------
 
-class StrategyParams(BaseModel):
+USER_CREDENTIALS = {}
+TRADE_HISTORY = []
+ENGINE_STATE = {"status": "Waiting for Login", "sl_hit_count": 0}
+
+class StrategyPayload(BaseModel):
     broker: str
     api_key: str
     api_secret: str
     lots: int
 
-execution_state = {
-    "active": False,
-    "sl_hit_count": 0,
-    "current_position": None
-}
-
 @app.get("/")
-def home():
-    return {"status": "Backend Engine is Running!"}
+def read_root():
+    return {"status": "Online", "message": "SENSEX Edge Engine Active"}
 
+# 5 BROKER LOGIN HANDLER
 @app.post("/start-strategy")
-def start_strategy(params: StrategyParams):
-    execution_state["active"] = True
-    return {"message": f"{params.broker} Auto Algo Started Successfully for {params.lots} Lot(s)!"}
-    print(f"Calculated Entry Level: {entry_level}, Target Level: {target_level}")
+def start_strategy(payload: StrategyPayload):
+    USER_CREDENTIALS["broker"] = payload.broker
+    USER_CREDENTIALS["api_key"] = payload.api_key
+    USER_CREDENTIALS["api_secret"] = payload.api_secret
+    USER_CREDENTIALS["lots"] = payload.lots
 
-    # Monitoring Loop
-    while execution_state["active"]:
-        time.sleep(2) # Live Candle Stream
-        
-        # Simulated Live Candle Data
-        current_candle_close = 165.0
-        is_green_candle = True # Green Candle Check (Rule 4)
-        
-        # Rule 4 & 3: Entry Execution on Green Candle
-        if execution_state["current_position"] is None:
-            if current_candle_close <= entry_level and is_green_candle:
-                print(f"[*] BUY ORDER Executed at {current_candle_close} | Lots: {lots}")
-                execution_state["current_position"] = {
-                    "entry_price": current_candle_close,
-                    "sl": current_candle_close - stoploss_points,
-                    "target": target_level,
-                    "trailed": False
-                }
+    broker = payload.broker.lower()
 
-        # Position Management
-        pos = execution_state["current_position"]
-        if pos:
-            current_price = 198.0 # Live Option Price
-            
-            # Rule 7: Target దిశగా 35 పాయింట్లు వెళ్తే SL ని Entry Place లోకి మార్చడం
-            if not pos["trailed"] and (current_price - pos["entry_price"]) >= 35.0:
-                pos["sl"] = pos["entry_price"] # Cost to Cost SL
-                pos["trailed"] = True
-                print("[*] SL Trailed to Entry Price (Cost-to-Cost)")
+    # Direct Connection Brokers (AngelOne, Dhan)
+    if broker in ["angelone", "dhan"]:
+        USER_CREDENTIALS["access_token"] = payload.api_secret
+        ENGINE_STATE["status"] = f"Active & Connected ({payload.broker.capitalize()})"
+        return {"status": "Success", "message": f"{payload.broker.capitalize()} తో విజయవంతంగా కనెక్ట్ అయ్యింది!"}
 
-            # Check SL Hit
-            if current_price <= pos["sl"]:
-                print("[!] Stoploss Hit!")
-                execution_state["sl_hit_count"] += 1
-                execution_state["current_position"] = None
-                
-                # Rule 5: 1 time SL hit అయితే ఏ కాండిల్ టచ్ అయిందో దాని 50% లెవెల్ లో Re-entry కోసం వెయిటింగ్
-                if execution_state["sl_hit_count"] == 1:
-                    print("[!] Waiting for 50% Candle Re-entry level...")
-                    # Re-entry triggers when price hits 50% candle zone
-                    
-            # Check Target Hit
-            elif current_price >= pos["target"]:
-                print("[+] Target Hit! Exiting Trade.")
-                execution_state["current_position"] = None
-                break
+    # Redirect OAuth Brokers (Upstox, Zerodha, Fyers)
+    elif broker in ["upstox", "zerodha", "fyers"]:
+        ENGINE_STATE["status"] = f"Pending Login ({payload.broker.capitalize()})"
+        return {
+            "status": "Redirect",
+            "auth_url": f"https://sensex-edge-telugu-backend.onrender.com/login/{broker}?api_key={payload.api_key}"
+        }
+    
+    return {"status": "Error", "message": "Invalid Broker Selected"}
 
-@app.post("/start-strategy")
-def start_strategy(params: StrategyParams, background_tasks: BackgroundTasks):
-    execution_state["active"] = True
-    background_tasks.add_task(
-        sensex_strategy_engine, 
-        params.broker, 
-        params.api_key, 
-        params.api_secret, 
-        params.lots
-    )
-    return {"status": "started", "message": f"{params.broker.upper()} లో ఆటోమ్యాటిక్ స్ట్రాటజీ రన్ అవుతోంది."}
+# UPSTOX AUTH
+@app.get("/login/upstox")
+def login_upstox(api_key: str):
+    redirect_uri = "https://sensex-edge-telugu-backend.onrender.com/callback/upstox"
+    url = f"https://api.upstox.com/v2/login/authorization/dialog?response_type=code&client_id={api_key}&redirect_uri={redirect_uri}"
+    return RedirectResponse(url=url)
+
+@app.get("/callback/upstox")
+def upstox_callback(code: str):
+    api_key = USER_CREDENTIALS.get("api_key")
+    api_secret = USER_CREDENTIALS.get("api_secret")
+    redirect_uri = "https://sensex-edge-telugu-backend.onrender.com/callback/upstox"
+
+    url = 'https://api.upstox.com/v2/login/authorization/token'
+    headers = {'accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'}
+    data = {'code': code, 'client_id': api_key, 'client_secret': api_secret, 'redirect_uri': redirect_uri, 'grant_type': 'authorization_code'}
+
+    res = requests.post(url, headers=headers, data=data).json()
+    if "access_token" in res:
+        USER_CREDENTIALS["access_token"] = res["access_token"]
+        ENGINE_STATE["status"] = "Active & Running"
+        return RedirectResponse(url="https://sensex-edge-telugu.onrender.com?status=success")
+    return {"status": "Failed", "details": res}
+
+@app.get("/get-history")
+def get_history():
+    return {"state": ENGINE_STATE, "history": TRADE_HISTORY}
