@@ -6,30 +6,11 @@
     <title>SENSEX EDGE TELUGU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #060913;
-            color: #ffffff;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .card-bg {
-            background-color: #0b1120;
-            border: 1px solid #1e293b;
-        }
-        .inner-box {
-            background-color: #070d19;
-            border: 1px solid #172554;
-        }
-        .btn-cyan {
-            background-color: #0284c7;
-            color: #ffffff;
-        }
-        .btn-cyan:hover {
-            background-color: #0369a1;
-        }
-        .input-bg {
-            background-color: #030712;
-            border: 1px solid #1e293b;
-        }
+        body { background-color: #060913; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; }
+        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
+        .inner-box { background-color: #070d19; border: 1px solid #172554; }
+        .btn-cyan { background-color: #0284c7; color: #ffffff; }
+        .input-bg { background-color: #030712; border: 1px solid #1e293b; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
@@ -41,8 +22,8 @@
             <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
                 <span class="text-3xl">🚀</span>
             </div>
-            <h1 class="text-2xl font-extrabold text-yellow-400 tracking-wide">Sensex Edge Telugu</h1>
-            <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Learn • Practice • Grow</p>
+            <h1 class="text-2xl font-extrabold text-yellow-400">Sensex Edge Telugu</h1>
+            <p class="text-xs text-slate-400 tracking-widest uppercase">Learn • Practice • Grow</p>
             <div class="pt-4 flex justify-center">
                 <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
@@ -85,16 +66,18 @@
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
             </div>
 
-            <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+            <!-- USER CONTINUE BUTTON (Checks Approval Only) -->
+            <button onclick="checkUserAccess()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
                 Continue
             </button>
 
+            <!-- ADMIN ACCESS BUTTON -->
             <button onclick="openAdminModal()" class="w-full text-xs text-slate-400 hover:text-yellow-400 underline pt-1">
                 Admin Access / Approve User
             </button>
         </div>
 
-        <!-- STEP 4: MAIN APP DASHBOARD -->
+        <!-- STEP 4: ORIGINAL MAIN APP DASHBOARD -->
         <div id="mainApp" style="display: none;" class="space-y-5">
             
             <div id="expiryReminder" style="display: none;" class="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
@@ -229,26 +212,28 @@
             document.getElementById('paymentScreen').style.display = 'block';
         }
 
-        function checkUserPayment() {
+        // USER CONTINUE BUTTON ACTION
+        function checkUserAccess() {
             const isApproved = localStorage.getItem("admin_approved");
             if (isApproved === "true") {
                 showMainApp();
             } else {
-                alert("మీ అకౌంట్‌కి అడ్మిన్ అనుమతి (Admin Approval) ఇంకా లభించలేదు.");
+                alert("మీ అకౌంట్‌కి అడ్మిన్ అనుమతి (Admin Approval) ఇంకా లభించలేదు. దయచేసి అడ్మిన్‌ను సంప్రదించండి.");
             }
         }
 
+        // ONLY ADMIN CAN APPROVE AND OPEN APP
         function openAdminModal() {
             const pass = prompt("Enter Admin Password:");
             if (pass === "merababa@123") {
                 localStorage.setItem("admin_approved", "true");
-                if(!localStorage.getItem("approval_date")) {
+                if (!localStorage.getItem("approval_date")) {
                     localStorage.setItem("approval_date", new Date().getTime());
                 }
-                alert("Welcome Admin! యూజర్‌కి యాప్ అనుమతి ఇవ్వబడింది.");
+                alert("Welcome Admin! ఈ యూజర్‌కి యాక్సెస్ ఇవ్వబడింది.");
                 showMainApp();
             } else {
-                alert("తప్పు పాస్‌వర్డ్!");
+                alert("తప్పు పాస్‌వర్డ్! అనుమతి నిరాకరించబడింది.");
             }
         }
 
@@ -342,4 +327,4 @@
         }
     </script>
 </body>
-                </html>
+</html>
