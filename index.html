@@ -79,10 +79,11 @@
             <div class="flex justify-center my-2">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
                 </div>
-            <!-- QR Code కింద ఈ అమౌంట్ లైన్ ఉంచండి -->
-<p class="text-sm font-extrabold text-emerald-400">Amount to Pay: ₹2,499 / Month</p>
+            
 
             <div class="inner-box p-4 rounded-xl space-y-2">
+                <!-- QR Code కింద ఈ అమౌంట్ లైన్ ఉంచండి -->
+<p class="text-sm font-extrabold text-emerald-400">Amount to Pay: ₹2,499 / Month</p>
                 <p class="text-xs text-slate-400">UPI ID:</p>
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
                 <p class="text-[10px] text-slate-500">Scan to pay with any UPI app</p>
@@ -92,23 +93,29 @@
     I Have Paid - Continue to App
 </button>
 
-<!-- WAITING FOR ADMIN APPROVAL POPUP MODAL -->
 <div id="approvalModal" style="display: none;" class="modal-overlay">
     <div class="card-bg rounded-2xl p-6 max-w-sm w-full text-center space-y-4 border border-yellow-500/30 shadow-2xl">
         <div class="text-amber-400 text-4xl animate-pulse">⏳</div>
         <h3 class="text-base font-bold text-white">Waiting for Admin Approval</h3>
         <p class="text-xs text-slate-300 leading-relaxed">
-            మీ చెల్లింపు నూరు శాతం పూర్తయింది. అడ్మిన్ ధృవీకరించి అప్రూవల్ ఇచ్చిన వెంటనే యాప్ ఓపెన్ అవుతుంది.
+            మీ చెల్లింపు పూర్తయిన తర్వాత, అడ్మిన్ ధృవీకరించి అప్రూవల్ ఇచ్చిన తర్వాతే యాప్ ఓపెన్ అవుతుంది.
         </p>
         
-        <div class="pt-2 border-t border-slate-800 space-y-3">
-            <button onclick="openAdminModal()" class="w-full text-xs text-slate-400 hover:text-yellow-400 underline py-1">
-                Admin Access Button
+        <div class="space-y-2 pt-2">
+            <!-- 1. ADMIN LOGIN BUTTON -->
+            <button onclick="handleAdminLogin()" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow">
+                Admin Login
             </button>
-            <button onclick="closeModal()" class="text-xs text-slate-500 hover:text-slate-300 block mx-auto">
-                Close
+            
+            <!-- 2. ADMIN APPROVAL BUTTON -->
+            <button onclick="handleAdminApproval()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow">
+                Admin Approval Access
             </button>
         </div>
+
+        <button onclick="closeModal()" class="text-xs text-slate-400 hover:text-white underline pt-2 block mx-auto">
+            వెనక్కి వెళ్ళు (Back)
+        </button>
     </div>
 </div>
 
@@ -368,6 +375,31 @@ function checkUserPaymentForce() {
                 if (slBadge && data.state) {
                     slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`;
                 }
+                // ADMIN LOGIN
+function handleAdminLogin() {
+    const pass = prompt("Enter Admin Password:");
+    if (pass === "merababa@123") {
+        alert("Admin Login Successful!");
+    } else if (pass !== null) {
+        alert("తప్పు పాస్‌వర్డ్!");
+    }
+}
+
+// ADMIN APPROVAL (OPENS MAIN APP DIRECTLY)
+function handleAdminApproval() {
+    const pass = prompt("Enter Admin Approval Password:");
+    if (pass === "merababa@123") {
+        localStorage.setItem("admin_approved", "true");
+        if (!localStorage.getItem("approval_date")) {
+            localStorage.setItem("approval_date", new Date().getTime());
+        }
+        alert("ఈ యూజర్‌కి 30 రోజుల యాక్సెస్ విజయవంతంగా ఇవ్వబడింది.");
+        closeModal();
+        showMainApp();
+    } else if (pass !== null) {
+        alert("తప్పు పాస్‌వర్డ్! అనుమతి నిరాకరించబడింది.");
+    }
+}
 
                 const tbody = document.getElementById("historyTableBody");
                 if (!tbody) return;
@@ -394,7 +426,7 @@ function checkUserPaymentForce() {
             } catch (err) {
                 console.error("History fetch error:", err);
             }
-        }
+        
     </script>
 </body>
                                                                                                            </html>
