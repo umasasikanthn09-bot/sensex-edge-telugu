@@ -72,29 +72,20 @@
             </button>
         </div>
 
-         <!-- STEP 3: PAYMENT GATEWAY CARD -->
-        <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
+                <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
+        <div id="paymentScreen" class="hidden card-bg rounded-2xl p-6 shadow-2xl space-y-4 fade-in border border-emerald-500/20 text-center">
             <h2 class="text-lg font-bold text-emerald-400">Monthly Subscription</h2>
             
-            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-2.5">
-                
-                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
-            </div>
-                
-                
-                <div class="flex justify-center my-2">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
-                </div>
 
-                <p class="text-sm font-extrabold text-emerald-400">Amount to Pay: ₹2,499 / Month</p>
-                <p class="text-xs text-slate-400 pt-1">UPI ID:</p>
+            <div class="inner-box p-4 rounded-xl space-y-2">
+                <p class="text-xs text-slate-400">UPI ID:</p>
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
+                <p class="text-[10px] text-slate-500">Scan to pay with any UPI app</p>
             </div>
 
             <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                I Have Paid - Continue to App
+                Continue to App
             </button>
-        
 
             <button onclick="openAdminModal()" class="w-full text-xs text-slate-400 hover:text-yellow-400 underline pt-1">
                 Admin Access Button
