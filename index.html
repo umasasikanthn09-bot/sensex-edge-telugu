@@ -75,26 +75,46 @@
         <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
         <div id="paymentScreen" class="hidden card-bg rounded-2xl p-6 shadow-2xl space-y-4 fade-in border border-emerald-500/20 text-center">
             <h2 class="text-lg font-bold text-emerald-400">Payment Gateway</h2>
-            <p class="text-xs text-slate-400">V Grow (Indian Overseas Bank 0761)</p>
+            
+            <!-- MONTHLY FEE BOX -->
+            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-2.5">
+                <p class="text-xs text-slate-300">Monthly Subscription Fee:</p>
+                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
+            </div>
 
-            <div class="inner-box p-4 rounded-xl space-y-2">
+            <div class="inner-box p-4 rounded-xl space-y-3">
+                <p class="text-xs text-slate-300 font-semibold">V Grow (Indian Overseas Bank 0761)</p>
+                
+                <!-- SCANNER IMAGE -->
+                <div class="flex justify-center my-2">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
+                </div>
+
                 <p class="text-xs text-slate-400">UPI ID:</p>
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
                 <p class="text-[10px] text-slate-500">Scan to pay with any UPI app</p>
             </div>
 
+            <!-- CONTINUE BUTTON -->
             <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                I Have Paid - Continue to App
+                Continue
             </button>
 
+            <!-- ADMIN ACCESS LINK -->
             <button onclick="openAdminModal()" class="w-full text-xs text-slate-400 hover:text-yellow-400 underline pt-1">
-                Admin Access Button
+                Admin Access / Approve User
             </button>
         </div>
 
         <!-- ==================== STEP 4: ORIGINAL MAIN APP DASHBOARD ==================== -->
         <div id="mainApp" class="hidden space-y-5 fade-in">
             
+            <!-- REMINDER BANNER (3 DAYS BEFORE EXPIRY) -->
+            <div id="expiryReminder" class="hidden bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
+                <p class="text-xs font-bold text-amber-400">⚠️ సబ్‌స్క్రిప్షన్ అలర్ట్!</p>
+                <p class="text-[11px] text-slate-300">మీ యాప్ సబ్‌స్క్రిప్షన్ ముగియడానికి మరో <strong id="daysLeftText" class="text-yellow-400">3 రోజులు</strong> మాత్రమే ఉంది. రైనూవల్ కోసం ₹2,499 చెల్లించండి.</p>
+            </div>
+
             <!-- HEADER -->
             <div class="text-center py-2">
                 <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
@@ -234,7 +254,6 @@
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
-        // AUTOMATED SCREEN FLOW
         document.addEventListener("DOMContentLoaded", function () {
             // 2 సెకన్ల తర్వాత Welcome Screen మాయమై YouTube Screen వస్తుంది
             setTimeout(() => {
@@ -252,6 +271,7 @@
 
             setInterval(fetchTradeHistory, 3000);
             fetchTradeHistory();
+            checkSubscriptionExpiry();
         });
 
         function goToPayment() {
@@ -259,29 +279,58 @@
             document.getElementById('paymentScreen').classList.remove('hidden');
         }
 
+        // STRICT ADMIN APPROVAL CHECK
         function checkUserPayment() {
             const isApproved = localStorage.getItem("admin_approved");
             if (isApproved === "true") {
                 showMainApp();
             } else {
-                alert("మీ పేమెంట్ పరిశీలనలో ఉంది! Admin అప్రూవల్ ఇచ్చిన తర్వాతే యాప్ ఓపెన్ అవుతుంది.");
+                alert("మీ అకౌంట్‌కి అడ్మిన్ అనుమతి (Admin Approval) ఇంకా లభించలేదు. దయచేసి పేమెంట్ చేసిన తర్వాత అడ్మిన్‌ను సంప్రదించండి.");
             }
         }
 
+        // ADMIN LOGIN & APPROVAL
         function openAdminModal() {
             const pass = prompt("Enter Admin Password:");
             if (pass === "merababa@123") {
                 localStorage.setItem("admin_approved", "true");
-                alert("Welcome Admin! అప్రూవల్ విజయవంతమైంది.");
+                // Set Approval Date to track 30 days expiry
+                if(!localStorage.getItem("approval_date")) {
+                    localStorage.setItem("approval_date", new Date().getTime());
+                }
+                alert("Welcome Admin! యూజర్‌కి యాప్ అనుమతి ఇవ్వబడింది.");
                 showMainApp();
             } else {
-                alert("తప్పు పాస్‌వర్డ్!");
+                alert("తప్పు పాస్‌వర్డ్! అనుమతి నిరాకరించబడింది.");
             }
         }
 
         function showMainApp() {
             document.getElementById('paymentScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
+        }
+
+        // 3 DAYS BEFORE EXPIRY REMINDER LOGIC
+        function checkSubscriptionExpiry() {
+            const approvalDate = localStorage.getItem("approval_date");
+            if (approvalDate) {
+                const now = new Date().getTime();
+                const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
+                const daysLeft = 30 - daysPassed;
+
+                if (daysLeft <= 3 && daysLeft >= 0) {
+                    const reminderBox = document.getElementById("expiryReminder");
+                    const daysText = document.getElementById("daysLeftText");
+                    if (reminderBox && daysText) {
+                        daysText.innerText = `${daysLeft} రోజులు`;
+                        reminderBox.classList.remove("hidden");
+                    }
+                } else if (daysLeft < 0) {
+                    localStorage.removeItem("admin_approved");
+                    alert("మీ సబ్‌స్క్రిప్షన్ గడువు ముగిసింది. దయచేసి మళ్లీ రీఛార్జ్ చేయండి.");
+                    location.reload();
+                }
+            }
         }
 
         async function startAutoTrader() {
@@ -375,5 +424,4 @@
         }
     </script>
 </body>
-                                                                                                                </html>
-
+    </html>
