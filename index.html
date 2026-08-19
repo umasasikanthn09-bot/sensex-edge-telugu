@@ -49,10 +49,10 @@
 
         <!-- STEP 3: PAYMENT GATEWAY CARD -->
         <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
-            <h2 class="text-lg font-bold text-emerald-400">Monthly Subscription</h2>
+            <h2 class="text-lg font-bold text-emerald-400">Payment Gateway</h2>
             
             <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-2.5">
-                
+                <p class="text-xs text-slate-300">Monthly Subscription Fee:</p>
                 <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
             </div>
 
@@ -67,24 +67,33 @@
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
             </div>
 
-            <!-- ONLY CONTINUE BUTTON HERE -->
             <button onclick="onContinueClick()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
                 Continue
             </button>
         </div>
 
-        <!-- POPUP BOX FOR ADMIN APPROVAL -->
+        <!-- STEP 3.5: POPUP CARD WITH ADMIN LOGIN & APPROVAL BUTTONS -->
         <div id="approvalModal" style="display: none;" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 z-50">
             <div class="card-bg rounded-2xl p-6 max-w-sm w-full text-center space-y-4 border border-yellow-500/30 shadow-2xl">
-                <div class="text-amber-400 text-4xl">🔒</div>
-                <h3 class="text-base font-bold text-white">అడ్మిన్ అనుమతి అవసరం</h3>
+                <div class="text-amber-400 text-4xl">🔐</div>
+                <h3 class="text-base font-bold text-white">అడ్మిన్ వెరిఫికేషన్ ప్రక్రియ</h3>
                 <p class="text-xs text-slate-300 leading-relaxed">
-                    మీ చెల్లింపు పూర్తయిన తర్వాత, యాప్ ఓపెన్ చేయడానికి అడ్మిన్ Access ద్వారా అనుమతి పొందాలి.
+                    మీరు పేమెంట్ పూర్తి చేసిన తర్వాత, అడ్మిన్ పాస్‌వర్డ్ ద్వారా అప్రూవల్ ఇస్తేనే యాప్ ఓపెన్ అవుతుంది.
                 </p>
-                <button onclick="openAdminModal()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-extrabold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                    Admin Access / Approve User
-                </button>
-                <button onclick="closeModal()" class="text-xs text-slate-400 hover:text-white underline">
+                
+                <div class="space-y-2 pt-2">
+                    <!-- BUTTON 1: ADMIN LOGIN -->
+                    <button onclick="handleAdminLogin()" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow">
+                        Admin Login
+                    </button>
+                    
+                    <!-- BUTTON 2: ADMIN APPROVAL -->
+                    <button onclick="handleAdminApproval()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow">
+                        Admin Approval
+                    </button>
+                </div>
+
+                <button onclick="closeModal()" class="text-xs text-slate-400 hover:text-white underline pt-2 block mx-auto">
                     వెనక్కి వెళ్ళు (Back)
                 </button>
             </div>
@@ -239,14 +248,25 @@
             document.getElementById('approvalModal').style.display = 'none';
         }
 
-        function openAdminModal() {
+        // 1. ADMIN LOGIN ACTION
+        function handleAdminLogin() {
             const pass = prompt("Enter Admin Password:");
+            if (pass === "merababa@123") {
+                alert("Admin Login Successful!");
+            } else {
+                alert("తప్పు పాస్‌వర్డ్!");
+            }
+        }
+
+        // 2. ADMIN APPROVAL ACTION (OPENS MAIN APP FOR USER)
+        function handleAdminApproval() {
+            const pass = prompt("Enter Admin Approval Password:");
             if (pass === "merababa@123") {
                 localStorage.setItem("admin_approved", "true");
                 if (!localStorage.getItem("approval_date")) {
                     localStorage.setItem("approval_date", new Date().getTime());
                 }
-                alert("Welcome Admin! ఈ యూజర్‌కి యాక్సెస్ ఇవ్వబడింది.");
+                alert("మంచిది! ఈ యూజర్‌కి 30 రోజుల యాక్సెస్ విజయవంతంగా ఇవ్వబడింది.");
                 closeModal();
                 showMainApp();
             } else {
@@ -344,4 +364,4 @@
         }
     </script>
 </body>
-                    </html>
+    </html>
