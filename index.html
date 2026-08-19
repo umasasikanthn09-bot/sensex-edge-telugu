@@ -6,19 +6,54 @@
     <title>SENSEX EDGE TELUGU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #060913; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; }
-        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
-        .inner-box { background-color: #070d19; border: 1px solid #172554; }
-        .btn-cyan { background-color: #0284c7; color: #ffffff; }
-        .btn-cyan:hover { background-color: #0369a1; }
-        .input-bg { background-color: #030712; border: 1px solid #1e293b; }
+        body {
+            background-color: #060913;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .card-bg {
+            background-color: #0b1120;
+            border: 1px solid #1e293b;
+        }
+        .inner-box {
+            background-color: #070d19;
+            border: 1px solid #172554;
+        }
+        .btn-cyan {
+            background-color: #0284c7;
+            color: #ffffff;
+        }
+        .btn-cyan:hover {
+            background-color: #0369a1;
+        }
+        .input-bg {
+            background-color: #030712;
+            border: 1px solid #1e293b;
+        }
+        /* Modal Overlay Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
 
     <div class="w-full max-w-md space-y-5">
 
-        <!-- STEP 1: WELCOME CARD -->
+        <!-- ==================== STEP 1: WELCOME CARD ==================== -->
         <div id="welcomeScreen" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 border border-yellow-500/20">
             <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
                 <span class="text-3xl">🚀</span>
@@ -30,7 +65,7 @@
             </div>
         </div>
 
-        <!-- STEP 2: YOUTUBE CARD -->
+        <!-- ==================== STEP 2: YOUTUBE CARD ==================== -->
         <div id="youtubeScreen" style="display: none;" class="card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 border border-red-500/20">
             <div class="inline-block p-3 bg-red-600/10 rounded-full">
                 <svg class="w-10 h-10 text-red-500 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -47,7 +82,7 @@
             </button>
         </div>
 
-        <!-- STEP 3: PAYMENT GATEWAY CARD -->
+        <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
         <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
             <h2 class="text-lg font-bold text-emerald-400">Payment Gateway</h2>
             
@@ -67,18 +102,19 @@
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
             </div>
 
+            <!-- ONLY CONTINUE BUTTON -->
             <button onclick="onContinueClick()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
                 Continue
             </button>
         </div>
 
-        <!-- STEP 3.5: POPUP CARD WITH ADMIN LOGIN & APPROVAL BUTTONS -->
-        <div id="approvalModal" style="display: none;" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 z-50">
+        <!-- ==================== POPUP CARD (ADMIN LOGIN & APPROVAL) ==================== -->
+        <div id="approvalModal" style="display: none;" class="modal-overlay">
             <div class="card-bg rounded-2xl p-6 max-w-sm w-full text-center space-y-4 border border-yellow-500/30 shadow-2xl">
                 <div class="text-amber-400 text-4xl">🔐</div>
                 <h3 class="text-base font-bold text-white">అడ్మిన్ వెరిఫికేషన్ ప్రక్రియ</h3>
                 <p class="text-xs text-slate-300 leading-relaxed">
-                    మీరు పేమెంట్ పూర్తి చేసిన తర్వాత, అడ్మిన్ పాస్‌వర్డ్ ద్వారా అప్రూవల్ ఇస్తేనే యాప్ ఓపెన్ అవుతుంది.
+                    మీరు పేమెంట్ పూర్తి చేసిన తర్వాత, అడ్మిన్ ద్వారా అప్రూవల్ పొందితేనే యాప్ ఓపెన్ అవుతుంది.
                 </p>
                 
                 <div class="space-y-2 pt-2">
@@ -99,7 +135,7 @@
             </div>
         </div>
 
-        <!-- STEP 4: ORIGINAL MAIN APP DASHBOARD -->
+        <!-- ==================== STEP 4: ORIGINAL MAIN APP DASHBOARD ==================== -->
         <div id="mainApp" style="display: none;" class="space-y-5">
             
             <div id="expiryReminder" style="display: none;" class="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
@@ -107,6 +143,7 @@
                 <p class="text-[11px] text-slate-300">మీ యాప్ సబ్‌స్క్రిప్షన్ ముగియడానికి మరో <strong id="daysLeftText" class="text-yellow-400">3 రోజులు</strong> మాత్రమే ఉంది.</p>
             </div>
 
+            <!-- HEADER -->
             <div class="text-center py-2">
                 <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
                 <p class="text-[10px] text-slate-400 tracking-widest mt-1 uppercase font-semibold">Learn • Practice • Grow</p>
@@ -212,6 +249,7 @@
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
 
         document.addEventListener("DOMContentLoaded", function () {
+            // ఆటోమేటిక్ గా ఫస్ట్ స్క్రీన్ నుండి సెకండ్ స్క్రీన్ కి వెళ్తుంది
             setTimeout(() => {
                 document.getElementById('welcomeScreen').style.display = 'none';
                 document.getElementById('youtubeScreen').style.display = 'block';
@@ -248,7 +286,7 @@
             document.getElementById('approvalModal').style.display = 'none';
         }
 
-        // 1. ADMIN LOGIN ACTION
+        // ADMIN LOGIN
         function handleAdminLogin() {
             const pass = prompt("Enter Admin Password:");
             if (pass === "merababa@123") {
@@ -258,7 +296,7 @@
             }
         }
 
-        // 2. ADMIN APPROVAL ACTION (OPENS MAIN APP FOR USER)
+        // ADMIN APPROVAL (OPENS APP FOR USER)
         function handleAdminApproval() {
             const pass = prompt("Enter Admin Approval Password:");
             if (pass === "merababa@123") {
@@ -266,7 +304,7 @@
                 if (!localStorage.getItem("approval_date")) {
                     localStorage.setItem("approval_date", new Date().getTime());
                 }
-                alert("మంచిది! ఈ యూజర్‌కి 30 రోజుల యాక్సెస్ విజయవంతంగా ఇవ్వబడింది.");
+                alert("ఈ యూజర్‌కి 30 రోజుల యాక్సెస్ విజయవంతంగా ఇవ్వబడింది.");
                 closeModal();
                 showMainApp();
             } else {
@@ -275,7 +313,10 @@
         }
 
         function showMainApp() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('youtubeScreen').style.display = 'none';
             document.getElementById('paymentScreen').style.display = 'none';
+            document.getElementById('approvalModal').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
         }
 
@@ -364,4 +405,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
