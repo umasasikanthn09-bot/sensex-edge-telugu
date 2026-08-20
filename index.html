@@ -194,8 +194,27 @@
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
         const VALID_APPROVAL_CODE = "SET2026"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
         const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // 1. ఆటోమేటిక్‌గా 3 సెకన్లలో YouTube Screen కొస్తుంది
+    setTimeout(() => {
+        const welcome = document.getElementById('welcomeScreen');
+        const youtube = document.getElementById('youtubeScreen');
+        if (welcome) welcome.style.display = 'none';
+        if (youtube) youtube.style.display = 'block';
 
-        document.addEventListener("DOMContentLoaded", function () {
+        // 2. మరొక 3 సెకన్ల తర్వాత యూజర్ నంబర్ ఇచ్చే స్క్రీన్‌కి వెళ్తుంది
+        setTimeout(() => {
+            if (youtube) youtube.style.display = 'none';
+            
+            // ఫోన్ ఇన్పుట్ లేదా పేమెంట్ స్క్రీన్ ఓపెన్ చేస్తుంది
+            const targetScreen = document.getElementById('phoneCard') || document.getElementById('paymentScreen');
+            if (targetScreen) targetScreen.style.display = 'block';
+        }, 3000); // 3 సెకన్లు
+
+    }, 3000); // 3 సెకన్లు
+});
+        
             // ఆటోమేటిక్‌గా 2 సెకన్లలో YouTube Screen కొస్తుంది
             setTimeout(() => {
                 const welcome = document.getElementById('welcomeScreen');
