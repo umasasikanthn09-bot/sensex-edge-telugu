@@ -93,213 +93,138 @@
             </button>
 
             <!-- ==================== CONTINUE TO APP / ADMIN APPROVAL ==================== -->
-
 <script>
     // Admin Access Password
     const ADMIN_ACCESS_PASSWORD = "merababa@123";
 
-    // Continue to App button
+    // 1. CONTINUE TO APP BUTTON CLICK ACTION
     function checkUserPayment() {
+        const isApproved = localStorage.getItem("admin_access_approved");
 
-        // User payment screen నుండి direct access ఇవ్వకుండా
-        // Admin approval pending message చూపిస్తుంది
-        alert(
-            "⏳ Admin Access Pending\n\n" +
-            "మీ Payment / Membership వివరాలు Admin Approval కోసం పంపబడ్డాయి.\n\n" +
-            "Admin Access approve చేసిన తర్వాత మాత్రమే App లోకి ప్రవేశించగలరు."
-        );
+        if (isApproved === "true") {
+            // అప్రూవల్ ఉంటే నేరుగా యాప్‌కి వెళ్తుంది
+            showAppScreen();
+        } else {
+            // అప్రూవల్ లేకపోతే అలర్ట్ వచ్చి అడ్మిన్ పాస్‌వర్డ్ బాక్స్ ఓపెన్ అవుతుంది
+            alert(
+                "⏳ Admin Access Pending\n\n" +
+                "మీ Payment వివరాలు Admin Approval కోసం పంపబడ్డాయి.\n\n" +
+                "Admin Access Approve చేసిన తర్వాత మాత్రమే App లోకి ప్రవేశించగలరు."
+            );
+            
+            // అడ్మిన్ పాస్‌వర్డ్ ఎంటర్ చేసే మోడల్ ఓపెన్ అవుతుంది
+            openAdminModal();
+        }
     }
 
-
-    // ==================== ADMIN ACCESS ====================
-
+    // 2. OPEN ADMIN MODAL
     function openAdminModal() {
-
-        // Existing admin modal ఉంటే దాన్ని open చేస్తుంది
         const modal = document.getElementById("adminModal");
 
         if (modal) {
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-
-            const passwordInput =
-                document.getElementById("adminAccessPassword");
-
+            modal.style.display = "flex";
+            const passwordInput = document.getElementById("adminAccessPassword");
             if (passwordInput) {
                 passwordInput.value = "";
                 setTimeout(() => passwordInput.focus(), 100);
             }
-
             return;
         }
 
-        // Modal లేకపోతే create చేస్తుంది
         createAdminAccessModal();
     }
 
-
+    // 3. CREATE ADMIN ACCESS MODAL
     function createAdminAccessModal() {
-
-        // Already exists అయితే duplicate create చేయదు
         if (document.getElementById("adminModal")) {
             openAdminModal();
             return;
         }
 
         const modal = document.createElement("div");
-
         modal.id = "adminModal";
-
-        modal.className =
-            "fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] p-4";
+        modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
 
         modal.innerHTML = `
-            <div class="bg-[#0b101d] border border-emerald-500/30
-                        p-6 rounded-2xl max-w-sm w-full
-                        shadow-2xl space-y-4">
-
+            <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4">
                 <div class="text-center">
-                    <h2 class="text-lg font-bold text-emerald-400">
-                        🔐 Admin Access
-                    </h2>
-
-                    <p class="text-xs text-slate-400 mt-1">
-                        User access approve చేయడానికి Admin Password enter చేయండి.
-                    </p>
+                    <h2 class="text-lg font-bold text-emerald-400">🔐 Admin Access</h2>
+                    <p class="text-xs text-slate-400 mt-1">User access approve చేయడానికి Admin Password enter చేయండి.</p>
                 </div>
 
-                <input
-                    type="password"
-                    id="adminAccessPassword"
-                    placeholder="Enter Admin Password"
-                    class="w-full bg-slate-900 border border-slate-700
-                           text-white px-4 py-3 rounded-xl
-                           text-sm outline-none
-                           focus:border-emerald-400"
-                >
+                <input type="password" id="adminAccessPassword" placeholder="Enter Admin Password" class="w-full bg-slate-900 border border-slate-700 text-white px-4 py-3 rounded-xl text-sm outline-none focus:border-emerald-400">
 
                 <div class="flex gap-2">
-
-                    <button
-                        onclick="verifyAdminAccess()"
-                        class="flex-1 bg-emerald-600 hover:bg-emerald-700
-                               text-white font-bold py-3 rounded-xl text-sm">
+                    <button onclick="verifyAdminAccess()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm">
                         Approve Access
                     </button>
-
-                    <button
-                        onclick="closeAdminAccessModal()"
-                        class="flex-1 bg-slate-700 hover:bg-slate-600
-                               text-white font-bold py-3 rounded-xl text-sm">
+                    <button onclick="closeAdminAccessModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm">
                         Cancel
                     </button>
-
                 </div>
 
-                <p id="adminAccessError"
-                   class="hidden text-center text-xs text-red-400">
-                </p>
-
+                <p id="adminAccessError" class="hidden text-center text-xs text-red-400"></p>
             </div>
         `;
 
         document.body.appendChild(modal);
-
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-
         setTimeout(() => {
             document.getElementById("adminAccessPassword").focus();
         }, 100);
     }
 
+    // 4. CLOSE ADMIN MODAL
+    function closeAdminAccessModal() {
+        const modal = document.getElementById("adminModal");
+        if (modal) modal.style.display = "none";
+    }
 
-    // ==================== VERIFY ADMIN PASSWORD ====================
-
+    // 5. VERIFY ADMIN PASSWORD & UNLOCK APP
     function verifyAdminAccess() {
-
-        const passwordInput =
-            document.getElementById("adminAccessPassword");
-
+        const passwordInput = document.getElementById("adminAccessPassword");
         if (!passwordInput) return;
 
         const enteredPassword = passwordInput.value.trim();
-
-        const errorMessage =
-            document.getElementById("adminAccessError");
+        const errorMessage = document.getElementById("adminAccessError");
 
         if (enteredPassword === ADMIN_ACCESS_PASSWORD) {
-
-            // Admin approval status save
             localStorage.setItem("admin_access_approved", "true");
-
-            // Modal close
             closeAdminAccessModal();
 
-            // Success message
             alert(
                 "✅ Admin Access Approved!\n\n" +
                 "User access successfully approved.\n" +
                 "ఇప్పుడు App లోకి ప్రవేశించవచ్చు."
             );
 
-            /*
-             * మీ existing app/premium page function ను ఇక్కడ call చేస్తుంది.
-             * showPage("premium") మీ website లో already ఉంటే ఇది పనిచేస్తుంది.
-             */
-            if (typeof showPage === "function") {
-                showPage("premium");
-            }
-
+            showAppScreen();
         } else {
-
             if (errorMessage) {
-                errorMessage.textContent =
-                    "❌ Incorrect Admin Password";
+                errorMessage.textContent = "❌ Incorrect Admin Password";
                 errorMessage.classList.remove("hidden");
             }
-
             passwordInput.value = "";
             passwordInput.focus();
         }
     }
 
-
-    // ==================== CLOSE ADMIN MODAL ====================
-
-    function closeAdminAccessModal() {
-
-        const modal = document.getElementById("adminModal");
-
-        if (modal) {
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
+    // 6. SHOW MAIN APP SCREEN (MAIN FIX)
+    function showAppScreen() {
+        // పాత పేమెంట్, వెల్కమ్ స్క్రీన్‌లను దాచి మెయిన్ యాప్ ఓపెన్ చేస్తుంది
+        if (document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display = 'none';
+        if (document.getElementById('youtubeScreen')) document.getElementById('youtubeScreen').style.display = 'none';
+        if (document.getElementById('paymentScreen')) document.getElementById('paymentScreen').style.display = 'none';
+        
+        const mainApp = document.getElementById('mainApp');
+        if (mainApp) {
+            mainApp.style.display = 'block';
+            mainApp.classList.remove('hidden');
+        } else if (typeof showPage === "function") {
+            showPage("premium");
         }
     }
+            </script>
 
-
-    // ==================== ENTER KEY SUPPORT ====================
-
-    document.addEventListener("keydown", function(event) {
-
-        if (event.key === "Enter") {
-
-            const passwordInput =
-                document.getElementById("adminAccessPassword");
-
-            if (
-                passwordInput &&
-                document.activeElement === passwordInput
-            ) {
-                verifyAdminAccess();
-            }
-        }
-
-        if (event.key === "Escape") {
-            closeAdminAccessModal();
-        }
-    });
-</script>
 
         <!-- ==================== STEP 4: ORIGINAL MAIN APP DASHBOARD ==================== -->
         <div id="mainApp" class="hidden space-y-5 fade-in">
