@@ -195,25 +195,40 @@
         const VALID_APPROVAL_CODE = "SET2026"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
         const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
 document.addEventListener("DOMContentLoaded", function () {
-    
-    // 1. ఆటోమేటిక్‌గా 3 సెకన్లలో YouTube Screen కొస్తుంది
+    // 1. మొదట WELCOME SCREEN ని మాత్రమే చూపిస్తుంది
+    showStep('welcomeScreen');
+
+    // 2. 3 సెకన్ల తర్వాత ఆటోమేటిక్‌గా YOUTUBE SCREEN కి మారుతుంది
     setTimeout(() => {
-        const welcome = document.getElementById('welcomeScreen');
-        const youtube = document.getElementById('youtubeScreen');
-        if (welcome) welcome.style.display = 'none';
-        if (youtube) youtube.style.display = 'block';
+        showStep('youtubeScreen');
 
-        // 2. మరొక 3 సెకన్ల తర్వాత యూజర్ నంబర్ ఇచ్చే స్క్రీన్‌కి వెళ్తుంది
+        // 3. మరొక 3 సెకన్ల తర్వాత ఆటోమేటిక్‌గా PAYMENT / PHONE SCREEN కి మారుతుంది
         setTimeout(() => {
-            if (youtube) youtube.style.display = 'none';
-            
-            // ఫోన్ ఇన్పుట్ లేదా పేమెంట్ స్క్రీన్ ఓపెన్ చేస్తుంది
-            const targetScreen = document.getElementById('phoneCard') || document.getElementById('paymentScreen');
-            if (targetScreen) targetScreen.style.display = 'block';
-        }, 3000); // 3 సెకన్లు
+            const nextTarget = document.getElementById('phoneCard') ? 'phoneCard' : 'paymentScreen';
+            showStep(nextTarget);
+        }, 3000); // 3 సెకన్ల టైమర్
 
-    }, 3000); // 3 సెకన్లు
+    }, 3000); // 3 సెకన్ల టైమర్
 });
+
+// అన్ని స్క్రీన్లను సరిగ్గా స్విచ్ చేసే Universal Function
+function showStep(stepId) {
+    const screens = ['welcomeScreen', 'welcomeCard1', 'welcomeCard2', 'youtubeScreen', 'phoneCard', 'paymentScreen', 'waitingScreen', 'mainApp'];
+    
+    screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none';
+            el.classList.add('hidden');
+        }
+    });
+    
+    const target = document.getElementById(stepId);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.remove('hidden');
+    }
+                }
         
             // ఆటోమేటిక్‌గా 2 సెకన్లలో YouTube Screen కొస్తుంది
             setTimeout(() => {
