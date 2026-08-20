@@ -205,6 +205,9 @@ def get_history():
         "history": trading_state["trade_history"]
     })
 
+import os
+
 if __name__ == '__main__':
-    # Render / Production Hosting కి అనుకూలంగా Port 5000 లో రన్ అవుతుంది
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Render ఇచ్చే డైనమిక్ PORT ని తీసుకోవడం కోసం
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)
