@@ -65,12 +65,12 @@
             <!-- BUTTONS: USER & WHATSAPP -->
             
            <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                I Have Paid - Enter Approval Code
+                Continue 
            </button>
             
 
             <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20send%20Approval%20Code." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
-                💬 Contact Admin on WhatsApp for Code
+                💬 Contact Admin on WhatsApp for Approval 
             </a>
 
             <!-- ADMIN DIRECT ACCESS BUTTON -->
@@ -194,7 +194,7 @@
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
-        const VALID_APPROVAL_CODE = "SET2026"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
+        const VALID_APPROVAL_CODE = "mahesh123"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
         const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -331,7 +331,7 @@
                     }
                 } else if (daysLeft < 0) {
                     localStorage.removeItem("admin_access_approved");
-                    alert("మీ సబ్‌స్క్రిప్షన్ గడువు ముగిసింది. దయచేసి మళ్ళీ రెండు చేసుకోండి.");
+                    alert("మీ సబ్‌స్క్రిప్షన్ గడువు ముగిసింది. దయచేసి రెన్యువల్ చేసుకోండి.");
                     location.reload();
                 }
             }
