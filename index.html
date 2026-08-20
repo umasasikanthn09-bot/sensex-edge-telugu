@@ -279,55 +279,6 @@ function showStep(stepId) {
             }
         }
 
-        // USER CODE POPUP MODAL
-        function openApprovalModal() {
-            let modal = document.getElementById("approvalModal");
-            if (!modal) {
-                modal = document.createElement("div");
-                modal.id = "approvalModal";
-                modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
-                modal.innerHTML = `
-                    <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center">
-                        <h2 class="text-lg font-bold text-emerald-400">🔑 Enter Approval Code</h2>
-                        <p class="text-xs text-slate-400">అడ్మిన్ WhatsApp ద్వారా పంపిన 30 రోజుల యాక్సెస్ కోడ్‌ను ఇక్కడ ఎంటర్ చేయండి.</p>
-                        
-                        <input type="text" id="userPasscode" placeholder="Enter Code (e.g. SET2026)" class="w-full bg-slate-900 border border-slate-700 text-white px-4 py-3 rounded-xl text-sm text-center uppercase outline-none focus:border-emerald-400">
-                        
-                        <div class="flex gap-2">
-                            <button onclick="verifyUserPasscode()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm">Submit Code</button>
-                            <button onclick="closeApprovalModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm">Cancel</button>
-                        </div>
-                        <p id="codeError" class="hidden text-xs text-red-400"></p>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            } else {
-                modal.style.display = "flex";
-            }
-        }
-
-        function closeApprovalModal() {
-            const modal = document.getElementById("approvalModal");
-            if (modal) modal.style.display = "none";
-        }
-
-        // VERIFY CODE
-        function verifyUserPasscode() {
-            const inputCode = document.getElementById("userPasscode").value.trim();
-            const codeError = document.getElementById("codeError");
-
-            if (inputCode.toUpperCase() === VALID_APPROVAL_CODE) {
-                localStorage.setItem("admin_access_approved", "true");
-                localStorage.setItem("approval_date", new Date().getTime());
-                
-                closeApprovalModal();
-                alert("✅ Approval Verified!\n30 Days Subscription Unlocked.");
-                showAppScreen();
-            } else {
-                codeError.innerText = "❌ Incorrect Code! Please contact admin on WhatsApp.";
-                codeError.classList.remove("hidden");
-            }
-        }
 
         // SHOW MAIN APP DASHBOARD
         function showAppScreen() {
