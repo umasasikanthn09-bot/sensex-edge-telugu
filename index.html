@@ -50,7 +50,7 @@
         <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
         <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
             <h2 class="text-lg font-bold text-emerald-400">Monthly Subscription</h2>
-           
+            
             <div class="flex justify-center my-2">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
             </div>
@@ -63,11 +63,9 @@
             </div>
 
             <!-- BUTTONS: USER & WHATSAPP -->
-            
-           <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+            <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
                 Continue 
-           </button>
-            
+            </button>
 
             <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20send%20Approval%20Code." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
                 💬 Contact Admin on WhatsApp for Approval 
@@ -194,7 +192,7 @@
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
-        const VALID_APPROVAL_CODE = "mahesh123"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
+        const VALID_APPROVAL_CODE = "MAHESH123"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
         const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -256,8 +254,19 @@
                 modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
                 modal.innerHTML = `
                     <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center">
-                        <h2 class="text-lg font-bold text-emerald-400">🔑 Waiting for Admin Approval</h2>
-                                 
+                        <h2 class="text-lg font-bold text-emerald-400">🔑 Enter Approval Code</h2>
+                        <p class="text-xs text-slate-300">పేమెంట్ పూర్తయిన తర్వాత అడ్మిన్ ఇచ్చిన కోడ్‌ను ఇక్కడ నమోదు చేయండి.</p>
+                        <input type="text" id="userPasscode" placeholder="Enter Approval Code" class="w-full bg-[#030712] border border-slate-700 rounded-lg p-2.5 text-xs text-center text-white focus:outline-none">
+                        <p id="codeError" class="text-xs text-rose-500 hidden"></p>
+                        <div class="flex space-x-2">
+                            <button onclick="verifyUserPasscode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs transition">Verify Code</button>
+                            <button onclick="closeApprovalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 rounded-lg text-xs transition">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } else {
+                modal.style.display = "flex";
             }
         }
 
@@ -388,6 +397,4 @@
         }
     </script>
 </body>
-    </html>
-
-
+                    </html>
