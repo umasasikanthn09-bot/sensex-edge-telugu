@@ -6,37 +6,12 @@
     <title>SENSEX EDGE TELUGU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background-color: #060913;
-            color: #ffffff;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        .card-bg {
-            background-color: #0b1120;
-            border: 1px solid #1e293b;
-        }
-        .inner-box {
-            background-color: #070d19;
-            border: 1px solid #172554;
-        }
-        .btn-cyan {
-            background-color: #0284c7;
-            color: #ffffff;
-        }
-        .btn-cyan:hover {
-            background-color: #0369a1;
-        }
-        .input-bg {
-            background-color: #030712;
-            border: 1px solid #1e293b;
-        }
-        .fade-in {
-            animation: fadeIn 0.4s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        body { background-color: #060913; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
+        .inner-box { background-color: #070d19; border: 1px solid #172554; }
+        .btn-cyan { background-color: #0284c7; color: #ffffff; }
+        .btn-cyan:hover { background-color: #0369a1; }
+        .input-bg { background-color: #030712; border: 1px solid #1e293b; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
@@ -44,7 +19,7 @@
     <div class="w-full max-w-md space-y-5">
 
         <!-- ==================== STEP 1: WELCOME CARD ==================== -->
-        <div id="welcomeScreen" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 fade-in border border-yellow-500/20">
+        <div id="welcomeScreen" style="display: block;" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 border border-yellow-500/20">
             <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
                 <span class="text-3xl">🚀</span>
             </div>
@@ -56,7 +31,7 @@
         </div>
 
         <!-- ==================== STEP 2: YOUTUBE CARD ==================== -->
-        <div id="youtubeScreen" class="hidden card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 fade-in border border-red-500/20">
+        <div id="youtubeScreen" style="display: none;" class="card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 border border-red-500/20">
             <div class="inline-block p-3 bg-red-600/10 rounded-full">
                 <svg class="w-10 h-10 text-red-500 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </div>
@@ -72,164 +47,44 @@
             </button>
         </div>
 
-                <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
-        <div id="paymentScreen" class="hidden card-bg rounded-2xl p-6 shadow-2xl space-y-4 fade-in border border-emerald-500/20 text-center">
+        <!-- ==================== STEP 3: PAYMENT GATEWAY CARD ==================== -->
+        <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
             <h2 class="text-lg font-bold text-emerald-400">Monthly Subscription</h2>
            
             <div class="flex justify-center my-2">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
-                </div>
-
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=umasasikanthn04@okhdfcbank%26pn=V%20Grow%26am=2499%26cu=INR" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
+            </div>
 
             <div class="inner-box p-4 rounded-xl space-y-2">
-                  <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
+                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
                 <p class="text-xs text-slate-400">UPI ID:</p>
                 <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
                 <p class="text-[10px] text-slate-500">Scan to pay with any UPI app</p>
             </div>
 
+            <!-- BUTTONS: USER & WHATSAPP -->
             <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                Continue to App
+                I Have Paid - Enter Approval Code
             </button>
 
-            <!-- ==================== CONTINUE TO APP / ADMIN APPROVAL ==================== -->
-<script>
-    // Admin Access Password
-    const ADMIN_ACCESS_PASSWORD = "merababa@123";
+            <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20send%20Approval%20Code." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
+                💬 Contact Admin on WhatsApp for Code
+            </a>
 
-    // 1. CONTINUE TO APP BUTTON CLICK ACTION
-    function checkUserPayment() {
-        const isApproved = localStorage.getItem("admin_access_approved");
+            <!-- ADMIN DIRECT ACCESS BUTTON -->
+            <button onclick="adminDirectAccess()" class="w-full text-[11px] text-slate-500 hover:text-amber-400 underline pt-1 block text-center transition">
+                🔐 Admin Direct Access
+            </button>
+        </div>
 
-        if (isApproved === "true") {
-            // అప్రూవల్ ఉంటే నేరుగా యాప్‌కి వెళ్తుంది
-            showAppScreen();
-        } else {
-            // అప్రూవల్ లేకపోతే అలర్ట్ వచ్చి అడ్మిన్ పాస్‌వర్డ్ బాక్స్ ఓపెన్ అవుతుంది
-            alert(
-                "⏳ Admin Access Pending\n\n" +
-                "మీ Payment వివరాలు Admin Approval కోసం పంపబడ్డాయి.\n\n" +
-                "Admin Access Approve చేసిన తర్వాత మాత్రమే App లోకి ప్రవేశించగలరు."
-            );
+        <!-- ==================== STEP 4: MAIN APP DASHBOARD ==================== -->
+        <div id="mainApp" style="display: none;" class="space-y-5">
             
-            // అడ్మిన్ పాస్‌వర్డ్ ఎంటర్ చేసే మోడల్ ఓపెన్ అవుతుంది
-            openAdminModal();
-        }
-    }
-
-    // 2. OPEN ADMIN MODAL
-    function openAdminModal() {
-        const modal = document.getElementById("adminModal");
-
-        if (modal) {
-            modal.style.display = "flex";
-            const passwordInput = document.getElementById("adminAccessPassword");
-            if (passwordInput) {
-                passwordInput.value = "";
-                setTimeout(() => passwordInput.focus(), 100);
-            }
-            return;
-        }
-
-        createAdminAccessModal();
-    }
-
-    // 3. CREATE ADMIN ACCESS MODAL
-    function createAdminAccessModal() {
-        if (document.getElementById("adminModal")) {
-            openAdminModal();
-            return;
-        }
-
-        const modal = document.createElement("div");
-        modal.id = "adminModal";
-        modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
-
-        modal.innerHTML = `
-            <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4">
-                <div class="text-center">
-                    <h2 class="text-lg font-bold text-emerald-400">🔐 Admin Access</h2>
-                    <p class="text-xs text-slate-400 mt-1">User access approve చేయడానికి Admin Password enter చేయండి.</p>
-                </div>
-
-                <input type="password" id="adminAccessPassword" placeholder="Enter Admin Password" class="w-full bg-slate-900 border border-slate-700 text-white px-4 py-3 rounded-xl text-sm outline-none focus:border-emerald-400">
-
-                <div class="flex gap-2">
-                    <button onclick="verifyAdminAccess()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm">
-                        Approve Access
-                    </button>
-                    <button onclick="closeAdminAccessModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm">
-                        Cancel
-                    </button>
-                </div>
-
-                <p id="adminAccessError" class="hidden text-center text-xs text-red-400"></p>
+            <div id="expiryReminder" style="display: none;" class="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
+                <p class="text-xs font-bold text-amber-400">⚠️ సబ్‌స్క్రిప్షన్ అలర్ట్!</p>
+                <p class="text-[11px] text-slate-300">మీ యాప్ సబ్‌స్క్రిప్షన్ ముగియడానికి మరో <strong id="daysLeftText" class="text-yellow-400">3 రోజులు</strong> మాత్రమే ఉంది.</p>
             </div>
-        `;
 
-        document.body.appendChild(modal);
-        setTimeout(() => {
-            document.getElementById("adminAccessPassword").focus();
-        }, 100);
-    }
-
-    // 4. CLOSE ADMIN MODAL
-    function closeAdminAccessModal() {
-        const modal = document.getElementById("adminModal");
-        if (modal) modal.style.display = "none";
-    }
-
-    // 5. VERIFY ADMIN PASSWORD & UNLOCK APP
-    function verifyAdminAccess() {
-        const passwordInput = document.getElementById("adminAccessPassword");
-        if (!passwordInput) return;
-
-        const enteredPassword = passwordInput.value.trim();
-        const errorMessage = document.getElementById("adminAccessError");
-
-        if (enteredPassword === ADMIN_ACCESS_PASSWORD) {
-            localStorage.setItem("admin_access_approved", "true");
-            closeAdminAccessModal();
-
-            alert(
-                "✅ Admin Access Approved!\n\n" +
-                "User access successfully approved.\n" +
-                "ఇప్పుడు App లోకి ప్రవేశించవచ్చు."
-            );
-
-            showAppScreen();
-        } else {
-            if (errorMessage) {
-                errorMessage.textContent = "❌ Incorrect Admin Password";
-                errorMessage.classList.remove("hidden");
-            }
-            passwordInput.value = "";
-            passwordInput.focus();
-        }
-    }
-
-    // 6. SHOW MAIN APP SCREEN (MAIN FIX)
-    function showAppScreen() {
-        // పాత పేమెంట్, వెల్కమ్ స్క్రీన్‌లను దాచి మెయిన్ యాప్ ఓపెన్ చేస్తుంది
-        if (document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display = 'none';
-        if (document.getElementById('youtubeScreen')) document.getElementById('youtubeScreen').style.display = 'none';
-        if (document.getElementById('paymentScreen')) document.getElementById('paymentScreen').style.display = 'none';
-        
-        const mainApp = document.getElementById('mainApp');
-        if (mainApp) {
-            mainApp.style.display = 'block';
-            mainApp.classList.remove('hidden');
-        } else if (typeof showPage === "function") {
-            showPage("premium");
-        }
-    }
-            </script>
-
-
-        <!-- ==================== STEP 4: ORIGINAL MAIN APP DASHBOARD ==================== -->
-        <div id="mainApp" class="hidden space-y-5 fade-in">
-            
-            <!-- HEADER -->
             <div class="text-center py-2">
                 <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
                 <p class="text-[10px] text-slate-400 tracking-widest mt-1 uppercase font-semibold">Learn • Practice • Grow</p>
@@ -237,32 +92,22 @@
 
             <hr class="border-slate-800 my-2">
 
-            <!-- 1. SENSEX OPTIONS STATUS CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg">
                 <div class="flex items-center space-x-2 mb-1">
                     <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     <h2 class="text-lg font-bold text-white">Sensex Options</h2>
                 </div>
                 <p class="text-xs text-slate-400 mb-3">Automated Algorithmic Execution</p>
-                
                 <div class="inner-box rounded-lg p-3 flex items-center space-x-2">
-                    <div class="bg-sky-500/20 text-sky-400 rounded-full p-1">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                    </div>
                     <span class="text-xs text-slate-300">ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-yellow-400 font-semibold">Waiting for Login</strong></span>
                 </div>
             </div>
 
-            <!-- 2. BROKER API INTEGRATION CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
-                <div class="flex items-center space-x-2">
-                    <svg class="w-4 h-4 text-sky-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H4v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg>
-                    <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
-                </div>
-
+                <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Select Your Broker</label>
-                    <select id="brokerSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+                    <select id="brokerSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
                         <option value="upstox">Upstox</option>
                         <option value="zerodha">Zerodha (Kite)</option>
                         <option value="angelone">AngelOne</option>
@@ -270,70 +115,51 @@
                         <option value="fyers">Fyers</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">API Key / App Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
                 </div>
-
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">API Secret / Access Token / PIN</label>
-                    <input type="password" id="apiSecret" placeholder="••••••••••••••••" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+                    <input type="password" id="apiSecret" placeholder="••••••••••••••••" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
                 </div>
-
-                <button onclick="startAutoTrader()" class="w-full btn-cyan py-2.5 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition shadow">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                    <span>Connect & Start Auto Algo</span>
+                <button onclick="startAutoTrader()" class="w-full btn-cyan py-2.5 rounded-lg text-xs font-bold transition shadow">
+                    Connect & Start Auto Algo
                 </button>
             </div>
 
-            <!-- 3. LOT SIZE & REALTIME P&L CARD -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-4">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Selected Lot Size <span class="text-[10px] text-slate-500">(Recommended 2 Lots Only)</span></label>
-                    <select id="lotSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+                    <label class="block text-xs text-slate-400 mb-1">Selected Lot Size</label>
+                    <select id="lotSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
                         <option value="1">1 Lot</option>
                         <option value="2" selected>2 Lots</option>
                         <option value="5">5 Lots</option>
                     </select>
                 </div>
-
-                <!-- REALTIME P&L BOX -->
                 <div class="inner-box rounded-lg p-4 text-center">
                     <p class="text-[10px] font-semibold text-slate-400 tracking-wider mb-1">TODAY'S REALTIME P & L</p>
                     <p class="text-2xl font-bold text-emerald-400">₹0.00</p>
-                    <p class="text-[9px] text-slate-500 mt-1">Auto-Syncing with Broker Account</p>
                 </div>
-
-                <!-- DISCLAIMER BOX -->
                 <div class="border border-amber-900/40 bg-amber-950/10 rounded-lg p-3 space-y-2">
                     <p class="text-xs font-bold text-amber-500">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</p>
-                    <ol class="text-[11px] text-slate-400 space-y-1 list-decimal list-inside leading-relaxed">
-                        <li>ఆటోమేటిక్ ఆర్డర్ ఎగ్జిక్యూషన్ ద్వారా జరిగే లాభనష్టాలకు యూజరే పూర్తి బాధ్యుడు.</li>
-                        <li>మార్కెట్ వోలాటిలిటీ వల్ల స్లిప్పేజెస్ (Slippage) రావచ్చు.</li>
-                    </ol>
                     <div class="flex items-start space-x-2 pt-1">
-                        <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded bg-slate-900 border-slate-700 text-sky-500 focus:ring-0">
-                        <label for="disclaimerCheck" class="text-[10px] text-slate-300 leading-tight">నేను పైన పేర్కొన్న నియమాలు మరియు మార్కెట్ రిస్కులను చదివాను, అంగీకరిస్తున్నాను.</label>
+                        <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded bg-slate-900 border-slate-700">
+                        <label for="disclaimerCheck" class="text-[10px] text-slate-300">నేను నిబంధనలను చదివాను, అంగీకరిస్తున్నాను.</label>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. EXECUTED ORDERS HISTORY TABLE -->
             <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm">📜</span>
-                        <h3 class="text-xs font-bold text-sky-400 uppercase tracking-wider">Executed Orders History</h3>
-                    </div>
+                    <h3 class="text-xs font-bold text-sky-400 uppercase">Executed Orders History</h3>
                     <span id="slCountBadge" class="bg-slate-900 border border-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-semibold">SL Hits: 0/2</span>
                 </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-[11px]">
                         <thead>
                             <tr class="text-slate-500 border-b border-slate-800">
-                                <th class="pb-2">Date & Time</th>
+                                <th class="pb-2">Time</th>
                                 <th class="pb-2">Symbol</th>
                                 <th class="pb-2">Type</th>
                                 <th class="pb-2">Price</th>
@@ -341,83 +167,166 @@
                             </tr>
                         </thead>
                         <tbody id="historyTableBody">
-                            <tr>
-                                <td colspan="5" class="py-4 text-center text-slate-600">No trades executed yet today.</td>
-                            </tr>
+                            <tr><td colspan="5" class="py-4 text-center text-slate-600">No trades executed yet today.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 5. LOGOUT BUTTON -->
-            <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 transition shadow-lg">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                <span>Stop & Secure Logout</span>
+            <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg">
+                Stop & Secure Logout
             </button>
-
-            <!-- FOOTER -->
-            <div class="text-center py-2">
-                <p class="text-[10px] text-slate-600">SENSEX EDGE TELUGU Platform • Version 2.0 Secure</p>
-            </div>
-
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
+        const VALID_APPROVAL_CODE = "SET2026"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
+        const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
 
-        // AUTOMATED SCREEN FLOW
         document.addEventListener("DOMContentLoaded", function () {
-            // 2 సెకన్ల తర్వాత Welcome Screen మాయమై YouTube Screen వస్తుంది
+            // ఆటోమేటిక్‌గా 2 సెకన్లలో YouTube Screen కొస్తుంది
             setTimeout(() => {
-                document.getElementById('welcomeScreen').classList.add('hidden');
-                document.getElementById('youtubeScreen').classList.remove('hidden');
+                const welcome = document.getElementById('welcomeScreen');
+                const youtube = document.getElementById('youtubeScreen');
+                if (welcome) welcome.style.display = 'none';
+                if (youtube) youtube.style.display = 'block';
             }, 2000);
 
+            // సేవ్ అయిన యూజర్ బ్రోకర్ డేటా లోడ్ చేయడం
             const savedBroker = localStorage.getItem("saved_broker");
             const savedApiKey = localStorage.getItem("saved_api_key");
             const savedApiSecret = localStorage.getItem("saved_api_secret");
 
-            if (savedBroker) document.getElementById('brokerSelect').value = savedBroker;
-            if (savedApiKey) document.getElementById('apiKey').value = savedApiKey;
-            if (savedApiSecret) document.getElementById('apiSecret').value = savedApiSecret;
+            if (savedBroker && document.getElementById('brokerSelect')) document.getElementById('brokerSelect').value = savedBroker;
+            if (savedApiKey && document.getElementById('apiKey')) document.getElementById('apiKey').value = savedApiKey;
+            if (savedApiSecret && document.getElementById('apiSecret')) document.getElementById('apiSecret').value = savedApiSecret;
 
-            setInterval(fetchTradeHistory, 3000);
-            fetchTradeHistory();
+            try { checkSubscriptionExpiry(); } catch(e) {}
         });
 
         function goToPayment() {
-            document.getElementById('youtubeScreen').classList.add('hidden');
-            document.getElementById('paymentScreen').classList.remove('hidden');
+            document.getElementById('youtubeScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'block';
         }
 
+        // USER PAYMENT CLICK
         function checkUserPayment() {
-            const isApproved = localStorage.getItem("admin_approved");
+            const isApproved = localStorage.getItem("admin_access_approved");
+
             if (isApproved === "true") {
-                showMainApp();
+                showAppScreen();
             } else {
-                alert("మీ పేమెంట్ పరిశీలనలో ఉంది! Admin అప్రూవల్ ఇచ్చిన తర్వాతే యాప్ ఓపెన్ అవుతుంది.");
+                openApprovalModal();
             }
         }
 
-        function openAdminModal() {
+        // ADMIN DIRECT ACCESS
+        function adminDirectAccess() {
             const pass = prompt("Enter Admin Password:");
-            if (pass === "merababa@123") {
-                localStorage.setItem("admin_approved", "true");
-                alert("Welcome Admin! అప్రూవల్ విజయవంతమైంది.");
-                showMainApp();
-            } else {
-                alert("తప్పు పాస్‌వర్డ్!");
+            if (pass === ADMIN_PASSWORD) {
+                localStorage.setItem("admin_access_approved", "true");
+                localStorage.setItem("approval_date", new Date().getTime());
+                alert("✅ Admin Access Granted!");
+                showAppScreen();
+            } else if (pass !== null) {
+                alert("❌ Wrong Admin Password!");
             }
         }
 
-        function showMainApp() {
-            document.getElementById('paymentScreen').classList.add('hidden');
-            document.getElementById('mainApp').classList.remove('hidden');
+        // USER CODE POPUP MODAL
+        function openApprovalModal() {
+            let modal = document.getElementById("approvalModal");
+            if (!modal) {
+                modal = document.createElement("div");
+                modal.id = "approvalModal";
+                modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
+                modal.innerHTML = `
+                    <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center">
+                        <h2 class="text-lg font-bold text-emerald-400">🔑 Enter Approval Code</h2>
+                        <p class="text-xs text-slate-400">అడ్మిన్ WhatsApp ద్వారా పంపిన 30 రోజుల యాక్సెస్ కోడ్‌ను ఇక్కడ ఎంటర్ చేయండి.</p>
+                        
+                        <input type="text" id="userPasscode" placeholder="Enter Code (e.g. SET2026)" class="w-full bg-slate-900 border border-slate-700 text-white px-4 py-3 rounded-xl text-sm text-center uppercase outline-none focus:border-emerald-400">
+                        
+                        <div class="flex gap-2">
+                            <button onclick="verifyUserPasscode()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm">Submit Code</button>
+                            <button onclick="closeApprovalModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm">Cancel</button>
+                        </div>
+                        <p id="codeError" class="hidden text-xs text-red-400"></p>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } else {
+                modal.style.display = "flex";
+            }
         }
 
+        function closeApprovalModal() {
+            const modal = document.getElementById("approvalModal");
+            if (modal) modal.style.display = "none";
+        }
+
+        // VERIFY CODE
+        function verifyUserPasscode() {
+            const inputCode = document.getElementById("userPasscode").value.trim();
+            const codeError = document.getElementById("codeError");
+
+            if (inputCode.toUpperCase() === VALID_APPROVAL_CODE) {
+                localStorage.setItem("admin_access_approved", "true");
+                localStorage.setItem("approval_date", new Date().getTime());
+                
+                closeApprovalModal();
+                alert("✅ Approval Verified!\n30 Days Subscription Unlocked.");
+                showAppScreen();
+            } else {
+                codeError.innerText = "❌ Incorrect Code! Please contact admin on WhatsApp.";
+                codeError.classList.remove("hidden");
+            }
+        }
+
+        // SHOW MAIN APP DASHBOARD
+        function showAppScreen() {
+            if (document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display = 'none';
+            if (document.getElementById('youtubeScreen')) document.getElementById('youtubeScreen').style.display = 'none';
+            if (document.getElementById('paymentScreen')) document.getElementById('paymentScreen').style.display = 'none';
+            
+            const mainApp = document.getElementById('mainApp');
+            if (mainApp) {
+                mainApp.style.display = 'block';
+                mainApp.classList.remove('hidden');
+            }
+
+            // మెయిన్ యాప్‌కి వచ్చాక మాత్రమే బ్యాకెండ్ రన్ అవుతుంది
+            setInterval(fetchTradeHistory, 4000);
+            fetchTradeHistory();
+        }
+
+        // 30 DAYS EXPIRY CHECK
+        function checkSubscriptionExpiry() {
+            const approvalDate = localStorage.getItem("approval_date");
+            if (approvalDate) {
+                const now = new Date().getTime();
+                const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
+                const daysLeft = 30 - daysPassed;
+
+                if (daysLeft <= 3 && daysLeft >= 0) {
+                    const reminderBox = document.getElementById("expiryReminder");
+                    const daysText = document.getElementById("daysLeftText");
+                    if (reminderBox && daysText) {
+                        daysText.innerText = `${daysLeft} రోజులు`;
+                        reminderBox.style.display = 'block';
+                    }
+                } else if (daysLeft < 0) {
+                    localStorage.removeItem("admin_access_approved");
+                    alert("మీ సబ్‌స్క్రిప్షన్ గడువు ముగిసింది. దయచేసి మళ్ళీ రెండు చేసుకోండి.");
+                    location.reload();
+                }
+            }
+        }
+
+        // AUTO TRADER BACKEND CALLS
         async function startAutoTrader() {
             const broker = document.getElementById('brokerSelect').value;
             const apiKey = document.getElementById('apiKey').value;
@@ -425,15 +334,8 @@
             const lotSize = document.getElementById('lotSelect').value;
             const isChecked = document.getElementById('disclaimerCheck').checked;
 
-            if (!isChecked) {
-                alert("దయచేసి నియమాలు మరియు మార్కెట్ రిస్క్ చెక్‌బాక్స్‌ను సెలెక్ట్ చేయండి.");
-                return;
-            }
-
-            if (!apiKey || !apiSecret) {
-                alert("దయచేసి API Key మరియు Access Token ఎంటర్ చేయండి.");
-                return;
-            }
+            if (!isChecked) { alert("దయచేసి నియమాలు సెలెక్ట్ చేయండి."); return; }
+            if (!apiKey || !apiSecret) { alert("API Key మరియు Access Token ఎంటర్ చేయండి."); return; }
 
             localStorage.setItem("saved_broker", broker);
             localStorage.setItem("saved_api_key", apiKey);
@@ -443,26 +345,15 @@
                 const response = await fetch(`${BACKEND_URL}/start-strategy`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        broker: broker,
-                        api_key: apiKey,
-                        api_secret: apiSecret,
-                        lots: parseInt(lotSize)
-                    })
+                    body: JSON.stringify({ broker, api_key: apiKey, api_secret: apiSecret, lots: parseInt(lotSize) })
                 });
-
                 const res = await response.json();
                 if (response.ok) {
                     document.getElementById('statusText').innerText = "Active & Running";
                     document.getElementById('statusText').className = "text-emerald-400 font-bold";
-                    alert(res.message || "ఆటో-ట్రేడింగ్ సిస్టమ్ విజయవంతంగా కనెక్ట్ అయ్యింది!");
-                    fetchTradeHistory();
-                } else {
-                    alert("Error: " + res.detail);
+                    alert(res.message || "కనెక్ట్ అయ్యింది!");
                 }
-            } catch (err) {
-                alert("బ్యాకెండ్ సర్వర్ అందుబాటులో లేదు. Python Server నడుస్తుందో లేదో చూడండి.");
-            }
+            } catch (err) { alert("Server error."); }
         }
 
         function stopAutoTrader() {
@@ -475,39 +366,28 @@
             try {
                 const response = await fetch(`${BACKEND_URL}/get-history`);
                 const data = await response.json();
-
                 const slBadge = document.getElementById("slCountBadge");
-                if (slBadge && data.state) {
-                    slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`;
-                }
-
+                if (slBadge && data.state) { slBadge.innerText = `SL Hits: ${data.state.sl_hit_count}/2`; }
                 const tbody = document.getElementById("historyTableBody");
                 if (!tbody) return;
-
                 if (!data.history || data.history.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-slate-600">No trades executed yet today.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-600">No trades executed yet today.</td></tr>`;
                     return;
                 }
-
                 tbody.innerHTML = "";
                 data.history.slice().reverse().forEach(trade => {
                     const typeColor = trade.type === 'BUY' ? 'text-emerald-400' : 'text-rose-400';
-                    const row = `
+                    tbody.innerHTML += `
                         <tr class="border-b border-slate-800/60 text-slate-300">
                             <td class="py-2 text-[10px]">${trade.datetime}</td>
                             <td class="py-2 font-bold text-slate-200">${trade.symbol}</td>
                             <td class="py-2 font-bold ${typeColor}">${trade.type}</td>
                             <td class="py-2">${trade.price}</td>
                             <td class="py-2"><span class="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-[9px] text-slate-400">${trade.status}</span></td>
-                        </tr>
-                    `;
-                    tbody.innerHTML += row;
+                        </tr>`;
                 });
-            } catch (err) {
-                console.error("History fetch error:", err);
-            }
+            } catch (err) {}
         }
     </script>
 </body>
-                                                                                                                </html>
-
+    </html>
