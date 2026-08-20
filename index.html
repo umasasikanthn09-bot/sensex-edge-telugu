@@ -394,9 +394,172 @@
                             <td class="py-2"><span class="bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-[9px] text-slate-400">${trade.status}</span></td>
                         </tr>`;
                 });
-            } catch (err) {}
+            
+} catch (err) {}
+        }
+
+        // ==================== FIREBASE APPROVAL & ADMIN CONTROL ====================
+        const firebaseConfig = {
+            databaseURL: "https://sensex-edge-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const ADMIN_PASSWORD = "merababa@123";
+
+        function showOnlyScreen(screenId) {
+            const screens = ['welcomeScreen', 'youtubeScreen', 'phoneCard', 'paymentScreen', 'waitingScreen', 'mainApp'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            
+            const target = document.getElementById(screenId);
+            if (target) target.style.display = 'block';
+        }
+
+        function submitApprovalRequest() {
+            const mobileInput = document.getElementById('userMobile');
+            const mobile = mobileInput ? mobileInput.value.trim() : "";
+
+            if (!mobile || mobile.length < 10) {
+                alert("దయచేసి సరైన 10 అంకెల Mobile Number ఎంటర్ చేయండి.");
+                return;
+            }
+
+            if (!db) return;
+
+            db.ref('users/' + mobile).once('value', snapshot => {
+                const userData = snapshot.val();
+                
+                if (!userData) {
+                    db.ref('users/' + mobile).set({
+                        status: 'pending',
+                        requestedAt: new Date().getTime()
+                    });
+                    showOnlyScreen('waitingScreen');
+                    listenForApproval(mobile);
+                } else if (userData.status === 'pending') {
+                    showOnlyScreen('waitingScreen');
+                    listenForApproval(mobile);
+                } else if (userData.status === 'approved') {
+                    checkValidityAndOpen(mobile, userData);
+                } else if (userData.status === 'rejected') {
+                    alert("❌ మీ రిక్వెస్ట్ తిరస్కరించబడింది (Rejected).");
+                    showOnlyScreen('paymentScreen');
+                }
+            });
+        }
+
+        function listenForApproval(mobile) {
+            db.ref('users/' + mobile).on('value', snapshot => {
+                const userData = snapshot.val();
+                if (userData && userData.status === 'approved') {
+                    checkValidityAndOpen(mobile, userData);
+                } else if (userData && userData.status === 'rejected') {
+                    showOnlyScreen('paymentScreen');
+                }
+            });
+        }
+
+        function checkValidityAndOpen(mobile, userData) {
+            const now = new Date().getTime();
+            const approvedAt = userData.approvedAt || now;
+            const daysPassed = Math.floor((now - approvedAt) / (1000 * 60 * 60 * 24));
+
+            if (30 - daysPassed > 0) {
+                showOnlyScreen('mainApp');
+            } else {
+                db.ref('users/' + mobile).update({ status: 'expired' });
+                alert("⚠️ మీ 30 రోజుల Access గడువు ముగిసింది.");
+                showOnlyScreen('paymentScreen');
+            }
+        }
+
+        function openAdminPanel() {
+            const pass = prompt("Enter Admin Password:");
+            if (pass !== null && pass.trim() === ADMIN_PASSWORD) {
+                const modal = document.getElementById('adminModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.style.display = 'flex';
+                }
+                loadAdminUserRequests();
+            } else if (pass !== null) {
+                alert("❌ Wrong Password!");
+            }
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('adminModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+        }
+
+        function loadAdminUserRequests() {
+            const listDiv = document.getElementById('adminUserList') || document.getElementById('userList');
+            if (!listDiv) return;
+
+            db.ref('users').on('value', snapshot => {
+                const users = snapshot.val();
+                if (!users) {
+                    listDiv.innerHTML = `<p class="text-slate-400 text-center py-4">ఏ యూజర్ రిక్వెస్ట్‌లు లేవు.</p>`;
+                    return;
+                }
+
+                listDiv.innerHTML = "";
+                for (let mobile in users) {
+                    const u = users[mobile];
+                    let btnHTML = "";
+
+                    if (u.status === 'pending' || u.status === 'expired') {
+                        btnHTML = `
+                            <div class="flex space-x-2">
+                                <button onclick="approveUser('${mobile}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow">Approve</button>
+                                <button onclick="rejectUser('${mobile}')" class="bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow">Reject</button>
+                            </div>`;
+                    } else if (u.status === 'approved') {
+                        btnHTML = `
+                            <div class="flex items-center space-x-2">
+                                <span class="text-emerald-400 text-[10px] font-bold bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded-full">30 Days Active ✅</span>
+                                <button onclick="rejectUser('${mobile}')" class="bg-rose-900 border border-rose-700 text-rose-300 text-[10px] px-2 py-0.5 rounded">Remove</button>
+                            </div>`;
+                    } else if (u.status === 'rejected') {
+                        btnHTML = `
+                            <div class="flex items-center space-x-2">
+                                <span class="text-rose-400 text-[10px] font-bold">Rejected ❌</span>
+                                <button onclick="approveUser('${mobile}')" class="bg-emerald-800 border border-emerald-700 text-emerald-300 text-[10px] px-2 py-0.5 rounded">Re-Approve</button>
+                            </div>`;
+                    }
+
+                    listDiv.innerHTML += `
+                        <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-3 rounded-xl mb-2">
+                            <div>
+                                <p class="font-bold text-slate-200 text-xs">Mobile: <span class="text-yellow-400 font-mono">${mobile}</span></p>
+                                <p class="text-[9px] text-slate-400 uppercase mt-0.5">Status: <strong class="text-amber-400">${u.status}</strong></p>
+                            </div>
+                            <div>${btnHTML}</div>
+                        </div>`;
+                }
+            });
+        }
+
+        function approveUser(mobile) {
+            db.ref('users/' + mobile).update({
+                status: 'approved',
+                approvedAt: new Date().getTime()
+            }).then(() => alert("✅ Mobile " + mobile + " కి 30 రోజుల Access ఇవ్వబడింది."));
+        }
+
+        function rejectUser(mobile) {
+            db.ref('users/' + mobile).update({
+                status: 'rejected'
+            }).then(() => alert("❌ Mobile " + mobile + " తిరస్కరించబడింది."));
         }
     </script>
 </body>
-    </html>
+</html>
 
