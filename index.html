@@ -260,17 +260,8 @@
                     
                         
                         <input type="text" id="userPasscode" placeholder="Enter Code (e.g. SET2026)" class="w-full bg-slate-900 border border-slate-700 text-white px-4 py-3 rounded-xl text-sm text-center uppercase outline-none focus:border-emerald-400">
+                    
                         
-                        <div class="flex gap-2">
-                            <button onclick="verifyUserPasscode()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm">Submit Code</button>
-                            <button onclick="closeApprovalModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl text-sm">Cancel</button>
-                        </div>
-                        <p id="codeError" class="hidden text-xs text-red-400"></p>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            } else {
-                modal.style.display = "flex";
             }
         }
 
