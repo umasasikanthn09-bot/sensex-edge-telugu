@@ -192,8 +192,8 @@
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
-        const VALID_APPROVAL_CODE = "MAHESH123"; // యూజర్లు అన్‌లాక్ చేసుకోవడానికి అప్రూవల్ కోడ్
-        const ADMIN_PASSWORD = "merababa@123"; // మీ (అడ్మిన్) డైరెక్ట్ పాస్‌వర్డ్
+        const VALID_APPROVAL_CODE = "MAHESH123";
+        const ADMIN_PASSWORD = "merababa@123";
 
         document.addEventListener("DOMContentLoaded", function () {
             // ఆటోమేటిక్‌గా 2 సెకన్లలో YouTube Screen కొస్తుంది
@@ -204,7 +204,6 @@
                 if (youtube) youtube.style.display = 'block';
             }, 2000);
 
-            // సేవ్ అయిన యూజర్ బ్రోకర్ డేటా లోడ్ చేయడం
             const savedBroker = localStorage.getItem("saved_broker");
             const savedApiKey = localStorage.getItem("saved_api_key");
             const savedApiSecret = localStorage.getItem("saved_api_secret");
@@ -221,6 +220,41 @@
             document.getElementById('paymentScreen').style.display = 'block';
         }
 
+        // WAITING SCREEN & AUTOMATIC APPROVAL CHECK LOGIC
+        function showWaitingScreen() {
+            if (document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display = 'none';
+            if (document.getElementById('youtubeScreen')) document.getElementById('youtubeScreen').style.display = 'none';
+            if (document.getElementById('paymentScreen')) document.getElementById('paymentScreen').style.display = 'none';
+            
+            const waitingScreen = document.getElementById('waitingScreen');
+            if (waitingScreen) waitingScreen.style.display = 'block';
+
+            // ప్రతి 3 సెకన్లకు అడ్మిన్ అప్రూవ్ చేశారో లేదో చెక్ చేస్తుంది
+            const checkInterval = setInterval(async () => {
+                const approved = await checkAdminApprovalFromBackend();
+                
+                if (approved) {
+                    clearInterval(checkInterval);
+                    localStorage.setItem("admin_access_approved", "true");
+                    localStorage.setItem("approval_date", new Date().getTime());
+                    
+                    waitingScreen.style.display = 'none';
+                    showAppScreen(); 
+                }
+            }, 3000);
+        }
+
+        async function checkAdminApprovalFromBackend() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/check-approval-status`);
+                const data = await response.json();
+                return data.isApproved === true; 
+            } catch (error) {
+                console.error("Approval Status Check Error:", error);
+                return false;
+            }
+        }
+
         // USER PAYMENT CLICK
         function checkUserPayment() {
             const isApproved = localStorage.getItem("admin_access_approved");
@@ -228,7 +262,7 @@
             if (isApproved === "true") {
                 showAppScreen();
             } else {
-                openApprovalModal();
+                showWaitingScreen();
             }
         }
 
@@ -245,59 +279,12 @@
             }
         }
 
-        // USER CODE POPUP MODAL
-        function openApprovalModal() {
-            let modal = document.getElementById("approvalModal");
-            if (!modal) {
-                modal = document.createElement("div");
-                modal.id = "approvalModal";
-                modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 16px;";
-                modal.innerHTML = `
-                    <div class="bg-[#0b101d] border border-emerald-500/30 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4 text-center">
-                        <h2 class="text-lg font-bold text-emerald-400">🔑 Enter Approval Code</h2>
-                        <p class="text-xs text-slate-300">పేమెంట్ పూర్తయిన తర్వాత అడ్మిన్ ఇచ్చిన కోడ్‌ను ఇక్కడ నమోదు చేయండి.</p>
-                        <input type="text" id="userPasscode" placeholder="Enter Approval Code" class="w-full bg-[#030712] border border-slate-700 rounded-lg p-2.5 text-xs text-center text-white focus:outline-none">
-                        <p id="codeError" class="text-xs text-rose-500 hidden"></p>
-                        <div class="flex space-x-2">
-                            <button onclick="verifyUserPasscode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-xs transition">Verify Code</button>
-                            <button onclick="closeApprovalModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 rounded-lg text-xs transition">Cancel</button>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            } else {
-                modal.style.display = "flex";
-            }
-        }
-
-        function closeApprovalModal() {
-            const modal = document.getElementById("approvalModal");
-            if (modal) modal.style.display = "none";
-        }
-
-        // VERIFY CODE
-        function verifyUserPasscode() {
-            const inputCode = document.getElementById("userPasscode").value.trim();
-            const codeError = document.getElementById("codeError");
-
-            if (inputCode.toUpperCase() === VALID_APPROVAL_CODE) {
-                localStorage.setItem("admin_access_approved", "true");
-                localStorage.setItem("approval_date", new Date().getTime());
-                
-                closeApprovalModal();
-                alert("✅ Approval Verified!\n30 Days Subscription Unlocked.");
-                showAppScreen();
-            } else {
-                codeError.innerText = "❌ Incorrect Code! Please contact admin on WhatsApp.";
-                codeError.classList.remove("hidden");
-            }
-        }
-
         // SHOW MAIN APP DASHBOARD
         function showAppScreen() {
             if (document.getElementById('welcomeScreen')) document.getElementById('welcomeScreen').style.display = 'none';
             if (document.getElementById('youtubeScreen')) document.getElementById('youtubeScreen').style.display = 'none';
             if (document.getElementById('paymentScreen')) document.getElementById('paymentScreen').style.display = 'none';
+            if (document.getElementById('waitingScreen')) document.getElementById('waitingScreen').style.display = 'none';
             
             const mainApp = document.getElementById('mainApp');
             if (mainApp) {
@@ -305,7 +292,6 @@
                 mainApp.classList.remove('hidden');
             }
 
-            // మెయిన్ యాప్‌కి వచ్చాక మాత్రమే బ్యాకెండ్ రన్ అవుతుంది
             setInterval(fetchTradeHistory, 4000);
             fetchTradeHistory();
         }
@@ -397,4 +383,4 @@
         }
     </script>
 </body>
-                    </html>
+            </html>
