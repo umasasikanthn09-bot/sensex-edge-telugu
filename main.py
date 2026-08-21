@@ -1,20 +1,19 @@
 import os
 import time
+import requests
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # CORS Error రాకుండా అనుమతిస్తుంది
+CORS(app)
 
 # ==============================================================================
 # 1. GLOBAL STATE & STORAGE
 # ==============================================================================
 
-# User Approval Storage: {"7729903172": "PENDING"}
 pending_requests = {}  
 
-# Trading State Variables
 trading_state = {
     "is_active": False,
     "target_achieved": False,
@@ -25,47 +24,96 @@ trading_state = {
 
 user_config = {
     "broker": "upstox",
-    "api_key": "",
-    "api_secret": "",
-    "lots": 2
+    "access_token": "",  # Login నాటి సజీవ Token
+    "lots": 1,
+    "symbol": "SENSEX"
 }
 
 # ==============================================================================
-# 2. HELPER FUNCTIONS (10:30 AM CANDLE LOGIC)
+# 2. HELPER FUNCTIONS & UPSTOX INTEGRATION
 # ==============================================================================
 
-def get_15min_candle_from_broker(strike_type, date_obj):
+def get_15min_candle_from_upstox(instrument_key, date_str):
     """
-    ఇక్కడ మీ బ్రోకర్ (Upstox/Zerodha) API నుండి 10:30 AM క్యాండిల్ తెచ్చుకునే కోడ్ ఉంటుంది.
-    డేటా లభిస్తే dictionary రూపంలో ఇస్తుంది, లేదంటే None ఇస్తుంది.
+    Upstox Historical Data API ద్వారా నిర్దిష్ట తేదీకి చెందిన 10:30 AM క్యాండిల్ వివరాలు సేకరిస్తుంది.
     """
-    # EXAMPLE API CALL:
-    # candle = broker_api.get_historical_data(strike_type, date_obj, time="10:30")
-    # return candle
-    return None  # ప్రస్తుతం API కనెక్షన్ లేకపోతే testing కోసం
+    url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{date_str}/{date_str}"
+    headers = {"Accept": "application/json"}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            candles = response.json().get("data", {}).get("candles", [])
+            # 10:30 AM క్యాండిల్ ఉందో లేదో సరిచూడటం
+            for candle in candles:
+                # candle[0] లో timestamp ఉంటుంది (e.g., '2026-08-21T10:30:00+05:30')
+                if "10:30:00" in candle[0]:
+                    return {"timestamp": candle[0], "open": candle[1], "high": candle[2], "low": candle[3], "close": candle[4]}
+    except Exception as e:
+        print(f"[ERROR] Candle Fetching Failed: {e}")
+        
+    return None
 
 
-def calculate_1030_entry_price(strike_type):
-    today = datetime.now().date()
-    yesterday = today - timedelta(days=1)
+def calculate_1030_entry_price(instrument_key):
+    """
+    అంశం 2: నిన్నటి 10:30 AM క్యాండిల్ high ఉంటే దానికి +3 పాయింట్లు.
+    అది లేకపోతేనే ఈరోజటి 10:30 AM క్యాండిల్ high + 3 పాయింట్లను తీసుకుంటుంది.
+    """
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    # 1. మొదట నిన్నటి (Previous Day) 10:30 AM క్యాండిల్ కోసం వెతకడం
-    candle = get_15min_candle_from_broker(strike_type, yesterday)
+    # 1. మొదట నిన్నటి 10:30 AM క్యాండిల్ సరిచూడటం
+    candle = get_15min_candle_from_upstox(instrument_key, yesterday_str)
 
-    # 2. నిన్నటి క్యాండిల్ లభించకపోతే, ఈరోజు (Same Day) 10:30 AM క్యాండిల్ తీసుకోవడం
+    # 2. నిన్నటిది లేకపోతేనే ఈరోజు 10:30 AM క్యాండిల్ వాడటం
     if candle is None:
-        candle = get_15min_candle_from_broker(strike_type, today)
-        print(f"[{strike_type}] నిన్నటి 10:30 AM క్యాండిల్ లేదు -> ఈరోజు 10:30 AM క్యాండిల్ తీసుకున్నాం.")
+        candle = get_15min_candle_from_upstox(instrument_key, today_str)
+        print(f"[{instrument_key}] నిన్నటి 10:30 AM క్యాండిల్ లేదు -> ఈరోజు 10:30 AM క్యాండిల్ వాడుతున్నాం.")
     else:
-        print(f"[{strike_type}] నిన్నటి 10:30 AM క్యాండిల్ దొరికింది.")
+        print(f"[{instrument_key}] నిన్నటి 10:30 AM క్యాండిల్ లభించింది.")
 
-    # 3. క్యాండిల్ High + 3 Points యాడ్ చేసి ఎంట్రీ ప్రైస్ లెక్కించడం
     if candle and 'high' in candle:
-        high_price = candle['high']
-        entry_price = high_price + 3
+        entry_price = candle['high'] + 3
         return entry_price
     
     return None
+
+
+def place_upstox_order(instrument_key, quantity, order_type="LIMIT", price=0):
+    """
+    అంశం 1 & 3: స్ట్రాటజీ ప్రారంభం కాగానే ఉద్దేశించిన బ్రోకర్ ఖాతాలో డిఫాల్ట్‌గా ఆర్డర్ ప్లేస్ అవుతుంది.
+    ఫండ్స్ ఉంటే Executed అవుతుంది, ఫండ్స్ లేకపోతే బ్రోకర్ నుండి Rejection Order నమోదవుతుంది.
+    """
+    url = "https://api.upstox.com/v2/order/place"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {user_config['access_token']}"
+    }
+    
+    payload = {
+        "quantity": quantity,
+        "product": "I",  # Intraday
+        "validity": "DAY",
+        "price": price,
+        "tag": "ALGO_TRADE",
+        "instrument_token": instrument_key,
+        "order_type": order_type,
+        "transaction_type": "BUY",
+        "disclosed_quantity": 0,
+        "trigger_price": 0,
+        "is_amo": False
+    }
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        res_data = response.json()
+        print(f"[ORDER RESPONSE] Status: {response.status_code} | Data: {res_data}")
+        return res_data
+    except Exception as e:
+        print(f"[ERROR] Order Placement Failed: {e}")
+        return {"status": "error", "message": str(e)}
 
 # ==============================================================================
 # 3. ADMIN APPROVAL & USER CHECK ENDPOINTS
@@ -80,7 +128,6 @@ def request_approval():
     phone = data.get("phone")
     if phone:
         pending_requests[phone] = "PENDING"
-        print(f"[APPROVAL] New request received from Phone: {phone}")
         return jsonify({"status": "success", "message": "Request received"}), 200
     
     return jsonify({"status": "error", "message": "No phone number provided"}), 400
@@ -103,7 +150,6 @@ def admin_action():
     
     if phone in pending_requests:
         pending_requests[phone] = "APPROVED" if action == "APPROVE" else "REJECTED"
-        print(f"[ADMIN] Phone {phone} has been {pending_requests[phone]}")
         return jsonify({"status": "success"}), 200
     
     return jsonify({"status": "error", "message": "Phone number not found"}), 400
@@ -127,27 +173,37 @@ def start_strategy():
     global user_config, trading_state
     data = request.json or {}
     
-    user_config["broker"] = data.get("broker")
-    user_config["api_key"] = data.get("api_key")
-    user_config["api_secret"] = data.get("api_secret")
-    user_config["lots"] = data.get("lots", 2)
+    user_config["broker"] = data.get("broker", "upstox")
+    user_config["access_token"] = data.get("access_token") or data.get("api_key")  # అంశం 4: రోజూ లాగిన్ అయ్యే Access Token
+    user_config["lots"] = int(data.get("lots", 1))
 
-    # -------------------------------------------------------------
-    # CE & PE 10:30 AM ENTRY PRICES CALCULATION (కొత్తగా చేర్చిన లాజిక్)
-    # -------------------------------------------------------------
-    ce_entry_price = calculate_1030_entry_price("CE")
-    pe_entry_price = calculate_1030_entry_price("PE")
+    # CE మరియు PE కి సంబంధించిన ఇన్‌స్ట్రుమెంట్ కీలు (ఉదాహరణకు)
+    ce_instrument = data.get("ce_instrument", "NSE_FO|12345")
+    pe_instrument = data.get("pe_instrument", "NSE_FO|67890")
 
-    print(f"[ALGO] CE Calculated Entry Price: {ce_entry_price}")
-    print(f"[ALGO] PE Calculated Entry Price: {pe_entry_price}")
+    # 10:30 AM high క్యాలిక్యులేషన్ (+3 Points)
+    ce_entry_price = calculate_1030_entry_price(ce_instrument)
+    pe_entry_price = calculate_1030_entry_price(pe_instrument)
+
+    # అంశం 3: స్ట్రాటజీ కింద లాగిన్ కాగానే డిఫాల్ట్‌గా 1 ఆర్డర్ ప్లేస్ చేయడం
+    order_result = {}
+    if ce_entry_price:
+        # బ్రోకర్ అకౌంట్‌కి ఆర్డర్ రిక్వెస్ట్ వెళుతుంది (ఫండ్స్ లేకపోతే రిజెక్ట్ అవుతుంది)
+        order_result = place_upstox_order(
+            instrument_key=ce_instrument, 
+            quantity=user_config["lots"] * 10, # Lot Size
+            order_type="LIMIT", 
+            price=ce_entry_price
+        )
 
     trading_state["is_active"] = True
     
     return jsonify({
         "status": "success",
-        "message": "కనెక్ట్ అయ్యింది! Sensex 15Min Strategy ప్రారంభమైంది.",
+        "message": "Strategy Started & Default Order Sent to Broker!",
         "ce_entry_price": ce_entry_price,
-        "pe_entry_price": pe_entry_price
+        "pe_entry_price": pe_entry_price,
+        "broker_order_response": order_result
     }), 200
 
 
