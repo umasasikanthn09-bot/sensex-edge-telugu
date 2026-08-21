@@ -188,8 +188,33 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
         return {"status": "error", "message": str(e)}
 
 # ==============================================================================
-# 3. BACKGROUND MONITORING LOOP
+# 3. BACKGROUND MONITORING LOOP (3:10 PM Auto-Cancel with Time Check)
 # ==============================================================================
+
+def cancel_all_broker_orders(broker, access_token, api_key=""):
+    """
+    3:10 PM సమయంలో బ్రోకర్ ఖాతాలోని ఓపెన్ ఆర్డర్లను క్యాన్సిల్ చేసే ఫంక్షన్
+    """
+    broker = str(broker).lower()
+    headers = {}
+    url = ""
+
+    if broker == "upstox":
+        url = "https://api.upstox.com/v2/order/multi/cancel"
+        headers = {"Authorization": f"Bearer {access_token}", "Accept": "application/json"}
+    elif broker == "zerodha":
+        url = "https://api.kite.trade/orders"
+        headers = {"X-Kite-Version": "3", "Authorization": f"token {api_key}:{access_token}"}
+    elif broker == "angelone":
+        url = "https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/cancelOrder"
+        headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}
+    
+    try:
+        response = requests.delete(url, headers=headers)
+        print(f"[{broker.upper()} CANCEL ORDERS] Status: {response.status_code} | Data: {response.json()}")
+    except Exception as e:
+        print(f"[{broker.upper()} CANCEL ERROR] Failed to cancel orders: {e}")
+
 
 def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_price):
     global trading_state
@@ -197,24 +222,44 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
     
     order_executed = False
     
-    while trading_state["is_active"] and not order_executed:
-        try:
-            print(f"[ALGO] Placing Order for {ce_symbol} at Price {ce_target_price}...")
-            
-            res = place_broker_order(
-                broker=broker,
-                access_token=user_config["access_token"],
-                api_key=user_config["api_key"],
-                instrument_key=ce_symbol,
-                quantity=user_config["lots"] * 10,
-                price=ce_target_price
+    while trading_state["is_active"]:
+        now = datetime.now()
+        current_time_str = now.strftime("%H:%M") # HH:MM ఫార్మాట్ (e.g., 15:10)
+
+        # -------------------------------------------------------------
+        # నియమం: 3:10 PM (15:10) కి ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ చేయడం
+        # -------------------------------------------------------------
+        if current_time_str >= "15:10":
+            print("[ALGO TIME EXIT] 3:10 PM అయ్యింది! అన్ని ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ అవుతున్నాయి...")
+            cancel_all_broker_orders(
+                broker=broker, 
+                access_token=user_config["access_token"], 
+                api_key=user_config["api_key"]
             )
-            
-            print(f"[ALGO] Execution Output: {res}")
-            order_executed = True
-            
-        except Exception as e:
-            print(f"[ALGO LOOP ERROR] {e}")
+            trading_state["is_active"] = False
+            break
+
+        # -------------------------------------------------------------
+        # ఎంట్రీ ఆర్డర్ ఎగ్జిక్యూషన్ లాజిక్
+        # -------------------------------------------------------------
+        if not order_executed:
+            try:
+                print(f"[ALGO] Placing Order for {ce_symbol} at Price {ce_target_price}...")
+                
+                res = place_broker_order(
+                    broker=broker,
+                    access_token=user_config["access_token"],
+                    api_key=user_config["api_key"],
+                    instrument_key=ce_symbol,
+                    quantity=user_config["lots"] * 10,
+                    price=ce_target_price
+                )
+                
+                print(f"[ALGO] Execution Output: {res}")
+                order_executed = True # ఆర్డర్ అటెంప్ట్ పూర్తయింది
+                
+            except Exception as e:
+                print(f"[ALGO LOOP ERROR] {e}")
             
         time.sleep(2)
 
