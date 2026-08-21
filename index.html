@@ -3,346 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENSEX EDGE TELUGU</title>
+    <title>Sensex Edge Telugu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #060913; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
-        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
-        .inner-box { background-color: #070d19; border: 1px solid #172554; }
-        .btn-cyan { background-color: #0284c7; color: #ffffff; }
-        .btn-cyan:hover { background-color: #0369a1; }
-        .input-bg { background-color: #030712; border: 1px solid #1e293b; }
+        body {
+            background-color: #0b0f17;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+        }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
+<body class="text-white min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-md space-y-5">
-
-        <!-- CARD 1: WELCOME SCREEN (START POINT) -->
-        <div id="welcomeScreen" style="display: block;" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 border border-yellow-500/20">
-            <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
-                <span class="text-3xl">🚀</span>
-            </div>
-            <h1 class="text-2xl font-extrabold text-yellow-400 tracking-wide">Sensex Edge Telugu</h1>
-            <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Learn • Practice • Grow</p>
-            <div class="pt-4 flex justify-center">
-                <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-        </div>
-
-        <!-- CARD 2: YOUTUBE SCREEN -->
-        <div id="youtubeScreen" style="display: none;" class="card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 border border-red-500/20">
-            <div class="inline-block p-3 bg-red-600/10 rounded-full">
-                <svg class="w-10 h-10 text-red-500 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            </div>
-            <div>
-                <h2 class="text-lg font-bold text-white mb-1">మా YouTube ఛానెల్‌ని చూడండి</h2>
-                <p class="text-xs text-slate-300">పరిశీలించండి, Join అవ్వండి!</p>
-            </div>
-            <a href="https://youtube.com/@sensexedgetelugu-w5d?si=YJJ-Nx5izcub36k2" target="_blank" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-lg">
-                <span>YouTube లో పరిశీలించండి & Join అవ్వండి</span>
-            </a>
-            <button onclick="goToPayment()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold py-3 px-4 rounded-xl text-xs transition">
-                Continue ➔
-            </button>
-        </div>
-
-        <!-- CARD 3: PAYMENT SCREEN WITH CELL NUMBER -->
+    <!-- MAIN CONTAINER (EXACT ORIGINAL DESIGN) -->
+    <div class="glass-card p-6 rounded-2xl w-full max-w-md mx-auto border border-slate-800 shadow-2xl text-center">
         
-<div class="flex justify-center items-center w-full mb-6">
-        <div class="p-3 bg-white rounded-2xl border-2 border-indigo-500 shadow-lg inline-block">
+        <!-- Top Brand Header -->
+        <div class="flex flex-col items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700 shadow-md mb-3">
+                <span class="text-2xl">🚀</span>
+            </div>
+            <h1 class="text-2xl font-bold text-yellow-400 tracking-wide">
+                Sensex Edge Telugu
+            </h1>
+            <p class="text-xs text-slate-400 font-medium tracking-widest uppercase mt-1">
+                LEARN • PRACTICE • GROW
+            </p>
+        </div>
+
+        <!-- QR Code Box (Original Styled Border & Alignment) -->
+        <div class="relative w-72 h-72 mx-auto mb-6 p-2 rounded-2xl border-2 border-indigo-500/80 bg-slate-950 flex items-center justify-center shadow-2xl">
             <img 
-                src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=umasasikanthn04@okhdfcbank&pn=SensexEdge&cu=INR" 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=umasasikanthn04@okhdfcbank&pn=SensexEdge&cu=INR" 
                 alt="Payment QR" 
-                class="w-56 h-56 mx-auto object-contain block"
+                class="w-full h-full rounded-xl bg-white p-2 object-contain"
             />
         </div>
-</div>
-        
-            <div class="inner-box p-4 rounded-xl space-y-2">
-                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
-                <p class="text-xs text-slate-400">UPI ID:</p>
-                <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
+
+        <!-- Pricing & UPI Details Box -->
+        <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 mb-5 text-left">
+            <div class="text-xl font-bold text-emerald-400 mb-1">
+                ₹2,499 / Month
             </div>
-
-            <div class="text-left space-y-1">
-                <label class="block text-xs text-slate-300 font-semibold">Enter Phone/Cell Number (for Verification)</label>
-                <input type="tel" id="userCellNo" maxlength="10" placeholder="10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి" class="w-full input-bg rounded-xl p-3 text-xs text-slate-100 focus:outline-none border border-emerald-500/40">
+            <div class="text-xs text-slate-400 mb-1">
+                UPI ID:
             </div>
-
-            <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
-                Continue 
-            </button>
-
-            <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20approve." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
-                💬 Contact Admin on WhatsApp
-            </a>
-
-            <button onclick="adminDirectAccess()" class="w-full text-[11px] text-slate-500 hover:text-amber-400 underline pt-1 block text-center transition">
-                🔐 Admin Panel Access
-            </button>
-        </div>
-
-        <!-- CARD 4: WAITING FOR ADMIN APPROVAL SCREEN -->
-        <div id="waitingScreen" style="display: none;" class="card-bg rounded-2xl p-10 text-center shadow-2xl space-y-3 border border-amber-500/30">
-            <div class="animate-spin inline-block w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full mb-2"></div>
-            <h2 class="text-base font-bold text-amber-400">Waiting for admin approval</h2>
-            <p id="waitingCellText" class="text-xs text-sky-400 font-semibold"></p>
-            <p class="text-[10px] text-slate-400">అడ్మిన్ అప్రూవ్ చేసిన వెంటనే యాప్ ఆటోమేటిక్‌గా 30 రోజులకు ఓపెన్ అవుతుంది.</p>
-
-            <button onclick="adminDirectAccess()" class="w-full text-[11px] text-slate-500 hover:text-amber-400 underline pt-4 block text-center transition">
-                🔐 Admin Panel Access
-            </button>
-        </div>
-
-        <!-- CARD 5: ADMIN CONTROL PANEL MODAL -->
-        <div id="adminPanelModal" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-amber-500/40">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="text-sm font-bold text-amber-400 uppercase">Admin Control Panel</h3>
-                <button onclick="closeAdminPanelAndEnter()" class="text-xs bg-slate-800 px-3 py-1 rounded-lg text-slate-200 hover:bg-slate-700 font-bold border border-slate-700">✖ Close & Open App</button>
-            </div>
-            <p class="text-xs text-slate-300">అప్రూవల్ కోరిన యూజర్ల మొబైల్ నంబర్లు:</p>
-            
-            <div class="space-y-3 max-h-60 overflow-y-auto" id="pendingRequestsContainer">
-                <!-- APPROVE & REJECT BUTTONS SHOW HERE -->
+            <div class="text-sm font-semibold text-sky-400 break-all select-all">
+                umasasikanthn04@okhdfcbank
             </div>
         </div>
 
-        <!-- CARD 6: MAIN APP DASHBOARD (ORIGINAL 3 CARDS RESTORED) -->
-        <div id="mainApp" style="display: none;" class="space-y-5">
-            <div id="expiryReminder" style="display: none;" class="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
-                <p class="text-xs font-bold text-amber-400">⚠️ సబ్‌స్క్రిప్షన్ అలర్ట్!</p>
-                <p class="text-[11px] text-slate-300">మీ 30 రోజుల యాక్సెస్ ముగియడానికి మరో <strong id="daysLeftText" class="text-yellow-400">3 రోజులు</strong> ఉంది.</p>
-            </div>
-
-            <div class="text-center py-2">
-                <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
-                <p class="text-[10px] text-slate-400 tracking-widest mt-1 uppercase font-semibold">Learn • Practice • Grow</p>
-            </div>
-
-            <hr class="border-slate-800 my-2">
-
-            <!-- APP CARD 1 -->
-            <div class="card-bg rounded-xl p-4 shadow-lg">
-                <div class="flex items-center space-x-2 mb-1">
-                    <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                    <h2 class="text-lg font-bold text-white">Sensex Options</h2>
-                </div>
-                <p class="text-xs text-slate-400 mb-3">Automated Algorithmic Execution</p>
-                <div class="inner-box rounded-lg p-3 flex items-center space-x-2">
-                    <span class="text-xs text-slate-300">ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-yellow-400 font-semibold">Waiting for Login</strong></span>
-                </div>
-            </div>
-
-            <!-- APP CARD 2 -->
-            <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
-                <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Select Your Broker</label>
-                    <select id="brokerSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
-                        <option value="upstox">Upstox</option>
-                        <option value="zerodha">Zerodha (Kite)</option>
-                        <option value="angelone">AngelOne</option>
-                        <option value="dhan">Dhan</option>
-                        <option value="fyers">Fyers</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">API Key / App Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">API Secret / Access Token / PIN</label>
-                    <input type="password" id="apiSecret" placeholder="••••••••••••••••" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
-                </div>
-                <button onclick="startAutoTrader()" class="w-full btn-cyan py-2.5 rounded-lg text-xs font-bold transition shadow">
-                    Connect & Start Auto Algo
-                </button>
-            </div>
-
-            <!-- APP CARD 3 -->
-            <div class="card-bg rounded-xl p-4 shadow-lg space-y-4">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Selected Lot Size</label>
-                    <select id="lotSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
-                        <option value="1"selected>1 Lot</option>
-                        <option value="2">2 Lots</option>
-                        <option value="5">5 Lots</option>
-                    </select>
-                </div>
-
-                <div class="inner-box rounded-lg p-4 text-center">
-                    <p class="text-[10px] font-semibold text-slate-400 tracking-wider mb-1">TODAY'S REALTIME P & L</p>
-                    <p class="text-2xl font-bold text-emerald-400">₹0.00</p>
-                </div>
-
-                <div class="border border-amber-900/40 bg-amber-950/10 rounded-lg p-3 space-y-2">
-                    <p class="text-xs font-bold text-amber-500">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</p>
-                    <p class="text-xs font-bold text-slate-300">* 2 lots కి మించి తీసుకునే రిస్క్ కు పూర్తి బాధ్యత నాదే.</p>
-                    <p class="text-xs font-bold text-slate-300">* బ్రోకర్ platform లో ఏర్పడే ఎర్రర్స్ కు sensex edge Telugu కు ఎలాంటి సంబంధం లేదు.</p>
-                    <div class="flex items-start space-x-2 pt-1">
-                        <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded bg-slate-900 border-slate-700">
-                        <label for="disclaimerCheck" class="text-[10px] text-slate-300">నేను నిబంధనలను చదివాను, అంగీకరిస్తున్నాను.</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- STOP BUTTON -->
-            <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg">
-                Stop & Secure Logout
-            </button>
+        <!-- Phone Verification Input -->
+        <div class="text-left mb-4">
+            <label class="block text-xs text-slate-300 mb-2">
+                Enter Phone/Cell Number (for Verification)
+            </label>
+            <input 
+                type="tel" 
+                id="phoneInput"
+                placeholder="10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి" 
+                class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+            />
         </div>
 
+        <!-- Action Buttons -->
+        <button onclick="handleVerification()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl shadow-lg transition mb-3">
+            Continue
+        </button>
+
+        <a href="https://wa.me/" target="_blank" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-2 text-sm transition mb-4">
+            <span>💬</span> Contact Admin on WhatsApp
+        </a>
+
+        <a href="#" class="text-xs text-yellow-500/80 hover:text-yellow-400 inline-flex items-center gap-1">
+            🔐 Admin Panel Access
+        </a>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
-        const ADMIN_PASSWORD = "merababa@123";
-
-        // ALWAYS START FROM WELCOME SCREEN
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById('welcomeScreen').style.display = 'block';
-            document.getElementById('youtubeScreen').style.display = 'none';
-            document.getElementById('paymentScreen').style.display = 'none';
-            document.getElementById('waitingScreen').style.display = 'none';
-            document.getElementById('adminPanelModal').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'none';
-
-            // Auto navigate to YouTube Screen after 2 seconds
-            setTimeout(() => {
-                document.getElementById('welcomeScreen').style.display = 'none';
-                document.getElementById('youtubeScreen').style.display = 'block';
-            }, 2000);
-        });
-
-        function goToPayment() {
-            document.getElementById('youtubeScreen').style.display = 'none';
-            document.getElementById('paymentScreen').style.display = 'block';
-        }
-
-        async function checkUserPayment() {
-            const cellNo = document.getElementById('userCellNo').value.trim();
-            if (cellNo.length < 10) {
-                alert("దయచేసి సరైన 10 అంకెల సెల్ నంబర్ నమోదు చేయండి.");
+        function handleVerification() {
+            const phone = document.getElementById('phoneInput').value;
+            if(!phone || phone.length < 10) {
+                alert("దయచేసి సరియైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.");
                 return;
             }
-
-            localStorage.setItem("user_phone", cellNo);
-
-            try {
-                await fetch(`${BACKEND_URL}/request-approval`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: cellNo })
-                });
-            } catch(e) {}
-
-            showWaitingScreen(cellNo);
-        }
-
-        function showWaitingScreen(cellNo) {
-            document.getElementById('paymentScreen').style.display = 'none';
-            const waitingScreen = document.getElementById('waitingScreen');
-            waitingScreen.style.display = 'block';
-            document.getElementById('waitingCellText').innerText = `Phone: ${cellNo}`;
-
-            const checkInterval = setInterval(() => {
-                if (localStorage.getItem("admin_access_approved") === "true") {
-                    clearInterval(checkInterval);
-                    waitingScreen.style.display = 'none';
-                    showAppScreen();
-                }
-            }, 2000);
-        }
-
-        function adminDirectAccess() {
-            const pass = prompt("Enter Admin Password:");
-            if (pass === ADMIN_PASSWORD) {
-                document.getElementById('adminPanelModal').style.display = 'block';
-                loadPendingRequests();
-            } else if (pass !== null) {
-                alert("❌ Wrong Admin Password!");
-            }
-        }
-
-        function closeAdminPanelAndEnter() {
-            localStorage.setItem("admin_access_approved", "true");
-            localStorage.setItem("approval_date", new Date().getTime());
-            document.getElementById('adminPanelModal').style.display = 'none';
-            showAppScreen();
-        }
-
-        function loadPendingRequests() {
-            const container = document.getElementById('pendingRequestsContainer');
-            const savedPhone = localStorage.getItem("user_phone") || "7729903172";
-
-            container.innerHTML = `
-                <div class="inner-box p-3 rounded-xl flex items-center justify-between my-2 border border-slate-800">
-                    <div>
-                        <p class="text-xs font-bold text-sky-400">📱 ${savedPhone}</p>
-                        <p class="text-[9px] text-slate-400">Waiting for approval</p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button onclick="approveUser('${savedPhone}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow">Approve</button>
-                        <button onclick="rejectUser('${savedPhone}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow">Reject</button>
-                    </div>
-                </div>`;
-        }
-
-        function approveUser(phone) {
-            localStorage.setItem("admin_access_approved", "true");
-            localStorage.setItem("approval_date", new Date().getTime());
-            alert(`User ${phone} Approved! Opening App...`);
-            document.getElementById('adminPanelModal').style.display = 'none';
-            showAppScreen();
-        }
-
-        function rejectUser(phone) {
-            localStorage.removeItem("admin_access_approved");
-            alert(`User ${phone} Rejected.`);
-            location.reload();
-        }
-
-        function showAppScreen() {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('youtubeScreen').style.display = 'none';
-            document.getElementById('paymentScreen').style.display = 'none';
-            document.getElementById('waitingScreen').style.display = 'none';
-            document.getElementById('adminPanelModal').style.display = 'none';
-            
-            const mainApp = document.getElementById('mainApp');
-            if (mainApp) mainApp.style.display = 'block';
-
-            checkSubscriptionExpiry();
-        }
-
-        function checkSubscriptionExpiry() {
-            const approvalDate = localStorage.getItem("approval_date");
-            if (approvalDate) {
-                const now = new Date().getTime();
-                const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
-                const daysLeft = 30 - daysPassed;
-
-                if (daysLeft <= 3 && daysLeft >= 0) {
-                    document.getElementById("daysLeftText").innerText = `${daysLeft} రోజులు`;
-                    document.getElementById("expiryReminder").style.display = 'block';
-                }
-            }
-        }
-
-        function startAutoTrader() {
-            const isChecked = document.getElementById('disclaimerCheck').checked;
-            if (!isChecked) { alert("దయచేసి నిబంధనలు సెలెక్ట్ చేయండి."); return; }
-            document.getElementById('statusText').innerText = "Active & Running";
-            document.getElementById('statusText').className = "text-emerald-400 font-bold";
-            alert("కనెక్ట్ అయ్యింది! Auto Trading ప్రారంభమైంది.");
-        }
-
-        function stopAutoTrader() {
-            document.getElementById('statusText').innerText = "Stopped";
-            document.getElementById('statusText').className = "text-rose-400 font-bold";
+            alert("మీ రిక్వెస్ట్ పంపబడింది. అడ్మిన్ వెరిఫికేషన్ పూర్తయ్యాక అల్గో యాక్టివ్ అవుతుంది.");
         }
     </script>
 </body>
-  </html>
+</html>
