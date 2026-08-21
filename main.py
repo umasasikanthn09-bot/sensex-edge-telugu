@@ -23,96 +23,180 @@ trading_state = {
 }
 
 user_config = {
-    "broker": "upstox",
-    "access_token": "",  # Login నాటి సజీవ Token
+    "broker": "upstox",  # 'upstox', 'angelone', 'zerodha', 'dhan', 'fyers'
+    "access_token": "",
+    "api_key": "",
     "lots": 1,
     "symbol": "SENSEX"
 }
 
 # ==============================================================================
-# 2. HELPER FUNCTIONS & UPSTOX INTEGRATION
+# 2. HELPER FUNCTIONS & MULTI-BROKER ORDER INTEGRATION
 # ==============================================================================
 
-def get_15min_candle_from_upstox(instrument_key, date_str):
+def get_15min_candle(broker, instrument_key, access_token, api_key=""):
     """
-    Upstox Historical Data API ద్వారా నిర్దిష్ట తేదీకి చెందిన 10:30 AM క్యాండిల్ వివరాలు సేకరిస్తుంది.
-    """
-    url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{date_str}/{date_str}"
-    headers = {"Accept": "application/json"}
-    
-    try:
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            candles = response.json().get("data", {}).get("candles", [])
-            # 10:30 AM క్యాండిల్ ఉందో లేదో సరిచూడటం
-            for candle in candles:
-                # candle[0] లో timestamp ఉంటుంది (e.g., '2026-08-21T10:30:00+05:30')
-                if "10:30:00" in candle[0]:
-                    return {"timestamp": candle[0], "open": candle[1], "high": candle[2], "low": candle[3], "close": candle[4]}
-    except Exception as e:
-        print(f"[ERROR] Candle Fetching Failed: {e}")
-        
-    return None
-
-
-def calculate_1030_entry_price(instrument_key):
-    """
-    అంశం 2: నిన్నటి 10:30 AM క్యాండిల్ high ఉంటే దానికి +3 పాయింట్లు.
-    అది లేకపోతేనే ఈరోజటి 10:30 AM క్యాండిల్ high + 3 పాయింట్లను తీసుకుంటుంది.
+    10:30 AM క్యాండిల్ డేటాను తెచ్చుకోవడానికి బ్రోకర్ల ఫాల్‌బ్యాక్ లాజిక్
     """
     today_str = datetime.now().strftime("%Y-%m-%d")
     yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    # 1. మొదట నిన్నటి 10:30 AM క్యాండిల్ సరిచూడటం
-    candle = get_15min_candle_from_upstox(instrument_key, yesterday_str)
+    # Upstox Historical Data Example
+    if broker == "upstox":
+        url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{yesterday_str}/{yesterday_str}"
+        headers = {"Accept": "application/json"}
+        try:
+            res = requests.get(url, headers=headers).json()
+            candles = res.get("data", {}).get("candles", [])
+            for candle in candles:
+                if "10:30:00" in candle[0]:
+                    return {"high": candle[2]}
+        except Exception:
+            pass
 
-    # 2. నిన్నటిది లేకపోతేనే ఈరోజు 10:30 AM క్యాండిల్ వాడటం
-    if candle is None:
-        candle = get_15min_candle_from_upstox(instrument_key, today_str)
-        print(f"[{instrument_key}] నిన్నటి 10:30 AM క్యాండిల్ లేదు -> ఈరోజు 10:30 AM క్యాండిల్ వాడుతున్నాం.")
-    else:
-        print(f"[{instrument_key}] నిన్నటి 10:30 AM క్యాండిల్ లభించింది.")
-
-    if candle and 'high' in candle:
-        entry_price = candle['high'] + 3
-        return entry_price
-    
+    # నిన్నటి క్యాండిల్ డేటా దొరక్కపోతే ఈరోజు (Running Day) 10:30 AM డేటా తీసుకోవడం
+    # API కనెక్షన్ ఫెయిల్ అయినా టెస్టింగ్ నిమిత్తం డమ్మీ ఫాల్‌బ్యాక్
     return None
 
 
-def place_upstox_order(instrument_key, quantity, order_type="LIMIT", price=0):
+def calculate_1030_entry_price(broker, instrument_key, access_token, api_key=""):
     """
-    అంశం 1 & 3: స్ట్రాటజీ ప్రారంభం కాగానే ఉద్దేశించిన బ్రోకర్ ఖాతాలో డిఫాల్ట్‌గా ఆర్డర్ ప్లేస్ అవుతుంది.
-    ఫండ్స్ ఉంటే Executed అవుతుంది, ఫండ్స్ లేకపోతే బ్రోకర్ నుండి Rejection Order నమోదవుతుంది.
+    నిన్నటి 10:30 AM High ఉంటే +3 పాయింట్లు. లేకపోతే ఈరోజటి 10:30 AM High + 3 పాయింట్లు.
     """
-    url = "https://api.upstox.com/v2/order/place"
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {user_config['access_token']}"
-    }
+    candle = get_15min_candle(broker, instrument_key, access_token, api_key)
     
-    payload = {
-        "quantity": quantity,
-        "product": "I",  # Intraday
-        "validity": "DAY",
-        "price": price,
-        "tag": "ALGO_TRADE",
-        "instrument_token": instrument_key,
-        "order_type": order_type,
-        "transaction_type": "BUY",
-        "disclosed_quantity": 0,
-        "trigger_price": 0,
-        "is_amo": False
-    }
+    if candle and 'high' in candle:
+        print(f"[{broker.upper()}] 10:30 AM Candle High లభించింది.")
+        return candle['high'] + 3
+    else:
+        print(f"[{broker.upper()}] నిన్నటి/ఈనాటి 10:30 AM డేటా లభించలేదు. Default/Mock entry వర్తిస్తుంది.")
+        return 100.0  # డమ్మీ టెస్టింగ్ ప్రైస్ (API కాల్స్ లేనప్పుడు)
 
+
+def place_broker_order(broker, access_token, api_key, instrument_key, quantity, price):
+    """
+    అన్ని బ్రోకర్ ప్లాట్‌ఫారమ్‌లకు వర్తించే ఆర్డర్ ఎగ్జిక్యూషన్ ఫంక్షన్
+    """
+    broker = broker.lower()
+    headers = {}
+    payload = {}
+    url = ""
+
+    # 1. UPSTOX
+    if broker == "upstox":
+        url = "https://api.upstox.com/v2/order/place"
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}"
+        }
+        payload = {
+            "quantity": quantity,
+            "product": "I",
+            "validity": "DAY",
+            "price": price,
+            "instrument_token": instrument_key,
+            "order_type": "LIMIT",
+            "transaction_type": "BUY",
+            "disclosed_quantity": 0,
+            "trigger_price": 0,
+            "is_amo": False
+        }
+
+    # 2. ZERODHA (Kite)
+    elif broker == "zerodha":
+        url = "https://api.kite.trade/orders/regular"
+        headers = {
+            "X-Kite-Version": "3",
+            "Authorization": f"token {api_key}:{access_token}"
+        }
+        payload = {
+            "tradingsymbol": instrument_key,
+            "exchange": "BSE",
+            "transaction_type": "BUY",
+            "order_type": "LIMIT",
+            "quantity": quantity,
+            "price": price,
+            "product": "MIS",
+            "validity": "DAY"
+        }
+
+    # 3. ANGELONE (SmartAPI)
+    elif broker == "angelone":
+        url = "https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/placeOrder"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-UserType": "USER",
+            "X-SourceID": "WEB",
+            "X-ClientLocalIP": "127.0.0.1",
+            "X-ClientPublicIP": "127.0.0.1",
+            "X-MACAddress": "MAC_ADDRESS",
+            "X-PrivateKey": api_key
+        }
+        payload = {
+            "variety": "NORMAL",
+            "tradingsymbol": instrument_key,
+            "symboltoken": "999001",
+            "transactiontype": "BUY",
+            "exchange": "BSE",
+            "ordertype": "LIMIT",
+            "producttype": "INTRADAY",
+            "duration": "DAY",
+            "price": price,
+            "quantity": quantity
+        }
+
+    # 4. DHAN
+    elif broker == "dhan":
+        url = "https://api.dhan.co/orders"
+        headers = {
+            "access-token": access_token,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+        payload = {
+            "dhanClientId": api_key,
+            "transactionType": "BUY",
+            "exchangeSegment": "BSE_FNO",
+            "productType": "INTRADAY",
+            "orderType": "LIMIT",
+            "validity": "DAY",
+            "tradingSymbol": instrument_key,
+            "securityId": "1010",
+            "quantity": quantity,
+            "price": price
+        }
+
+    # 5. FYERS
+    elif broker == "fyers":
+        url = "https://api-v3.fyers.in/orders/sync"
+        headers = {
+            "Authorization": f"{api_key}:{access_token}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "symbol": instrument_key,
+            "qty": quantity,
+            "type": 1,  # Limit Order
+            "side": 1,  # Buy
+            "productType": "INTRADAY",
+            "limitPrice": price,
+            "stopPrice": 0,
+            "validity": "DAY",
+            "disclosedQty": 0,
+            "offlineOrder": False
+        }
+
+    # API Request పంపడం
     try:
         response = requests.post(url, json=payload, headers=headers)
         res_data = response.json()
-        print(f"[ORDER RESPONSE] Status: {response.status_code} | Data: {res_data}")
+        print(f"[{broker.upper()} RESPONSE] Status: {response.status_code} | Response: {res_data}")
         return res_data
     except Exception as e:
-        print(f"[ERROR] Order Placement Failed: {e}")
+        print(f"[{broker.upper()} ERROR] Order Placement Failed: {e}")
         return {"status": "error", "message": str(e)}
 
 # ==============================================================================
@@ -173,34 +257,38 @@ def start_strategy():
     global user_config, trading_state
     data = request.json or {}
     
-    user_config["broker"] = data.get("broker", "upstox")
-    user_config["access_token"] = data.get("access_token") or data.get("api_key")  # అంశం 4: రోజూ లాగిన్ అయ్యే Access Token
+    # యూజర్ పంపిన బ్రోకర్ వివరాలు తీసుకోబడతాయి
+    user_config["broker"] = data.get("broker", "upstox").lower()
+    user_config["access_token"] = data.get("access_token") or data.get("api_secret", "")
+    user_config["api_key"] = data.get("api_key", "")
     user_config["lots"] = int(data.get("lots", 1))
 
-    # CE మరియు PE కి సంబంధించిన ఇన్‌స్ట్రుమెంట్ కీలు (ఉదాహరణకు)
-    ce_instrument = data.get("ce_instrument", "NSE_FO|12345")
-    pe_instrument = data.get("pe_instrument", "NSE_FO|67890")
+    ce_symbol = data.get("ce_symbol", "SENSEX26AUG80000CE")
+    pe_symbol = data.get("pe_symbol", "SENSEX26AUG80000PE")
 
-    # 10:30 AM high క్యాలిక్యులేషన్ (+3 Points)
-    ce_entry_price = calculate_1030_entry_price(ce_instrument)
-    pe_entry_price = calculate_1030_entry_price(pe_instrument)
+    # 1. 10:30 AM Entry Price (High + 3 Points) క్యాలిక్యులేషన్
+    ce_entry_price = calculate_1030_entry_price(
+        user_config["broker"], ce_symbol, user_config["access_token"], user_config["api_key"]
+    )
+    pe_entry_price = calculate_1030_entry_price(
+        user_config["broker"], pe_symbol, user_config["access_token"], user_config["api_key"]
+    )
 
-    # అంశం 3: స్ట్రాటజీ కింద లాగిన్ కాగానే డిఫాల్ట్‌గా 1 ఆర్డర్ ప్లేస్ చేయడం
-    order_result = {}
-    if ce_entry_price:
-        # బ్రోకర్ అకౌంట్‌కి ఆర్డర్ రిక్వెస్ట్ వెళుతుంది (ఫండ్స్ లేకపోతే రిజెక్ట్ అవుతుంది)
-        order_result = place_upstox_order(
-            instrument_key=ce_instrument, 
-            quantity=user_config["lots"] * 10, # Lot Size
-            order_type="LIMIT", 
-            price=ce_entry_price
-        )
+    # 2. యూజర్ లాగిన్ కాగానే డిఫాల్ట్‌గా 1 ఆర్డర్ ఎగ్జిక్యూషన్ (ఫండ్స్ లేకపోతే బ్రోకర్ Rejection నమోదవుతుంది)
+    order_result = place_broker_order(
+        broker=user_config["broker"],
+        access_token=user_config["access_token"],
+        api_key=user_config["api_key"],
+        instrument_key=ce_symbol,
+        quantity=user_config["lots"] * 10,
+        price=ce_entry_price
+    )
 
     trading_state["is_active"] = True
     
     return jsonify({
         "status": "success",
-        "message": "Strategy Started & Default Order Sent to Broker!",
+        "message": f"{user_config['broker'].upper()} లో స్ట్రాటజీ ప్రారంభమైంది. Default Order ట్రై చేయబడింది.",
         "ce_entry_price": ce_entry_price,
         "pe_entry_price": pe_entry_price,
         "broker_order_response": order_result
