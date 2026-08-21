@@ -1,6 +1,7 @@
 import os
 import time
 import requests
+import threading
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -23,7 +24,7 @@ trading_state = {
 }
 
 user_config = {
-    "broker": "upstox",  # 'upstox', 'angelone', 'zerodha', 'dhan', 'fyers'
+    "broker": "upstox",
     "access_token": "",
     "api_key": "",
     "lots": 1,
@@ -35,13 +36,9 @@ user_config = {
 # ==============================================================================
 
 def get_15min_candle(broker, instrument_key, access_token, api_key=""):
-    """
-    10:30 AM క్యాండిల్ డేటాను తెచ్చుకోవడానికి బ్రోకర్ల ఫాల్‌బ్యాక్ లాజిక్
-    """
     today_str = datetime.now().strftime("%Y-%m-%d")
     yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    # Upstox Historical Data Example
     if broker == "upstox":
         url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{yesterday_str}/{yesterday_str}"
         headers = {"Accept": "application/json"}
@@ -54,35 +51,27 @@ def get_15min_candle(broker, instrument_key, access_token, api_key=""):
         except Exception:
             pass
 
-    # నిన్నటి క్యాండిల్ డేటా దొరక్కపోతే ఈరోజు (Running Day) 10:30 AM డేటా తీసుకోవడం
-    # API కనెక్షన్ ఫెయిల్ అయినా టెస్టింగ్ నిమిత్తం డమ్మీ ఫాల్‌బ్యాక్
     return None
 
 
 def calculate_1030_entry_price(broker, instrument_key, access_token, api_key=""):
-    """
-    నిన్నటి 10:30 AM High ఉంటే +3 పాయింట్లు. లేకపోతే ఈరోజటి 10:30 AM High + 3 పాయింట్లు.
-    """
     candle = get_15min_candle(broker, instrument_key, access_token, api_key)
     
     if candle and 'high' in candle:
         print(f"[{broker.upper()}] 10:30 AM Candle High లభించింది.")
         return candle['high'] + 3
     else:
-        print(f"[{broker.upper()}] నిన్నటి/ఈనాటి 10:30 AM డేటా లభించలేదు. Default/Mock entry వర్తిస్తుంది.")
-        return 100.0  # డమ్మీ టెస్టింగ్ ప్రైస్ (API కాల్స్ లేనప్పుడు)
+        print(f"[{broker.upper()}] 10:30 AM డేటా లభించలేదు. Default mock entry ప్రైస్ ఉపయోగిస్తున్నాం.")
+        return 400.0  # డమ్మీ టెస్టింగ్ ప్రైస్
 
 
 def place_broker_order(broker, access_token, api_key, instrument_key, quantity, price):
-    """
-    అన్ని బ్రోకర్ ప్లాట్‌ఫారమ్‌లకు వర్తించే ఆర్డర్ ఎగ్జిక్యూషన్ ఫంక్షన్
-    """
     broker = broker.lower()
     headers = {}
     payload = {}
     url = ""
 
-    # 1. UPSTOX
+    # UPSTOX
     if broker == "upstox":
         url = "https://api.upstox.com/v2/order/place"
         headers = {
@@ -103,7 +92,7 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "is_amo": False
         }
 
-    # 2. ZERODHA (Kite)
+    # ZERODHA
     elif broker == "zerodha":
         url = "https://api.kite.trade/orders/regular"
         headers = {
@@ -121,7 +110,7 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "validity": "DAY"
         }
 
-    # 3. ANGELONE (SmartAPI)
+    # ANGELONE
     elif broker == "angelone":
         url = "https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/placeOrder"
         headers = {
@@ -148,7 +137,7 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "quantity": quantity
         }
 
-    # 4. DHAN
+    # DHAN
     elif broker == "dhan":
         url = "https://api.dhan.co/orders"
         headers = {
@@ -169,7 +158,7 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "price": price
         }
 
-    # 5. FYERS
+    # FYERS
     elif broker == "fyers":
         url = "https://api-v3.fyers.in/orders/sync"
         headers = {
@@ -179,8 +168,8 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
         payload = {
             "symbol": instrument_key,
             "qty": quantity,
-            "type": 1,  # Limit Order
-            "side": 1,  # Buy
+            "type": 1,
+            "side": 1,
             "productType": "INTRADAY",
             "limitPrice": price,
             "stopPrice": 0,
@@ -189,7 +178,6 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "offlineOrder": False
         }
 
-    # API Request పంపడం
     try:
         response = requests.post(url, json=payload, headers=headers)
         res_data = response.json()
@@ -200,7 +188,39 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
         return {"status": "error", "message": str(e)}
 
 # ==============================================================================
-# 3. ADMIN APPROVAL & USER CHECK ENDPOINTS
+# 3. BACKGROUND MONITORING LOOP (BACKGROUND THREAD)
+# ==============================================================================
+
+def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_price):
+    global trading_state
+    print("[ALGO] Live Monitoring Started in Background...")
+    
+    order_executed = False
+    
+    while trading_state["is_active"] and not order_executed:
+        try:
+            print(f"[ALGO] Placing Order for {ce_symbol} at Target Price {ce_target_price}...")
+            
+            # బ్రోకర్ అకౌంట్‌లోకి ఆర్డర్ రిక్వెస్ట్ పంపడం
+            res = place_broker_order(
+                broker=broker,
+                access_token=user_config["access_token"],
+                api_key=user_config["api_key"],
+                instrument_key=ce_symbol,
+                quantity=user_config["lots"] * 10,
+                price=ce_target_price
+            )
+            
+            print(f"[ALGO] Order Executed Result: {res}")
+            order_executed = True # ఒకసారి ఆర్డర్ పంపిన తర్వాత లూప్ ఆగుతుంది
+            
+        except Exception as e:
+            print(f"[ALGO LOOP ERROR] {e}")
+            
+        time.sleep(2)
+
+# ==============================================================================
+# 4. ADMIN APPROVAL & USER CHECK ENDPOINTS
 # ==============================================================================
 
 @app.route('/request-approval', methods=['POST', 'OPTIONS'])
@@ -246,7 +266,7 @@ def check_user_status():
     return jsonify({"status": status}), 200
 
 # ==============================================================================
-# 4. TRADING ALGO STRATEGY ENDPOINTS
+# 5. TRADING ALGO STRATEGY ENDPOINTS
 # ==============================================================================
 
 @app.route('/start-strategy', methods=['POST', 'OPTIONS'])
@@ -257,14 +277,13 @@ def start_strategy():
     global user_config, trading_state
     data = request.json or {}
     
-    # యూజర్ పంపిన బ్రోకర్ వివరాలు తీసుకోబడతాయి
     user_config["broker"] = data.get("broker", "upstox").lower()
     user_config["access_token"] = data.get("access_token") or data.get("api_secret", "")
     user_config["api_key"] = data.get("api_key", "")
     user_config["lots"] = int(data.get("lots", 1))
 
-    ce_symbol = data.get("ce_symbol", "SENSEX26AUG80000CE")
-    pe_symbol = data.get("pe_symbol", "SENSEX26AUG80000PE")
+    ce_symbol = data.get("ce_symbol", "SENSEX77700CE")
+    pe_symbol = data.get("pe_symbol", "SENSEX77700PE")
 
     # 1. 10:30 AM Entry Price (High + 3 Points) క్యాలిక్యులేషన్
     ce_entry_price = calculate_1030_entry_price(
@@ -274,24 +293,21 @@ def start_strategy():
         user_config["broker"], pe_symbol, user_config["access_token"], user_config["api_key"]
     )
 
-    # 2. యూజర్ లాగిన్ కాగానే డిఫాల్ట్‌గా 1 ఆర్డర్ ఎగ్జిక్యూషన్ (ఫండ్స్ లేకపోతే బ్రోకర్ Rejection నమోదవుతుంది)
-    order_result = place_broker_order(
-        broker=user_config["broker"],
-        access_token=user_config["access_token"],
-        api_key=user_config["api_key"],
-        instrument_key=ce_symbol,
-        quantity=user_config["lots"] * 10,
-        price=ce_entry_price
-    )
-
     trading_state["is_active"] = True
-    
+
+    # 2. బ్యాక్‌గ్రౌండ్ థ్రెడ్ ప్రారంభించడం
+    strategy_thread = threading.Thread(
+        target=run_strategy_loop, 
+        args=(user_config["broker"], ce_symbol, pe_symbol, ce_entry_price, pe_entry_price)
+    )
+    strategy_thread.daemon = True
+    strategy_thread.start()
+
     return jsonify({
         "status": "success",
-        "message": f"{user_config['broker'].upper()} లో స్ట్రాటజీ ప్రారంభమైంది. Default Order ట్రై చేయబడింది.",
+        "message": f"{user_config['broker'].upper()} Strategy Started & Background Monitoring Active!",
         "ce_entry_price": ce_entry_price,
-        "pe_entry_price": pe_entry_price,
-        "broker_order_response": order_result
+        "pe_entry_price": pe_entry_price
     }), 200
 
 
@@ -307,7 +323,7 @@ def get_history():
     }), 200
 
 # ==============================================================================
-# 5. RENDER SERVER STARTUP
+# 6. RENDER SERVER STARTUP
 # ==============================================================================
 
 if __name__ == '__main__':
