@@ -1,1 +1,266 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensex Edge Telugu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0b0f17;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center p-4">
 
+    <!-- 1. SUBSCRIPTION & WELCOME CARD (EXACT ORIGINAL DESIGN) -->
+    <div id="subscriptionCard" class="glass-card p-6 rounded-2xl w-full max-w-md mx-auto border border-slate-800 shadow-2xl text-center">
+        
+        <!-- Top Brand Header -->
+        <div class="flex flex-col items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700 shadow-md mb-3">
+                <span class="text-2xl">🚀</span>
+            </div>
+            <h1 class="text-2xl font-bold text-yellow-400 tracking-wide">
+                Sensex Edge Telugu
+            </h1>
+            <p class="text-xs text-slate-400 font-medium tracking-widest uppercase mt-1">
+                LEARN • PRACTICE • GROW
+            </p>
+        </div>
+
+        <!-- QR Code Box (Original Styled Border & Alignment) -->
+        <div class="relative w-72 h-72 mx-auto mb-6 p-2 rounded-2xl border-2 border-indigo-500/80 bg-slate-950 flex items-center justify-center shadow-2xl">
+            <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=umasasikanthn04@okhdfcbank&pn=SensexEdge&cu=INR" 
+                alt="Payment QR" 
+                class="w-full h-full rounded-xl bg-white p-2 object-contain"
+            />
+        </div>
+
+        <!-- Pricing & UPI Details Box -->
+        <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 mb-5 text-left">
+            <div class="text-xl font-bold text-emerald-400 mb-1">
+                ₹2,499 / Month
+            </div>
+            <div class="text-xs text-slate-400 mb-1">
+                UPI ID:
+            </div>
+            <div class="text-sm font-semibold text-sky-400 break-all select-all">
+                umasasikanthn04@okhdfcbank
+            </div>
+        </div>
+
+        <!-- Phone Verification Input -->
+        <div class="text-left mb-4">
+            <label class="block text-xs text-slate-300 mb-2">
+                Enter Phone/Cell Number (for Verification)
+            </label>
+            <input 
+                type="tel" 
+                id="phoneInput"
+                placeholder="10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి" 
+                class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+            />
+        </div>
+
+        <!-- Action Buttons -->
+        <button onclick="submitApprovalRequest()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl shadow-lg transition mb-3">
+            Continue
+        </button>
+
+        <a href="https://wa.me/" target="_blank" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-2 text-sm transition mb-4">
+            <span>💬</span> Contact Admin on WhatsApp
+        </a>
+
+        <button onclick="toggleAdminPanel()" class="text-xs text-yellow-500/80 hover:text-yellow-400 inline-flex items-center gap-1">
+            🔐 Admin Panel Access
+        </button>
+    </div>
+
+    <!-- 2. ADMIN PANEL MODAL (APPROVE / REJECT BUTTONS) -->
+    <div id="adminPanel" class="hidden glass-card p-6 rounded-2xl w-full max-w-md mx-auto border border-yellow-500/40 shadow-2xl text-center">
+        <h2 class="text-xl font-bold text-yellow-400 mb-4 flex items-center justify-center gap-2">
+            <span>🔐</span> Admin Panel
+        </h2>
+        
+        <p class="text-xs text-slate-400 mb-4">పెండింగ్‌లో ఉన్న వినియోగదారుల రిక్వెస్ట్‌లు:</p>
+        
+        <div id="requestsList" class="space-y-3 mb-6 max-h-60 overflow-y-auto">
+            <!-- Dynamic User Requests will load here -->
+            <p class="text-xs text-slate-500">డేటా లోడ్ అవుతోంది...</p>
+        </div>
+
+        <button onclick="toggleAdminPanel()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm">
+            Close Panel
+        </button>
+    </div>
+
+    <!-- 3. DASHBOARD / STRATEGY SCREEN (APPROVED USERS ONLY) -->
+    <div id="dashboardScreen" class="hidden glass-card p-6 rounded-2xl w-full max-w-md mx-auto border border-emerald-500/40 shadow-2xl text-center">
+        <h2 class="text-2xl font-bold text-emerald-400 mb-2">Welcome to Sensex Edge</h2>
+        <p class="text-xs text-slate-400 mb-6">మీ ఖాతా ఆమోదించబడింది. అల్గో రన్ చేయడానికి సిద్ధంగా ఉంది.</p>
+        
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6 text-left space-y-3">
+            <div>
+                <label class="text-xs text-slate-400">Select Broker</label>
+                <select id="brokerSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white mt-1">
+                    <option value="upstox">Upstox</option>
+                    <option value="zerodha">Zerodha</option>
+                    <option value="angelone">AngelOne</option>
+                    <option value="dhan">Dhan</option>
+                    <option value="fyers">Fyers</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-xs text-slate-400">Access Token / API Secret</label>
+                <input type="text" id="accessTokenInput" placeholder="Enter Token" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white mt-1" />
+            </div>
+            <div>
+                <label class="text-xs text-slate-400">Lots</label>
+                <input type="number" id="lotsInput" value="1" min="1" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white mt-1" />
+            </div>
+        </div>
+
+        <button onclick="startStrategy()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl shadow-lg transition">
+            Start Strategy
+        </button>
+    </div>
+
+    <script>
+        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com"; // మీ Render Backend URL
+
+        // 1. User Approval Request
+        async function submitApprovalRequest() {
+            const phone = document.getElementById('phoneInput').value;
+            if (!phone || phone.length < 10) {
+                alert("దయచేసి సరియైన 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/request-approval`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone })
+                });
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    alert("మీ రిక్వెస్ట్ అడ్మిన్‌కు పంపబడింది. ఆమోదం లభించాక ఆటోమేటిక్‌గా ఓపెన్ అవుతుంది.");
+                    checkUserStatusPeriodically(phone);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (err) {
+                alert("సర్వర్ కి కనెక్ట్ అవ్వడం లేదు. దయచేసి మళ్లీ ప్రయత్నించండి.");
+            }
+        }
+
+        // 2. Poll Status Check for Approved Users
+        function checkUserStatusPeriodically(phone) {
+            const interval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${BACKEND_URL}/check-user-status?phone=${phone}`);
+                    const data = await res.json();
+                    
+                    if (data.status === 'APPROVED') {
+                        clearInterval(interval);
+                        alert("మీ ఖాతా ఆమోదించబడింది!");
+                        document.getElementById('subscriptionCard').classList.add('hidden');
+                        document.getElementById('dashboardScreen').classList.remove('hidden');
+                    } else if (data.status === 'REJECTED') {
+                        clearInterval(interval);
+                        alert("మీ రిక్వెస్ట్ తిరస్కరించబడింది. దయచేసి అడ్మిన్‌ను సంప్రదించండి.");
+                    }
+                } catch (e) {}
+            }, 3000);
+        }
+
+        // 3. Admin Panel Logic (Fetch & Approve/Reject)
+        function toggleAdminPanel() {
+            const admin = document.getElementById('adminPanel');
+            const sub = document.getElementById('subscriptionCard');
+            if (admin.classList.contains('hidden')) {
+                admin.classList.remove('hidden');
+                sub.classList.add('hidden');
+                fetchPendingRequests();
+            } else {
+                admin.classList.add('hidden');
+                sub.classList.remove('hidden');
+            }
+        }
+
+        async function fetchPendingRequests() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/get-pending-requests`);
+                const requests = await res.json();
+                const container = document.getElementById('requestsList');
+                
+                if (requests.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-500">పెండింగ్ రిక్వెస్ట్‌లు ఏవీ లేవు.</p>`;
+                    return;
+                }
+
+                container.innerHTML = requests.map(r => `
+                    <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <span class="text-sm font-medium text-slate-200">${r.phone}</span>
+                        <div class="flex gap-2">
+                            <button onclick="handleAdminAction('${r.phone}', 'APPROVE')" class="px-3 py-1 bg-emerald-500 text-slate-950 text-xs font-bold rounded-lg hover:bg-emerald-400">
+                                Approve
+                            </button>
+                            <button onclick="handleAdminAction('${r.phone}', 'REJECT')" class="px-3 py-1 bg-rose-500 text-white text-xs font-bold rounded-lg hover:bg-rose-600">
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                document.getElementById('requestsList').innerHTML = `<p class="text-xs text-rose-400">డేటా తెచ్ఛుటలో విఫలమైంది.</p>`;
+            }
+        }
+
+        async function handleAdminAction(phone, action) {
+            try {
+                await fetch(`${BACKEND_URL}/admin-action`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, action })
+                });
+                fetchPendingRequests();
+            } catch (e) {
+                alert("Action failed!");
+            }
+        }
+
+        // 4. Start Strategy Action
+        async function startStrategy() {
+            const broker = document.getElementById('brokerSelect').value;
+            const token = document.getElementById('accessTokenInput').value;
+            const lots = document.getElementById('lotsInput').value;
+
+            if (!token) {
+                alert("దయచేసి Access Token నమోదు చేయండి.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/start-strategy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ broker, access_token: token, lots: parseInt(lots) })
+                });
+                const data = await res.json();
+                alert("స్ట్రాటజీ రన్ అవుతోంది: " + data.message);
+            } catch (e) {
+                alert("స్ట్రాటజీ స్టార్ట్ చేయడంలో విఫలమైంది.");
+            }
+        }
+    </script>
+</body>
+  </html>
