@@ -31,17 +31,57 @@ user_config = {
     "symbol": "SENSEX"
 }
 
+SENSEX_INDEX_KEY = "BSE_INDEX|SENSEX" # Upstox Sensex Instrument Key
+
 # ==============================================================================
-# 2. HELPER FUNCTIONS & MULTI-BROKER ORDER INTEGRATION
+# 2. AUTO SPOT PRICE & ATM STRIKE SELECTION LOGIC
+# ==============================================================================
+
+def fetch_sensex_915_spot(broker, access_token):
+    """
+    9:15 AM సెన్సెక్స్ ఇండెక్స్ క్యాండిల్ స్పాట్ ప్రైస్‌ను ఆటోమేటిక్‌గా ఫెచ్ చేస్తుంది.
+    """
+    broker = str(broker).lower()
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    
+    if broker == "upstox":
+        url = f"https://api.upstox.com/v2/historical-candle/{SENSEX_INDEX_KEY}/15minute/{today_str}/{today_str}"
+        headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
+        try:
+            res = requests.get(url, headers=headers).json()
+            candles = res.get("data", {}).get("candles", [])
+            for c in candles:
+                if "09:15:00" in c[0]:
+                    spot_price = c[4] # 9:15 Candle Close Price
+                    print(f"[ALGO] Fetched 9:15 Sensex Spot Price: {spot_price}")
+                    return float(spot_price)
+        except Exception as e:
+            print(f"[ERROR] Failed to fetch Sensex Spot Price: {e}")
+
+    # డేటా దొరకకపోతే సేఫ్‌గా డిఫాల్ట్ ప్రైస్
+    return 76350.0
+
+
+def calculate_atm_strike_symbols(spot_price):
+    """
+    స్పాట్ ప్రైస్ (Ex: 76350) ని Nearest 100 కి రౌండ్ చేసి ATM CE & PE సింబల్స్ క్రియేట్ చేస్తుంది
+    """
+    atm_strike = round(spot_price / 100) * 100
+    ce_symbol = f"SENSEX{atm_strike}CE"
+    pe_symbol = f"SENSEX{atm_strike}PE"
+    print(f"[ALGO] Auto Selected ATM Strike: {atm_strike} | CE: {ce_symbol} | PE: {pe_symbol}")
+    return ce_symbol, pe_symbol, atm_strike
+
+# ==============================================================================
+# 3. HELPER FUNCTIONS & MULTI-BROKER ORDER INTEGRATION
 # ==============================================================================
 
 def get_15min_candle(broker, instrument_key, access_token, api_key=""):
     today_str = datetime.now().strftime("%Y-%m-%d")
-    yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
     if broker == "upstox":
-        url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{yesterday_str}/{yesterday_str}"
-        headers = {"Accept": "application/json"}
+        url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{today_str}/{today_str}"
+        headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
         try:
             res = requests.get(url, headers=headers).json()
             candles = res.get("data", {}).get("candles", [])
@@ -58,10 +98,10 @@ def calculate_1030_entry_price(broker, instrument_key, access_token, api_key="")
     candle = get_15min_candle(broker, instrument_key, access_token, api_key)
     
     if candle and 'high' in candle:
-        print(f"[{broker.upper()}] 10:30 AM Candle High లభించింది.")
+        print(f"[{broker.upper()}] 10:30 AM Candle High దొరికింది: {candle['high']}")
         return candle['high'] + 3
     else:
-        print(f"[{broker.upper()}] 10:30 AM డేటా లభించలేదు. Default mock entry ప్రైస్ ఉపయోగిస్తున్నాం.")
+        print(f"[{broker.upper()}] 10:30 AM డేటా దొరకలేదు. Default mock entry ప్రైస్ (400.0) ఉపయోగిస్తున్నాం.")
         return 400.0
 
 
@@ -188,13 +228,10 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
         return {"status": "error", "message": str(e)}
 
 # ==============================================================================
-# 3. BACKGROUND MONITORING LOOP (3:10 PM Auto-Cancel with Time Check)
+# 4. BACKGROUND MONITORING LOOP (3:10 PM Auto-Cancel)
 # ==============================================================================
 
 def cancel_all_broker_orders(broker, access_token, api_key=""):
-    """
-    3:10 PM సమయంలో బ్రోకర్ ఖాతాలోని ఓపెన్ ఆర్డర్లను క్యాన్సిల్ చేసే ఫంక్షన్
-    """
     broker = str(broker).lower()
     headers = {}
     url = ""
@@ -224,11 +261,9 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
     
     while trading_state["is_active"]:
         now = datetime.now()
-        current_time_str = now.strftime("%H:%M") # HH:MM ఫార్మాట్ (e.g., 15:10)
+        current_time_str = now.strftime("%H:%M")
 
-        # -------------------------------------------------------------
-        # నియమం: 3:10 PM (15:10) కి ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ చేయడం
-        # -------------------------------------------------------------
+        # నియమం: 3:10 PM కి ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ చేయడం
         if current_time_str >= "15:10":
             print("[ALGO TIME EXIT] 3:10 PM అయ్యింది! అన్ని ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ అవుతున్నాయి...")
             cancel_all_broker_orders(
@@ -239,9 +274,7 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
             trading_state["is_active"] = False
             break
 
-        # -------------------------------------------------------------
         # ఎంట్రీ ఆర్డర్ ఎగ్జిక్యూషన్ లాజిక్
-        # -------------------------------------------------------------
         if not order_executed:
             try:
                 print(f"[ALGO] Placing Order for {ce_symbol} at Price {ce_target_price}...")
@@ -256,7 +289,7 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
                 )
                 
                 print(f"[ALGO] Execution Output: {res}")
-                order_executed = True # ఆర్డర్ అటెంప్ట్ పూర్తయింది
+                order_executed = True
                 
             except Exception as e:
                 print(f"[ALGO LOOP ERROR] {e}")
@@ -264,7 +297,7 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
         time.sleep(2)
 
 # ==============================================================================
-# 4. ADMIN APPROVAL & USER CHECK ENDPOINTS
+# 5. ADMIN APPROVAL & USER CHECK ENDPOINTS
 # ==============================================================================
 
 @app.route('/request-approval', methods=['POST', 'OPTIONS'])
@@ -310,7 +343,7 @@ def check_user_status():
     return jsonify({"status": status}), 200
 
 # ==============================================================================
-# 5. TRADING ALGO STRATEGY ENDPOINTS
+# 6. TRADING ALGO STRATEGY ENDPOINTS
 # ==============================================================================
 
 @app.route('/start-strategy', methods=['POST', 'OPTIONS'])
@@ -326,9 +359,13 @@ def start_strategy():
     user_config["api_key"] = data.get("api_key", "")
     user_config["lots"] = int(data.get("lots", 1))
 
-    ce_symbol = data.get("ce_symbol", "SENSEX77700CE")
-    pe_symbol = data.get("pe_symbol", "SENSEX77700PE")
+    # 1. 9:15 AM Sensex Spot Price ని ఆటోమేటిక్‌గా ఫెచ్ చేస్తుంది
+    spot_price = fetch_sensex_915_spot(user_config["broker"], user_config["access_token"])
 
+    # 2. స్పాట్ ప్రైస్ ఆధారంగా ATM Strike క్యాలిక్యులేట్ చేస్తుంది (Ex: 76350 -> 76400)
+    ce_symbol, pe_symbol, atm_strike = calculate_atm_strike_symbols(spot_price)
+
+    # 3. ATM ఆప్షన్ల 10:30 AM High + 3 పాయింట్లు ఎంట్రీ ప్రైస్ గా సెట్ చేస్తుంది
     ce_entry_price = calculate_1030_entry_price(
         user_config["broker"], ce_symbol, user_config["access_token"], user_config["api_key"]
     )
@@ -347,7 +384,10 @@ def start_strategy():
 
     return jsonify({
         "status": "success",
-        "message": "Strategy Started & Background Monitoring Active!",
+        "message": f"Strategy Started! Auto Selected ATM: {atm_strike}",
+        "spot_price": spot_price,
+        "ce_symbol": ce_symbol,
+        "pe_symbol": pe_symbol,
         "ce_entry_price": ce_entry_price,
         "pe_entry_price": pe_entry_price
     }), 200
@@ -365,7 +405,7 @@ def get_history():
     }), 200
 
 # ==============================================================================
-# 6. RENDER SERVER STARTUP
+# 7. RENDER SERVER STARTUP
 # ==============================================================================
 
 if __name__ == '__main__':
