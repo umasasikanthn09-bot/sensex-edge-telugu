@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # ==============================================================================
-# 1. GLOBAL STATE & STORAGE
+# 1. GLOBAL STATE & CONFIGURATION
 # ==============================================================================
 
 pending_requests = {}  
@@ -31,15 +31,50 @@ user_config = {
     "symbol": "SENSEX"
 }
 
-SENSEX_INDEX_KEY = "BSE_INDEX|SENSEX" # Upstox Sensex Instrument Key
+SENSEX_INDEX_KEY = "BSE_INDEX|SENSEX"
 
 # ==============================================================================
-# 2. AUTO SPOT PRICE & ATM STRIKE SELECTION LOGIC
+# 2. HELPER FUNCTIONS: EXPIRY & INSTRUMENT RESOLUTION
+# ==============================================================================
+
+def get_next_expiry_date():
+    """
+    సెన్సెక్స్ వారపు ఎక్స్‌పైరీ తేదీని (సాధారణంగా గురువారం/శుక్రవారం) క్యాలిక్యులేట్ చేస్తుంది.
+    """
+    today = datetime.now()
+    # BSE SENSEX Weekly Expiry (Thursday/Friday alignment)
+    days_ahead = (3 - today.weekday()) % 7  # 3 = Thursday
+    if days_ahead == 0 and today.hour >= 15:
+        days_ahead += 7
+    expiry_date = today + timedelta(days=days_ahead)
+    return expiry_date
+
+
+def get_upstox_instrument_key(trading_symbol, access_token):
+    """
+    Upstox Search API ద్వారా ఆప్షన్ స్ట్రైక్ యొక్క అసలైన Instrument Token ని ఫెచ్ చేస్తుంది.
+    """
+    url = f"https://api.upstox.com/v2/instruments/search?query={trading_symbol}"
+    headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
+    try:
+        res = requests.get(url, headers=headers).json()
+        data = res.get("data", [])
+        if data:
+            for item in data:
+                if item.get("trading_symbol") == trading_symbol or item.get("short_name") == trading_symbol:
+                    return item.get("instrument_key")
+            return data[0].get("instrument_key")
+    except Exception as e:
+        print(f"[UPSTOX SEARCH ERROR] {e}")
+    return trading_symbol
+
+# ==============================================================================
+# 3. SPOT PRICE & DYNAMIC ATM STRIKE CALCULATIONS
 # ==============================================================================
 
 def fetch_sensex_915_spot(broker, access_token):
     """
-    9:15 AM సెన్సెక్స్ ఇండెక్స్ క్యాండిల్ స్పాట్ ప్రైస్‌ను ఆటోమేటిక్‌గా ఫెచ్ చేస్తుంది.
+    9:15 AM సెన్సెక్స్ ఇండెక్స్ ક્లోజింగ్ స్పాట్ ప్రైస్‌ను ఆటోమేటిక్‌గా ఫెచ్ చేస్తుంది.
     """
     broker = str(broker).lower()
     today_str = datetime.now().strftime("%Y-%m-%d")
@@ -52,67 +87,83 @@ def fetch_sensex_915_spot(broker, access_token):
             candles = res.get("data", {}).get("candles", [])
             for c in candles:
                 if "09:15:00" in c[0]:
-                    spot_price = c[4] # 9:15 Candle Close Price
-                    print(f"[ALGO] Fetched 9:15 Sensex Spot Price: {spot_price}")
-                    return float(spot_price)
+                    spot_price = float(c[4])
+                    print(f"[ALGO] Live 9:15 Sensex Spot Price: {spot_price}")
+                    return spot_price
         except Exception as e:
-            print(f"[ERROR] Failed to fetch Sensex Spot Price: {e}")
+            print(f"[ERROR] Spot Fetch Failed: {e}")
 
-    # డేటా దొరకకపోతే సేఫ్‌గా డిఫాల్ట్ ప్రైస్
-    return 76350.0
+    return 76350.0  # API డేటా లభించకపోతే సేఫ్ ఫాల్‌బ్యాక్
 
 
-def calculate_atm_strike_symbols(spot_price):
+def calculate_atm_strike_symbols(spot_price, broker):
     """
-    స్పాట్ ప్రైస్ (Ex: 76350) ని Nearest 100 కి రౌండ్ చేసి ATM CE & PE సింబల్స్ క్రియేట్ చేస్తుంది
+    స్పాట్ ప్రైస్ ఆధారంగా Nearest 100 ATM స్ట్రైక్ క్యాలిక్యులేట్ చేసి
+    రెస్పెక్టివ్ బ్రోకర్ ఫార్మాట్ సింబల్స్‌ని రిటర్న్ చేస్తుంది.
     """
     atm_strike = round(spot_price / 100) * 100
-    ce_symbol = f"SENSEX{atm_strike}CE"
-    pe_symbol = f"SENSEX{atm_strike}PE"
-    print(f"[ALGO] Auto Selected ATM Strike: {atm_strike} | CE: {ce_symbol} | PE: {pe_symbol}")
+    broker = str(broker).lower()
+    expiry = get_next_expiry_date()
+    
+    yy = expiry.strftime("%y")
+    mmm = expiry.strftime("%b").upper()
+    
+    # 5 బ్రోకర్లకు సరిపడే సింబల్ ఫార్మాటింగ్
+    if broker == "zerodha":
+        ce_symbol = f"SENSEX{yy}{mmm}{atm_strike}CE"
+        pe_symbol = f"SENSEX{yy}{mmm}{atm_strike}PE"
+    elif broker == "fyers":
+        ce_symbol = f"BSE:SENSEX{yy}{mmm}{atm_strike}CE"
+        pe_symbol = f"BSE:SENSEX{yy}{mmm}{atm_strike}PE"
+    else:
+        # Upstox, AngelOne, Dhan
+        ce_symbol = f"SENSEX{atm_strike}CE"
+        pe_symbol = f"SENSEX{atm_strike}PE"
+
+    print(f"[ALGO] Auto Selected ATM: {atm_strike} | CE: {ce_symbol} | PE: {pe_symbol}")
     return ce_symbol, pe_symbol, atm_strike
 
 # ==============================================================================
-# 3. HELPER FUNCTIONS & MULTI-BROKER ORDER INTEGRATION
+# 4. HISTORICAL DATA & 10:30 AM CANDLE HIGH
 # ==============================================================================
 
-def get_15min_candle(broker, instrument_key, access_token, api_key=""):
+def get_1030_candle_high(broker, symbol, access_token):
+    """
+    10:30 AM ఆప్షన్ క్యాండిల్ High ప్రైస్ ని ఫెచ్ చేస్తుంది.
+    """
+    broker = str(broker).lower()
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     if broker == "upstox":
-        url = f"https://api.upstox.com/v2/historical-candle/{instrument_key}/15minute/{today_str}/{today_str}"
+        inst_key = get_upstox_instrument_key(symbol, access_token)
+        url = f"https://api.upstox.com/v2/historical-candle/{inst_key}/15minute/{today_str}/{today_str}"
         headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
         try:
             res = requests.get(url, headers=headers).json()
             candles = res.get("data", {}).get("candles", [])
-            for candle in candles:
-                if "10:30:00" in candle[0]:
-                    return {"high": candle[2]}
+            for c in candles:
+                if "10:30:00" in c[0]:
+                    return float(c[2])  # High Price
         except Exception:
             pass
 
     return None
 
+# ==============================================================================
+# 5. MULTI-BROKER BREAKOUT ORDER EXECUTION (5 BROKERS)
+# ==============================================================================
 
-def calculate_1030_entry_price(broker, instrument_key, access_token, api_key=""):
-    candle = get_15min_candle(broker, instrument_key, access_token, api_key)
-    
-    if candle and 'high' in candle:
-        print(f"[{broker.upper()}] 10:30 AM Candle High దొరికింది: {candle['high']}")
-        return candle['high'] + 3
-    else:
-        print(f"[{broker.upper()}] 10:30 AM డేటా దొరకలేదు. Default mock entry ప్రైస్ (400.0) ఉపయోగిస్తున్నాం.")
-        return 400.0
-
-
-def place_broker_order(broker, access_token, api_key, instrument_key, quantity, price):
+def place_multi_broker_breakout_order(broker, access_token, api_key, symbol, quantity, target_price):
+    """
+    5 ప్రధాన బ్రోకర్లలో 10:30 AM High + 3 బ్రేక్ అవుట్ వద్ద ఎర్రర్-ఫ్రీ ఆర్డర్ ప్లేస్ చేస్తుంది.
+    """
     broker = str(broker).lower()
-    headers = {}
-    payload = {}
-    url = ""
+    trigger_price = round(target_price - 0.5, 2)
+    target_price = round(target_price, 2)
 
     # 1. UPSTOX
     if broker == "upstox":
+        inst_key = get_upstox_instrument_key(symbol, access_token)
         url = "https://api.upstox.com/v2/order/place"
         headers = {
             "Accept": "application/json",
@@ -123,12 +174,12 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "quantity": quantity,
             "product": "I",
             "validity": "DAY",
-            "price": price,
-            "instrument_token": instrument_key,
-            "order_type": "LIMIT",
+            "price": target_price,
+            "trigger_price": trigger_price,
+            "instrument_token": inst_key,
+            "order_type": "SL",
             "transaction_type": "BUY",
             "disclosed_quantity": 0,
-            "trigger_price": 0,
             "is_amo": False
         }
 
@@ -140,12 +191,13 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "Authorization": f"token {api_key}:{access_token}"
         }
         payload = {
-            "tradingsymbol": instrument_key,
-            "exchange": "BSE",
+            "tradingsymbol": symbol,
+            "exchange": "BFO",
             "transaction_type": "BUY",
-            "order_type": "LIMIT",
+            "order_type": "SL",
             "quantity": quantity,
-            "price": price,
+            "price": target_price,
+            "trigger_price": trigger_price,
             "product": "MIS",
             "validity": "DAY"
         }
@@ -165,15 +217,16 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "X-PrivateKey": api_key
         }
         payload = {
-            "variety": "NORMAL",
-            "tradingsymbol": instrument_key,
+            "variety": "STOPLOSS",
+            "tradingsymbol": symbol,
             "symboltoken": "999001",
             "transactiontype": "BUY",
-            "exchange": "BSE",
-            "ordertype": "LIMIT",
+            "exchange": "BFO",
+            "ordertype": "STOPLOSS_LIMIT",
             "producttype": "INTRADAY",
             "duration": "DAY",
-            "price": price,
+            "price": target_price,
+            "triggerprice": trigger_price,
             "quantity": quantity
         }
 
@@ -190,12 +243,12 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "transactionType": "BUY",
             "exchangeSegment": "BSE_FNO",
             "productType": "INTRADAY",
-            "orderType": "LIMIT",
+            "orderType": "STOP_LOSS_LIMIT",
             "validity": "DAY",
-            "tradingSymbol": instrument_key,
-            "securityId": "1010",
+            "tradingSymbol": symbol,
             "quantity": quantity,
-            "price": price
+            "price": target_price,
+            "triggerPrice": trigger_price
         }
 
     # 5. FYERS
@@ -206,29 +259,32 @@ def place_broker_order(broker, access_token, api_key, instrument_key, quantity, 
             "Content-Type": "application/json"
         }
         payload = {
-            "symbol": instrument_key,
+            "symbol": symbol,
             "qty": quantity,
-            "type": 1,
+            "type": 4,  # Stop Limit
             "side": 1,
             "productType": "INTRADAY",
-            "limitPrice": price,
-            "stopPrice": 0,
+            "limitPrice": target_price,
+            "stopPrice": trigger_price,
             "validity": "DAY",
             "disclosedQty": 0,
             "offlineOrder": False
         }
 
+    else:
+        return {"status": "error", "message": "Unsupported Broker"}
+
     try:
         response = requests.post(url, json=payload, headers=headers)
         res_data = response.json()
-        print(f"[{broker.upper()} RESPONSE] Status: {response.status_code} | Data: {res_data}")
+        print(f"[{broker.upper()} ORDER SUCCESS] Status: {response.status_code} | Res: {res_data}")
         return res_data
     except Exception as e:
-        print(f"[{broker.upper()} ERROR] Order Placement Failed: {e}")
+        print(f"[{broker.upper()} ORDER FAILED] Error: {e}")
         return {"status": "error", "message": str(e)}
 
 # ==============================================================================
-# 4. BACKGROUND MONITORING LOOP (3:10 PM Auto-Cancel)
+# 6. MONITORING & 3:10 PM AUTO CANCEL LOOP
 # ==============================================================================
 
 def cancel_all_broker_orders(broker, access_token, api_key=""):
@@ -245,17 +301,23 @@ def cancel_all_broker_orders(broker, access_token, api_key=""):
     elif broker == "angelone":
         url = "https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/cancelOrder"
         headers = {"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}
-    
+    elif broker == "dhan":
+        url = "https://api.dhan.co/orders"
+        headers = {"access-token": access_token}
+    elif broker == "fyers":
+        url = "https://api-v3.fyers.in/orders/sync"
+        headers = {"Authorization": f"{api_key}:{access_token}"}
+
     try:
         response = requests.delete(url, headers=headers)
-        print(f"[{broker.upper()} CANCEL ORDERS] Status: {response.status_code} | Data: {response.json()}")
+        print(f"[{broker.upper()} CANCEL EXECUTED] Status: {response.status_code}")
     except Exception as e:
-        print(f"[{broker.upper()} CANCEL ERROR] Failed to cancel orders: {e}")
+        print(f"[{broker.upper()} CANCEL ERROR] {e}")
 
 
 def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_price):
     global trading_state
-    print("[ALGO] Live Monitoring Started in Background...")
+    print("[ALGO] Live Monitoring & Auto Execution Active...")
     
     order_executed = False
     
@@ -263,9 +325,9 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
         now = datetime.now()
         current_time_str = now.strftime("%H:%M")
 
-        # నియమం: 3:10 PM కి ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ చేయడం
+        # 3:10 PM Auto-Square-off Rule
         if current_time_str >= "15:10":
-            print("[ALGO TIME EXIT] 3:10 PM అయ్యింది! అన్ని ఓపెన్ ఆర్డర్‌లు క్యాన్సిల్ అవుతున్నాయి...")
+            print("[ALGO TIME EXIT] 3:10 PM reached. Cancelling all open orders...")
             cancel_all_broker_orders(
                 broker=broker, 
                 access_token=user_config["access_token"], 
@@ -274,21 +336,29 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
             trading_state["is_active"] = False
             break
 
-        # ఎంట్రీ ఆర్డర్ ఎగ్జిక్యూషన్ లాజిక్
+        # Execute Breakout Orders on Start
         if not order_executed:
             try:
-                print(f"[ALGO] Placing Order for {ce_symbol} at Price {ce_target_price}...")
-                
-                res = place_broker_order(
+                print(f"[ALGO] Placing CE Order for {ce_symbol} at Price {ce_target_price}...")
+                place_multi_broker_breakout_order(
                     broker=broker,
                     access_token=user_config["access_token"],
                     api_key=user_config["api_key"],
-                    instrument_key=ce_symbol,
+                    symbol=ce_symbol,
                     quantity=user_config["lots"] * 10,
-                    price=ce_target_price
+                    target_price=ce_target_price
+                )
+
+                print(f"[ALGO] Placing PE Order for {pe_symbol} at Price {pe_target_price}...")
+                place_multi_broker_breakout_order(
+                    broker=broker,
+                    access_token=user_config["access_token"],
+                    api_key=user_config["api_key"],
+                    symbol=pe_symbol,
+                    quantity=user_config["lots"] * 10,
+                    target_price=pe_target_price
                 )
                 
-                print(f"[ALGO] Execution Output: {res}")
                 order_executed = True
                 
             except Exception as e:
@@ -297,21 +367,19 @@ def run_strategy_loop(broker, ce_symbol, pe_symbol, ce_target_price, pe_target_p
         time.sleep(2)
 
 # ==============================================================================
-# 5. ADMIN APPROVAL & USER CHECK ENDPOINTS
+# 7. API ENDPOINTS (ADMIN & TRADING)
 # ==============================================================================
 
 @app.route('/request-approval', methods=['POST', 'OPTIONS'])
 def request_approval():
     if request.method == 'OPTIONS':
         return jsonify({"status": "ok"}), 200
-    
     data = request.json or {}
     phone = data.get("phone")
     if phone:
         pending_requests[phone] = "PENDING"
-        return jsonify({"status": "success", "message": "Request received"}), 200
-    
-    return jsonify({"status": "error", "message": "No phone number provided"}), 400
+        return jsonify({"status": "success"}), 200
+    return jsonify({"status": "error"}), 400
 
 
 @app.route('/get-pending-requests', methods=['GET'])
@@ -324,16 +392,13 @@ def get_pending_requests():
 def admin_action():
     if request.method == 'OPTIONS':
         return jsonify({"status": "ok"}), 200
-    
     data = request.json or {}
     phone = data.get("phone")
     action = data.get("action")
-    
     if phone in pending_requests:
         pending_requests[phone] = "APPROVED" if action == "APPROVE" else "REJECTED"
         return jsonify({"status": "success"}), 200
-    
-    return jsonify({"status": "error", "message": "Phone number not found"}), 400
+    return jsonify({"status": "error"}), 400
 
 
 @app.route('/check-user-status', methods=['GET'])
@@ -342,9 +407,6 @@ def check_user_status():
     status = pending_requests.get(phone, "NOT_FOUND")
     return jsonify({"status": status}), 200
 
-# ==============================================================================
-# 6. TRADING ALGO STRATEGY ENDPOINTS
-# ==============================================================================
 
 @app.route('/start-strategy', methods=['POST', 'OPTIONS'])
 def start_strategy():
@@ -359,37 +421,42 @@ def start_strategy():
     user_config["api_key"] = data.get("api_key", "")
     user_config["lots"] = int(data.get("lots", 1))
 
-    # 1. 9:15 AM Sensex Spot Price ని ఆటోమేటిక్‌గా ఫెచ్ చేస్తుంది
+    # 1. Fetch Auto 9:15 Sensex Spot Price
     spot_price = fetch_sensex_915_spot(user_config["broker"], user_config["access_token"])
 
-    # 2. స్పాట్ ప్రైస్ ఆధారంగా ATM Strike క్యాలిక్యులేట్ చేస్తుంది (Ex: 76350 -> 76400)
-    ce_symbol, pe_symbol, atm_strike = calculate_atm_strike_symbols(spot_price)
+    # 2. Calculate ATM Strike CE & PE according to selected Broker Format
+    ce_symbol, pe_symbol, atm_strike = calculate_atm_strike_symbols(spot_price, user_config["broker"])
 
-    # 3. ATM ఆప్షన్ల 10:30 AM High + 3 పాయింట్లు ఎంట్రీ ప్రైస్ గా సెట్ చేస్తుంది
-    ce_entry_price = calculate_1030_entry_price(
-        user_config["broker"], ce_symbol, user_config["access_token"], user_config["api_key"]
-    )
-    pe_entry_price = calculate_1030_entry_price(
-        user_config["broker"], pe_symbol, user_config["access_token"], user_config["api_key"]
-    )
+    # 3. Get 10:30 AM Option Candle High Prices
+    ce_high = get_1030_candle_high(user_config["broker"], ce_symbol, user_config["access_token"])
+    pe_high = get_1030_candle_high(user_config["broker"], pe_symbol, user_config["access_token"])
+
+    if ce_high is None or pe_high is None:
+        ce_target_price = 403.0  
+        pe_target_price = 403.0
+        print("[WARNING] Live Candle Data null. Defaulting test prices.")
+    else:
+        ce_target_price = ce_high + 3.0
+        pe_target_price = pe_high + 3.0
 
     trading_state["is_active"] = True
 
     strategy_thread = threading.Thread(
         target=run_strategy_loop, 
-        args=(user_config["broker"], ce_symbol, pe_symbol, ce_entry_price, pe_entry_price)
+        args=(user_config["broker"], ce_symbol, pe_symbol, ce_target_price, pe_target_price)
     )
     strategy_thread.daemon = True
     strategy_thread.start()
 
     return jsonify({
         "status": "success",
-        "message": f"Strategy Started! Auto Selected ATM: {atm_strike}",
+        "message": f"Strategy Executed for Broker: {user_config['broker'].upper()}",
         "spot_price": spot_price,
+        "atm_strike": atm_strike,
         "ce_symbol": ce_symbol,
         "pe_symbol": pe_symbol,
-        "ce_entry_price": ce_entry_price,
-        "pe_entry_price": pe_entry_price
+        "ce_target_price": ce_target_price,
+        "pe_target_price": pe_target_price
     }), 200
 
 
@@ -405,7 +472,7 @@ def get_history():
     }), 200
 
 # ==============================================================================
-# 7. RENDER SERVER STARTUP
+# 8. SERVER INITIALIZATION
 # ==============================================================================
 
 if __name__ == '__main__':
