@@ -199,6 +199,18 @@
 
     </div>
 
+    <!-- CARD 7: SUBSCRIPTION EXPIRED SCREEN -->
+<div id="expiredScreen" style="display: none;" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-4 border border-rose-500/40">
+    <div class="inline-block p-3 bg-rose-500/10 rounded-full mb-1">
+        <span class="text-3xl">⏰</span>
+    </div>
+    <h2 class="text-lg font-bold text-rose-400">Subscription Expired</h2>
+    <p class="text-xs text-slate-300">మీ 30 రోజుల సబ్‌స్క్రిప్షన్ ముగిసింది. యాప్ వాడాలంటే దయచేసి renew చేయండి.</p>
+    <button onclick="goToRenew()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+        Renew Now ➔
+    </button>
+</div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
