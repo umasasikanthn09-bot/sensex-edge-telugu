@@ -284,7 +284,7 @@
                     const data = await res.json();
                     if (data.status === "APPROVED") {
                         localStorage.setItem("admin_access_approved", "true");
-                        localStorage.setItem("approval_date", new Date().getTime());
+                    
                         clearInterval(checkInterval);
                         waitingScreen.style.display = 'none';
                         showAppScreen();
