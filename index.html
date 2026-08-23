@@ -379,32 +379,59 @@
             loadPendingRequests();
         }
 
-        function showAppScreen() {
-            document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('youtubeScreen').style.display = 'none';
-            document.getElementById('paymentScreen').style.display = 'none';
-            document.getElementById('waitingScreen').style.display = 'none';
-            document.getElementById('adminPanelModal').style.display = 'none';
-            
-            const mainApp = document.getElementById('mainApp');
-            if (mainApp) mainApp.style.display = 'block';
+        function isSubscriptionExpired() {
+    const approvalDate = localStorage.getItem("approval_date");
+    if (!approvalDate) return false;  // approval_date లేకపోతే (ఉదా. admin direct access) expiry చెక్ చేయం
+    const now = new Date().getTime();
+    const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
+    return daysPassed >= 30;
+}
 
-            checkSubscriptionExpiry();
+function showAppScreen() {
+    document.getElementById('welcomeScreen').style.display = 'none';
+    document.getElementById('youtubeScreen').style.display = 'none';
+    document.getElementById('paymentScreen').style.display = 'none';
+    document.getElementById('waitingScreen').style.display = 'none';
+    document.getElementById('adminPanelModal').style.display = 'none';
+    document.getElementById('expiredScreen').style.display = 'none';
+
+    if (isSubscriptionExpired()) {
+        showExpiredScreen();
+        return;
+    }
+
+    const mainApp = document.getElementById('mainApp');
+    if (mainApp) mainApp.style.display = 'block';
+
+    checkSubscriptionExpiry();
+}
+
+function showExpiredScreen() {
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('expiredScreen').style.display = 'block';
+}
+
+function goToRenew() {
+    // పాత approval తీసేసి, తిరిగి payment screen కి పంపుతాం
+    localStorage.removeItem("admin_access_approved");
+    localStorage.removeItem("approval_date");
+    document.getElementById('expiredScreen').style.display = 'none';
+    document.getElementById('paymentScreen').style.display = 'block';
+}
+
+function checkSubscriptionExpiry() {
+    const approvalDate = localStorage.getItem("approval_date");
+    if (approvalDate) {
+        const now = new Date().getTime();
+        const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
+        const daysLeft = 30 - daysPassed;
+
+        if (daysLeft <= 3 && daysLeft >= 0) {
+            document.getElementById("daysLeftText").innerText = `${daysLeft} రోజులు`;
+            document.getElementById("expiryReminder").style.display = 'block';
         }
-
-        function checkSubscriptionExpiry() {
-            const approvalDate = localStorage.getItem("approval_date");
-            if (approvalDate) {
-                const now = new Date().getTime();
-                const daysPassed = Math.floor((now - approvalDate) / (1000 * 60 * 60 * 24));
-                const daysLeft = 30 - daysPassed;
-
-                if (daysLeft <= 3 && daysLeft >= 0) {
-                    document.getElementById("daysLeftText").innerText = `${daysLeft} రోజులు`;
-                    document.getElementById("expiryReminder").style.display = 'block';
-                }
-            }
-        }
+    }
+}
 
         // ------------------------------------------------------------------
         // AUTO TRADER START/STOP — ఇప్పుడు నిజంగా బ్యాకెండ్‌ని కాల్ చేస్తుంది
