@@ -1,1 +1,616 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENSEX EDGE TELUGU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #060913; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+        .card-bg { background-color: #0b1120; border: 1px solid #1e293b; }
+        .inner-box { background-color: #070d19; border: 1px solid #172554; }
+        .btn-cyan { background-color: #0284c7; color: #ffffff; }
+        .btn-cyan:hover { background-color: #0369a1; }
+        .input-bg { background-color: #030712; border: 1px solid #1e293b; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-6 flex justify-center items-center">
+
+    <div class="w-full max-w-md space-y-5">
+
+        <!-- CARD 1: WELCOME SCREEN (START POINT) -->
+        <div id="welcomeScreen" style="display: block;" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-3 border border-yellow-500/20">
+            <div class="inline-block p-3 bg-yellow-500/10 rounded-full mb-1">
+                <span class="text-3xl">🚀</span>
+            </div>
+            <h1 class="text-2xl font-extrabold text-yellow-400 tracking-wide">Sensex Edge Telugu</h1>
+            <p class="text-xs text-slate-400 tracking-widest uppercase font-semibold">Learn • Practice • Grow</p>
+            <div class="pt-4 flex justify-center">
+                <div class="w-6 h-6 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        </div>
+
+        <!-- CARD 2: YOUTUBE SCREEN -->
+        <div id="youtubeScreen" style="display: none;" class="card-bg rounded-2xl p-6 text-center shadow-2xl space-y-4 border border-red-500/20">
+            <div class="inline-block p-3 bg-red-600/10 rounded-full">
+                <svg class="w-10 h-10 text-red-500 mx-auto" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-white mb-1">మా YouTube ఛానెల్‌ని చూడండి</h2>
+                <p class="text-xs text-slate-300">పరిశీలించండి, Join అవ్వండి!</p>
+            </div>
+            <a href="https://youtube.com/@sensexedgetelugu-w5d?si=YJJ-Nx5izcub36k2" target="_blank" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-lg">
+                <span>YouTube లో పరిశీలించండి & Join అవ్వండి</span>
+            </a>
+            <button onclick="goToPayment()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold py-3 px-4 rounded-xl text-xs transition">
+                Continue ➔
+            </button>
+            <a href="https://join.dhan.co/?invite=FSBMH52877" target="_blank" rel="noopener" class="block w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3 px-4 rounded-xl text-xs text-center transition shadow-lg">
+                Dhan లో Join అవ్వండి ➔
+            </a>
+        </div>
+
+        <!-- CARD 3: PAYMENT SCREEN WITH CELL NUMBER -->
+        <div id="paymentScreen" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-emerald-500/20 text-center">
+            <h2 class="text-lg font-bold text-emerald-400">Monthly Subscription</h2>
+
+            <div class="flex justify-center my-2">
+                <img src="IMG-20260823-WA0001.jpg" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
+            </div>
+
+            <div class="inner-box p-4 rounded-xl space-y-2">
+                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
+                <p class="text-xs text-slate-400">UPI ID:</p>
+                <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
+            </div>
+
+            <div class="text-left space-y-1">
+                <label class="block text-xs text-slate-300 font-semibold">Enter Phone/Cell Number (for Verification)</label>
+                <input type="tel" id="userCellNo" maxlength="10" placeholder="10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి" class="w-full input-bg rounded-xl p-3 text-xs text-slate-100 focus:outline-none border border-emerald-500/40">
+            </div>
+
+            <button onclick="checkUserPayment()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+                Continue
+            </button>
+
+            <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20approve." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
+                💬 Contact Admin on WhatsApp
+            </a>
+
+            <button onclick="adminDirectAccess()" class="w-full text-[11px] text-slate-500 hover:text-amber-400 underline pt-1 block text-center transition">
+                🔐 Admin Panel Access
+            </button>
+        </div>
+
+        <!-- CARD 4: WAITING FOR ADMIN APPROVAL SCREEN -->
+        <div id="waitingScreen" style="display: none;" class="card-bg rounded-2xl p-10 text-center shadow-2xl space-y-3 border border-amber-500/30">
+            <div class="animate-spin inline-block w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full mb-2"></div>
+            <h2 class="text-base font-bold text-amber-400">Waiting for admin approval</h2>
+            <p id="waitingCellText" class="text-xs text-sky-400 font-semibold"></p>
+            <p class="text-[10px] text-slate-400">అడ్మిన్ అప్రూవ్ చేసిన వెంటనే యాప్ ఆటోమేటిక్‌గా 30 రోజులకు ఓపెన్ అవుతుంది.</p>
+
+            <button onclick="adminDirectAccess()" class="w-full text-[11px] text-slate-500 hover:text-amber-400 underline pt-4 block text-center transition">
+                🔐 Admin Panel Access
+            </button>
+        </div>
+
+        <!-- CARD 5: ADMIN CONTROL PANEL MODAL -->
+        <div id="adminPanelModal" style="display: none;" class="card-bg rounded-2xl p-6 shadow-2xl space-y-4 border border-amber-500/40">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                <h3 class="text-sm font-bold text-amber-400 uppercase">Admin Control Panel</h3>
+                <button onclick="closeAdminPanelAndEnter()" class="text-xs bg-slate-800 px-3 py-1 rounded-lg text-slate-200 hover:bg-slate-700 font-bold border border-slate-700">✖ Close & Open App</button>
+            </div>
+            <p class="text-xs text-slate-300">అప్రూవల్ కోరిన యూజర్ల మొబైల్ నంబర్లు:</p>
+
+            <div class="space-y-3 max-h-60 overflow-y-auto" id="pendingRequestsContainer">
+                <!-- APPROVE & REJECT BUTTONS SHOW HERE -->
+            </div>
+        </div>
+
+        <!-- CARD 6: MAIN APP DASHBOARD -->
+        <div id="mainApp" style="display: none;" class="space-y-5">
+            <div id="expiryReminder" style="display: none;" class="bg-amber-500/20 border border-amber-500/50 rounded-xl p-3 text-center space-y-1">
+                <p class="text-xs font-bold text-amber-400">⚠️ సబ్‌స్క్రిప్షన్ అలర్ట్!</p>
+                <p class="text-[11px] text-slate-300">మీ 30 రోజుల యాక్సెస్ ముగియడానికి మరో <strong id="daysLeftText" class="text-yellow-400">3 రోజులు</strong> ఉంది.</p>
+            </div>
+
+            <div class="text-center py-2">
+                <h1 class="text-2xl font-extrabold tracking-wider text-yellow-400">SENSEX EDGE TELUGU</h1>
+                <p class="text-[10px] text-slate-400 tracking-widest mt-1 uppercase font-semibold">Learn • Practice • Grow</p>
+            </div>
+
+            <hr class="border-slate-800 my-2">
+
+            <!-- APP CARD 1 -->
+            <div class="card-bg rounded-xl p-4 shadow-lg">
+                <div class="flex items-center space-x-2 mb-1">
+                    <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    <h2 class="text-lg font-bold text-white">Sensex Options</h2>
+                </div>
+                <p class="text-xs text-slate-400 mb-3">Automated Algorithmic Execution</p>
+                <div class="inner-box rounded-lg p-3 flex items-center space-x-2">
+                    <span class="text-xs text-slate-300">ఆటో-ట్రేడింగ్ సిస్టమ్ స్టేటస్: <strong id="statusText" class="text-yellow-400 font-semibold">Waiting for Login</strong></span>
+                </div>
+                <div id="tradeInfoBox" class="inner-box rounded-lg p-3 mt-2 text-[11px] text-slate-300 space-y-1" style="display:none;">
+                    <p>CE: <span id="ceInfo" class="text-sky-400 font-semibold">-</span></p>
+                    <p>PE: <span id="peInfo" class="text-rose-400 font-semibold">-</span></p>
+                </div>
+                <!-- లైవ్ ట్రేడ్ ఈవెంట్స్ (entry/target/SL/error) ఇక్కడ కనిపిస్తాయి -->
+                <div id="liveAlertsBox" class="mt-2 space-y-1" style="display:none;">
+                    <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Live Trade Alerts</p>
+                    <div id="liveAlertsList" class="space-y-1 max-h-40 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <!-- APP CARD 2 -->
+            <div class="card-bg rounded-xl p-4 shadow-lg space-y-3">
+                <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Broker API Integration</h3>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Select Your Broker</label>
+                    <select id="brokerSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
+                        <option value="upstox">Upstox</option>
+                        <option value="zerodha">Zerodha (Kite)</option>
+                        <option value="angelone">AngelOne</option>
+                        <option value="dhan">Dhan</option>
+                        <option value="fyers">Fyers</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">API Key / App Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter your Broker API Key" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">API Secret / Access Token / PIN</label>
+                    <input type="password" id="apiSecret" placeholder="••••••••••••••••" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
+                </div>
+                <button onclick="startAutoTrader()" class="w-full btn-cyan py-2.5 rounded-lg text-xs font-bold transition shadow">
+                    Connect & Start Auto Algo
+                </button>
+            </div>
+
+            <!-- APP CARD 3 -->
+            <div class="card-bg rounded-xl p-4 shadow-lg space-y-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Selected Lot Size</label>
+                    <select id="lotSelect" class="w-full input-bg rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none">
+                        <option value="1">1 Lot</option>
+                        <option value="2" selected>2 Lots</option>
+                        <option value="5">5 Lots</option>
+                    </select>
+                </div>
+
+                <div class="inner-box rounded-lg p-4 text-center">
+                    <p class="text-[10px] font-semibold text-slate-400 tracking-wider mb-1">TODAY'S REALTIME P & L</p>
+                    <p class="text-2xl font-bold text-emerald-400">₹0.00</p>
+                </div>
+
+                <div class="border border-amber-900/40 bg-amber-950/10 rounded-lg p-3 space-y-2">
+                    <p class="text-xs font-bold text-amber-500">రిస్క్ డిస్క్లైమర్ & సెక్యూరిటీ నిబంధనలు:</p>
+                    <p class="text-xs font-bold text-slate-300">* 2 lots కి మించి తీసుకునే రిస్క్ కు పూర్తి బాధ్యత మీదే.</p>
+                    <p class="text-xs font-bold text-slate-300">* బ్రోకర్ platforms లో ఏర్పడే ఎర్రర్స్ కు sensex edge బాధ్యత వహించదు.</p>
+                    <div class="flex items-start space-x-2 pt-1">
+                        <input type="checkbox" id="disclaimerCheck" class="mt-0.5 rounded bg-slate-900 border-slate-700">
+                        <label for="disclaimerCheck" class="text-[10px] text-slate-300">నేను నిబంధనలను చదివాను, అంగీకరిస్తున్నాను.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STOP BUTTON -->
+            <button onclick="stopAutoTrader()" class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg">
+                Stop & Secure Logout
+            </button>
+        </div>
+
+        <!-- CARD 7: SUBSCRIPTION EXPIRED SCREEN -->
+        <div id="expiredScreen" style="display: none;" class="card-bg rounded-2xl p-8 text-center shadow-2xl space-y-4 border border-rose-500/40">
+            <div class="inline-block p-3 bg-rose-500/10 rounded-full mb-1">
+                <span class="text-3xl">⏰</span>
+            </div>
+            <h2 class="text-lg font-bold text-rose-400">Subscription Expired</h2>
+            <p class="text-xs text-slate-300">మీ 30 రోజుల సబ్‌స్క్రిప్షన్ ముగిసింది. యాప్ వాడాలంటే దయచేసి renew చేయండి.</p>
+            <button onclick="goToRenew()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg">
+                Renew Now ➔
+            </button>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
+        // ⚠️ Admin password ఇక్కడ లేదు — ఇది ఇప్పుడు కేవలం backend server లోనే ఉంటుంది.
+        // adminDirectAccess() ఎంటర్ చేసిన పాస్‌వర్డ్‌ని /admin-login కి పంపి, backend verify చేస్తుంది.
+
+        let currentUserPhone = localStorage.getItem("user_phone") || null;
+        let adminToken = sessionStorage.getItem("admin_token") || null;
+        let alertsPollTimer = null;
+        let shownAlertKeys = new Set();
+
+        // ALWAYS START FROM WELCOME SCREEN
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('welcomeScreen').style.display = 'block';
+            document.getElementById('youtubeScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('adminPanelModal').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('expiredScreen').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('welcomeScreen').style.display = 'none';
+                document.getElementById('youtubeScreen').style.display = 'block';
+            }, 2000);
+        });
+
+        function goToPayment() {
+            document.getElementById('youtubeScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'block';
+        }
+
+        // ------------------------------------------------------------------
+        // PAYMENT / APPROVAL FLOW
+        // ------------------------------------------------------------------
+        async function checkUserPayment() {
+            const cellNo = document.getElementById('userCellNo').value.trim();
+            if (cellNo.length < 10) {
+                alert("దయచేసి సరైన 10 అంకెల సెల్ నంబర్ నమోదు చేయండి.");
+                return;
+            }
+
+            localStorage.setItem("user_phone", cellNo);
+            currentUserPhone = cellNo;
+
+            try {
+                await fetch(`${BACKEND_URL}/request-approval`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: cellNo })
+                });
+            } catch (e) {
+                console.error("request-approval failed:", e);
+            }
+
+            showWaitingScreen(cellNo);
+        }
+
+        function showWaitingScreen(cellNo) {
+            document.getElementById('paymentScreen').style.display = 'none';
+            const waitingScreen = document.getElementById('waitingScreen');
+            waitingScreen.style.display = 'block';
+            document.getElementById('waitingCellText').innerText = `Phone: ${cellNo}`;
+
+            const checkInterval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${BACKEND_URL}/check-user-status?phone=${encodeURIComponent(cellNo)}`);
+                    const data = await res.json();
+                    if (data.status === "APPROVED") {
+                        clearInterval(checkInterval);
+                        waitingScreen.style.display = 'none';
+                        showAppScreen();
+                    } else if (data.status === "REJECTED") {
+                        clearInterval(checkInterval);
+                        alert("మీ రిక్వెస్ట్ Admin తిరస్కరించారు.");
+                    }
+                } catch (e) {
+                    console.error("check-user-status failed:", e);
+                }
+            }, 4000);
+        }
+
+        // ------------------------------------------------------------------
+        // ADMIN LOGIN — పాస్‌వర్డ్ ఇప్పుడు backend కి పంపి, అక్కడే verify అవుతుంది.
+        // సరైతే ఒక session token వస్తుంది, admin actions అన్నీ ఆ token తోనే జరుగుతాయి.
+        // ------------------------------------------------------------------
+        async function adminDirectAccess() {
+            const pass = prompt("Enter Admin Password:");
+            if (pass === null) return;
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/admin-login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+
+                if (data.status === "success" && data.token) {
+                    adminToken = data.token;
+                    sessionStorage.setItem("admin_token", adminToken);
+                    document.getElementById('adminPanelModal').style.display = 'block';
+                    loadPendingRequests();
+                } else {
+                    alert("❌ Wrong Admin Password!");
+                }
+            } catch (e) {
+                console.error("admin-login failed:", e);
+                alert("బ్యాకెండ్‌ని చేరుకోలేకపోయాం.");
+            }
+        }
+
+        function closeAdminPanelAndEnter() {
+            document.getElementById('adminPanelModal').style.display = 'none';
+            // Admin తను టెస్ట్ చేసుకోవడానికి యాప్ డాష్‌బోర్డ్ చూపిస్తాం (ఇది ఏ phone కి tie కాదు,
+            // కాబట్టి ఇక్కడ 30-రోజుల expiry చెక్ వర్తించదు — ఇది కేవలం admin preview).
+            document.getElementById('mainApp').style.display = 'block';
+        }
+
+        // ------------------------------------------------------------------
+        // ADMIN PANEL — అన్ని కాల్స్ ఇప్పుడు X-Admin-Token హెడర్ తో వెళ్తాయి
+        // ------------------------------------------------------------------
+        async function loadPendingRequests() {
+            const container = document.getElementById('pendingRequestsContainer');
+            container.innerHTML = `<p class="text-[10px] text-slate-500 text-center">Loading...</p>`;
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/get-pending-requests`, {
+                    headers: { 'X-Admin-Token': adminToken }
+                });
+                if (res.status === 401) {
+                    alert("Admin సెషన్ ముగిసింది, దయచేసి మళ్ళీ లాగిన్ అవ్వండి.");
+                    sessionStorage.removeItem("admin_token");
+                    adminToken = null;
+                    document.getElementById('adminPanelModal').style.display = 'none';
+                    return;
+                }
+                const list = await res.json();
+
+                if (!list || list.length === 0) {
+                    container.innerHTML = `<p class="text-[10px] text-slate-500 text-center">పెండింగ్ రిక్వెస్ట్‌లు లేవు.</p>`;
+                    return;
+                }
+
+                container.innerHTML = list.map(item => `
+                    <div class="inner-box p-3 rounded-xl flex items-center justify-between my-2 border border-slate-800">
+                        <div>
+                            <p class="text-xs font-bold text-sky-400">📱 ${item.phone}</p>
+                            <p class="text-[9px] text-slate-400">Waiting for approval</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="approveUser('${item.phone}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow">Approve</button>
+                            <button onclick="rejectUser('${item.phone}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow">Reject</button>
+                        </div>
+                    </div>`).join('');
+            } catch (e) {
+                console.error("get-pending-requests failed:", e);
+                container.innerHTML = `<p class="text-[10px] text-rose-400 text-center">బ్యాకెండ్ కనెక్ట్ కాలేదు.</p>`;
+            }
+        }
+
+        async function approveUser(phone) {
+            try {
+                const res = await fetch(`${BACKEND_URL}/admin-action`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': adminToken },
+                    body: JSON.stringify({ phone: phone, action: "APPROVE" })
+                });
+                if (res.status === 401) {
+                    alert("Admin సెషన్ ముగిసింది, దయచేసి మళ్ళీ లాగిన్ అవ్వండి.");
+                    return;
+                }
+            } catch (e) {
+                console.error("admin-action approve failed:", e);
+            }
+            alert(`User ${phone} Approved!`);
+            loadPendingRequests();
+        }
+
+        async function rejectUser(phone) {
+            try {
+                const res = await fetch(`${BACKEND_URL}/admin-action`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': adminToken },
+                    body: JSON.stringify({ phone: phone, action: "REJECT" })
+                });
+                if (res.status === 401) {
+                    alert("Admin సెషన్ ముగిసింది, దయచేసి మళ్ళీ లాగిన్ అవ్వండి.");
+                    return;
+                }
+            } catch (e) {
+                console.error("admin-action reject failed:", e);
+            }
+            alert(`User ${phone} Rejected.`);
+            loadPendingRequests();
+        }
+
+        // ------------------------------------------------------------------
+        // APP SCREEN — 30-రోజుల expiry ఇప్పుడు backend నుండే verify అవుతుంది
+        // ------------------------------------------------------------------
+        async function showAppScreen() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('youtubeScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('adminPanelModal').style.display = 'none';
+            document.getElementById('expiredScreen').style.display = 'none';
+
+            if (!currentUserPhone) {
+                document.getElementById('mainApp').style.display = 'block';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/check-user-status?phone=${encodeURIComponent(currentUserPhone)}`);
+                const data = await res.json();
+
+                if (data.status === "APPROVED" && data.expired) {
+                    showExpiredScreen();
+                    return;
+                }
+
+                document.getElementById('mainApp').style.display = 'block';
+
+                if (data.status === "APPROVED" && data.days_left !== null && data.days_left <= 3) {
+                    document.getElementById("daysLeftText").innerText = `${data.days_left} రోజులు`;
+                    document.getElementById("expiryReminder").style.display = 'block';
+                }
+            } catch (e) {
+                console.error("check-user-status (expiry) failed:", e);
+                document.getElementById('mainApp').style.display = 'block';
+            }
+        }
+
+        function showExpiredScreen() {
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('expiredScreen').style.display = 'block';
+        }
+
+        function goToRenew() {
+            document.getElementById('expiredScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'block';
+        }
+
+        // ------------------------------------------------------------------
+        // AUTO TRADER START/STOP — ఇప్పుడు phone-scoped (per-user session)
+        // ------------------------------------------------------------------
+        async function startAutoTrader() {
+            const isChecked = document.getElementById('disclaimerCheck').checked;
+            if (!isChecked) { alert("దయచేసి నిబంధనలు సెలెక్ట్ చేయండి."); return; }
+
+            if (!currentUserPhone) {
+                alert("Phone number దొరకలేదు — దయచేసి payment screen నుండి మళ్ళీ లాగిన్ అవ్వండి.");
+                return;
+            }
+
+            const broker = document.getElementById('brokerSelect').value;
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const apiSecret = document.getElementById('apiSecret').value.trim();
+            const lots = document.getElementById('lotSelect').value;
+
+            if (!apiKey || !apiSecret) {
+                alert("దయచేసి API Key మరియు API Secret / Access Token నమోదు చేయండి.");
+                return;
+            }
+
+            document.getElementById('statusText').innerText = "Connecting...";
+            document.getElementById('statusText').className = "text-yellow-400 font-semibold";
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/start-strategy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: currentUserPhone,
+                        broker: broker,
+                        api_key: apiKey,
+                        access_token: apiSecret,
+                        lots: parseInt(lots, 10)
+                    })
+                });
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    document.getElementById('statusText').innerText = "Active & Running";
+                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
+
+                    document.getElementById('tradeInfoBox').style.display = 'block';
+                    document.getElementById('ceInfo').innerText =
+                        `${data.ce_symbol} | ATM:${data.ce_atm_strike} | Entry Trigger:${data.ce_entry_trigger} (${data.ce_reference_source})`;
+                    document.getElementById('peInfo').innerText =
+                        `${data.pe_symbol} | ATM:${data.pe_atm_strike} | Entry Trigger:${data.pe_entry_trigger} (${data.pe_reference_source})`;
+
+                    document.getElementById('liveAlertsBox').style.display = 'block';
+                    shownAlertKeys = new Set();
+                    document.getElementById('liveAlertsList').innerHTML = '';
+                    startAlertsPolling();
+
+                    alert(`కనెక్ట్ అయ్యింది! Auto Trading ప్రారంభమైంది.\nCE: ${data.ce_symbol}\nPE: ${data.pe_symbol}`);
+                } else {
+                    // ఉదా: live market data దొరకలేదు (weekend/holiday/invalid token) —
+                    // ఇప్పుడు ఇది తప్పుడు price తో ట్రేడ్ చేయకుండా ఆగిపోతుంది, యూజర్‌కి ఎర్రర్ చూపిస్తుంది.
+                    document.getElementById('statusText').innerText = "Not Started";
+                    document.getElementById('statusText').className = "text-rose-400 font-bold";
+                    alert("⚠️ " + (data.message || "Unknown error"));
+                }
+            } catch (e) {
+                console.error("start-strategy failed:", e);
+                document.getElementById('statusText').innerText = "Backend Unreachable";
+                document.getElementById('statusText').className = "text-rose-400 font-bold";
+                alert("బ్యాకెండ్‌ని చేరుకోలేకపోయాం. కొన్ని క్షణాల తర్వాత మళ్ళీ ప్రయత్నించండి.");
+            }
+        }
+
+        async function stopAutoTrader() {
+            document.getElementById('statusText').innerText = "Stopping...";
+            document.getElementById('statusText').className = "text-amber-400 font-bold";
+
+            try {
+                await fetch(`${BACKEND_URL}/stop-strategy`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: currentUserPhone })
+                });
+            } catch (e) {
+                console.error("stop-strategy failed:", e);
+            }
+
+            document.getElementById('statusText').innerText = "Stopped";
+            document.getElementById('statusText').className = "text-rose-400 font-bold";
+            document.getElementById('tradeInfoBox').style.display = 'none';
+            stopAlertsPolling();
+        }
+
+        // ------------------------------------------------------------------
+        // లైవ్ ట్రేడ్ అలర్ట్స్ — /get-history ని ప్రతి 5 సెకన్లకు పోల్ చేసి,
+        // entry/target/SL/error ఈవెంట్లను UI లో చూపిస్తుంది (ఇంతకుముందు ఇవి
+        // కేవలం సర్వర్ కన్సోల్ లాగ్‌లలో మాత్రమే ఉండేవి, యూజర్‌కి కనిపించేవి కాదు).
+        // ------------------------------------------------------------------
+        function eventLabel(event) {
+            const map = {
+                "ENTRY_ORDER_PLACED": "🟡 Entry order placed",
+                "ENTERED": "🟢 Entered",
+                "TARGET_HIT": "🎯 Target hit",
+                "SQUARE_OFF_ON_TARGET": "🎯 Square-off (other leg)",
+                "SL_HIT": "🔴 Stop-loss hit",
+                "TIME_EXIT": "⏰ 3:10 PM square-off",
+                "MANUAL_STOP": "⏹ Manually stopped",
+            };
+            return map[event] || event;
+        }
+
+        function startAlertsPolling() {
+            stopAlertsPolling();
+            pollAlertsOnce();
+            alertsPollTimer = setInterval(pollAlertsOnce, 5000);
+        }
+
+        function stopAlertsPolling() {
+            if (alertsPollTimer) {
+                clearInterval(alertsPollTimer);
+                alertsPollTimer = null;
+            }
+        }
+
+        async function pollAlertsOnce() {
+            if (!currentUserPhone) return;
+            try {
+                const res = await fetch(`${BACKEND_URL}/get-history?phone=${encodeURIComponent(currentUserPhone)}`);
+                const data = await res.json();
+                const history = data.history || [];
+                const list = document.getElementById('liveAlertsList');
+
+                history.forEach((item, idx) => {
+                    const key = `${idx}-${item.leg}-${item.event}-${item.time}`;
+                    if (shownAlertKeys.has(key)) return;
+                    shownAlertKeys.add(key);
+
+                    const priceText = item.price !== undefined && item.price !== null ? ` @ ${item.price}` : '';
+                    const row = document.createElement('div');
+                    row.className = "text-[10px] text-slate-300 border-l-2 border-slate-700 pl-2";
+                    row.innerText = `[${item.time}] ${item.leg}: ${eventLabel(item.event)}${priceText}`;
+                    list.prepend(row);
+                });
+
+                if (!data.state.is_active && alertsPollTimer) {
+                    // స్ట్రాటజీ ఆగిపోయింది (target/3:10PM/manual-stop) — పోలింగ్ ఆపేస్తాం
+                    stopAlertsPolling();
+                    document.getElementById('statusText').innerText = "Stopped";
+                    document.getElementById('statusText').className = "text-rose-400 font-bold";
+                }
+            } catch (e) {
+                console.error("get-history poll failed:", e);
+            }
+        }
+    </script>
+</body>
+</html>
 
