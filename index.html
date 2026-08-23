@@ -249,6 +249,7 @@
             }
 
             localStorage.setItem("user_phone", cellNo);
+            currentUserPhone = cellNo;
 
             try {
                 await fetch(`${BACKEND_URL}/request-approval`, {
