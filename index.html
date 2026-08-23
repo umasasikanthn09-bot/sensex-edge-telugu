@@ -328,9 +328,12 @@
         }
 
         function closeAdminPanelAndEnter() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('youtubeScreen').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'none';
+            document.getElementById('waitingScreen').style.display = 'none';
             document.getElementById('adminPanelModal').style.display = 'none';
-            // Admin తను టెస్ట్ చేసుకోవడానికి యాప్ డాష్‌బోర్డ్ చూపిస్తాం (ఇది ఏ phone కి tie కాదు,
-            // కాబట్టి ఇక్కడ 30-రోజుల expiry చెక్ వర్తించదు — ఇది కేవలం admin preview).
+            document.getElementById('expiredScreen').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
         }
 
