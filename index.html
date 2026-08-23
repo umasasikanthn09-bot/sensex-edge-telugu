@@ -215,6 +215,7 @@
     <script>
         const BACKEND_URL = "https://sensex-edge-telugu-backend.onrender.com";
         const ADMIN_PASSWORD = "merababa@123";
+        let currentUserPhone = localStorage.getItem("user_phone") || null;
 
         // ALWAYS START FROM WELCOME SCREEN
         document.addEventListener("DOMContentLoaded", function () {
