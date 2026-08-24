@@ -446,9 +446,48 @@
                     document.getElementById("daysLeftText").innerText = `${data.days_left} రోజులు`;
                     document.getElementById("expiryReminder").style.display = 'block';
                 }
+
+                // ⬇️ మొబైల్ లాక్ అయ్యి/పేజీ రీలోడ్ అయ్యి UI రీసెట్ అయినా, backend లో
+                // strategy ఇంకా running ఉంటే ఇక్కడే గుర్తించి UI ని దానికి sync చేస్తాం.
+                await resumeIfAlreadyRunning();
             } catch (e) {
                 console.error("check-user-status (expiry) failed:", e);
                 document.getElementById('mainApp').style.display = 'block';
+            }
+        }
+
+        async function resumeIfAlreadyRunning() {
+            if (!currentUserPhone) return;
+            try {
+                const res = await fetch(`${BACKEND_URL}/get-history?phone=${encodeURIComponent(currentUserPhone)}`);
+                const data = await res.json();
+                if (!data.state || !data.state.is_active) return;
+
+                console.log("[ALGO] Backend లో ఇప్పటికే running strategy దొరికింది — UI sync చేస్తున్నాం.");
+
+                if (data.state.phase === "TRADING") {
+                    document.getElementById('statusText').innerText = "Active & Running";
+                    document.getElementById('statusText').className = "text-emerald-400 font-bold";
+
+                    const legs = data.state.legs || {};
+                    if (legs.CE && legs.CE.symbol) {
+                        document.getElementById('tradeInfoBox').style.display = 'block';
+                        document.getElementById('ceInfo').innerText =
+                            `${legs.CE.symbol} | Entry Trigger:${legs.CE.entry_trigger_price} (${legs.CE.entry_ref_source})`;
+                        document.getElementById('peInfo').innerText =
+                            `${legs.PE.symbol} | Entry Trigger:${legs.PE.entry_trigger_price} (${legs.PE.entry_ref_source})`;
+                    }
+                } else {
+                    document.getElementById('statusText').innerText = "Waiting for 9:15 data...";
+                    document.getElementById('statusText').className = "text-yellow-400 font-semibold";
+                }
+
+                document.getElementById('liveAlertsBox').style.display = 'block';
+                shownAlertKeys = new Set();
+                document.getElementById('liveAlertsList').innerHTML = '';
+                startAlertsPolling();
+            } catch (e) {
+                console.error("resumeIfAlreadyRunning failed:", e);
             }
         }
 
@@ -511,6 +550,11 @@
                     shownAlertKeys = new Set();
                     document.getElementById('liveAlertsList').innerHTML = '';
                     startAlertsPolling();
+                } else if (res.status === 409) {
+                    // మీ మొబైల్ లాక్ అయ్యి/పేజీ రీలోడ్ అయ్యి UI రీసెట్ అయినా, backend లో
+                    // strategy ఇంకా (ఆగకుండా) running ఉంది — దీన్ని ఎర్రర్‌గా చూపించకుండా,
+                    // నేరుగా ప్రస్తుత running స్థితికి UI ని sync చేస్తాం.
+                    await resumeIfAlreadyRunning();
                 } else {
                     // ఉదా: live market data దొరకలేదు (weekend/holiday/invalid token) —
                     // ఇప్పుడు ఇది తప్పుడు price తో ట్రేడ్ చేయకుండా ఆగిపోతుంది, యూజర్‌కి ఎర్రర్ చూపిస్తుంది.
