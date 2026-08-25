@@ -306,15 +306,32 @@ def fetch_915_high_low(broker, access_token):
         url = f"https://api.upstox.com/v2/historical-candle/{SENSEX_INDEX_KEY_UPSTOX}/15minute/{today_str}/{today_str}"
         headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
         try:
-            res = requests.get(url, headers=headers, timeout=10).json()
+            response = requests.get(url, headers=headers, timeout=10)
+            res = response.json()
+
+            if response.status_code != 200:
+                # ⚠️ ఇక్కడే exact కారణం కనిపిస్తుంది — 401/403 అయితే token సమస్య,
+                # 404 అయితే instrument_key తప్పు, ఇలా Render Logs లో exact చూపిస్తాం.
+                print(f"[UPSTOX 9:15 CANDLE] ❌ HTTP {response.status_code} | URL: {url}")
+                print(f"[UPSTOX 9:15 CANDLE] Response: {str(res)[:500]}")
+                return None, None
+
             candles = res.get("data", {}).get("candles", [])
+            if not candles:
+                print(f"[UPSTOX 9:15 CANDLE] ⚠️ HTTP 200 కానీ candles ఖాళీగా ఉంది. "
+                      f"Full response: {str(res)[:500]}")
+                return None, None
+
             for c in candles:
                 if "09:15:00" in c[0]:
                     high, low = float(c[2]), float(c[3])
                     print(f"[ALGO] 9:15 Candle -> High:{high} Low:{low}")
                     return high, low
+
+            print(f"[UPSTOX 9:15 CANDLE] ⚠️ HTTP 200, {len(candles)} candles వచ్చాయి కానీ "
+                  f"09:15:00 timestamp లేదు. మొదటి candle: {candles[0] if candles else 'N/A'}")
         except Exception as e:
-            print(f"[ERROR] 9:15 Candle Fetch Failed: {e}")
+            print(f"[UPSTOX 9:15 CANDLE] ❌ Exception: {e}")
     else:
         print(f"[WARNING] {broker} కోసం 9:15 index-candle API ఇంకా ఇంప్లిమెంట్ కాలేదు.")
 
@@ -1215,4 +1232,3 @@ def get_history():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port, debug=False)
-
