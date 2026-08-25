@@ -58,10 +58,25 @@
                 <img src="IMG-20260823-WA0001.jpg" alt="UPI QR Code" class="w-44 h-44 rounded-lg border-2 border-white p-1 bg-white shadow-md">
             </div>
 
-            <div class="inner-box p-4 rounded-xl space-y-2">
-                <p class="text-xl font-extrabold text-emerald-400">₹2,499 / Month</p>
-                <p class="text-xs text-slate-400">UPI ID:</p>
-                <p class="text-sm font-bold text-sky-400 select-all">umasasikanthn04@okhdfcbank</p>
+            <p class="text-xs text-slate-400">UPI ID: <span class="text-sky-400 font-bold select-all">umasasikanthn04@okhdfcbank</span></p>
+            <p class="text-[10px] text-amber-400">⚠️ దయచేసి QR స్కాన్ చేసిన తర్వాత, కింద ఎంచుకున్న ప్లాన్ మొత్తాన్నే (₹1,499 లేదా ₹2,499) మాన్యువల్‌గా ఎంటర్ చేయండి.</p>
+
+            <!-- ప్లాన్ ఎంపిక: Beginner (1 Lot మాత్రమే) vs Full Access -->
+            <div class="grid grid-cols-2 gap-3 text-left">
+                <button type="button" onclick="selectPlan('BEGINNER')" id="planCardBeginner"
+                        class="inner-box rounded-xl p-3 border-2 border-slate-700 transition">
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase">Beginner</p>
+                    <p class="text-lg font-extrabold text-emerald-400">₹1,499</p>
+                    <p class="text-[10px] text-slate-400">/ నెల</p>
+                    <p class="text-[10px] text-slate-300 mt-1">✅ కేవలం 1 Lot ట్రేడింగ్</p>
+                </button>
+                <button type="button" onclick="selectPlan('FULL')" id="planCardFull"
+                        class="inner-box rounded-xl p-3 border-2 border-emerald-500 transition">
+                    <p class="text-[10px] text-slate-400 font-semibold uppercase">Full Access</p>
+                    <p class="text-lg font-extrabold text-emerald-400">₹2,499</p>
+                    <p class="text-[10px] text-slate-400">/ నెల</p>
+                    <p class="text-[10px] text-slate-300 mt-1">✅ 1/2/5 Lots ఎంపిక</p>
+                </button>
             </div>
 
             <div class="text-left space-y-1">
@@ -73,7 +88,7 @@
                 Continue
             </button>
 
-            <a href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20approve." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
+            <a id="whatsappContactLink" href="https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499.%20Please%20approve." target="_blank" class="block w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl text-xs text-center transition">
                 💬 Contact Admin on WhatsApp
             </a>
 
@@ -177,6 +192,10 @@
                         <option value="2" selected>2 Lots</option>
                         <option value="5">5 Lots</option>
                     </select>
+                    <div id="upgradeHint" style="display:none;" class="mt-2 bg-amber-500/10 border border-amber-500/30 rounded-lg p-2 flex items-center justify-between">
+                        <p class="text-[10px] text-amber-400">Beginner ప్లాన్‌లో 1 Lot మాత్రమే. ఎక్కువ Lots కోసం అప్‌గ్రేడ్ చేయండి.</p>
+                        <button onclick="upgradePlan()" class="text-[10px] bg-amber-600 hover:bg-amber-700 text-white font-bold px-2 py-1 rounded-lg shrink-0 ml-2">Upgrade</button>
+                    </div>
                 </div>
 
                 <div class="inner-box rounded-lg p-4 text-center">
@@ -222,6 +241,8 @@
         // adminDirectAccess() ఎంటర్ చేసిన పాస్‌వర్డ్‌ని /admin-login కి పంపి, backend verify చేస్తుంది.
 
         let currentUserPhone = localStorage.getItem("user_phone") || null;
+        let selectedPlan = "FULL";      // Payment screen లో ఎంచుకున్న ప్లాన్ (BEGINNER/FULL)
+        let currentUserPlan = "FULL";   // Approved అయిన తర్వాత backend నుండి వచ్చిన అసలైన ప్లాన్
         let adminToken = sessionStorage.getItem("admin_token") || null;
         let alertsPollTimer = null;
         let shownAlertKeys = new Set();
@@ -245,6 +266,25 @@
         function goToPayment() {
             document.getElementById('youtubeScreen').style.display = 'none';
             document.getElementById('paymentScreen').style.display = 'block';
+            selectPlan("FULL");  // డిఫాల్ట్‌గా Full Access ఎంచుకుని ఉంటుంది
+        }
+
+        // ప్లాన్ కార్డ్ ఎంచుకున్నప్పుడు — highlight మార్చడం, WhatsApp మెసేజ్ లో amount అప్డేట్ చేయడం
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            const beginnerCard = document.getElementById('planCardBeginner');
+            const fullCard = document.getElementById('planCardFull');
+            const waLink = document.getElementById('whatsappContactLink');
+
+            if (plan === "BEGINNER") {
+                beginnerCard.className = "inner-box rounded-xl p-3 border-2 border-emerald-500 transition";
+                fullCard.className = "inner-box rounded-xl p-3 border-2 border-slate-700 transition";
+                waLink.href = "https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.1499%20(Beginner%20Plan).%20Please%20approve.";
+            } else {
+                beginnerCard.className = "inner-box rounded-xl p-3 border-2 border-slate-700 transition";
+                fullCard.className = "inner-box rounded-xl p-3 border-2 border-emerald-500 transition";
+                waLink.href = "https://wa.me/919999999999?text=Hello%20Admin,%20I%20have%20paid%20Rs.2499%20(Full%20Access).%20Please%20approve.";
+            }
         }
 
         // ------------------------------------------------------------------
@@ -264,7 +304,7 @@
                 await fetch(`${BACKEND_URL}/request-approval`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone: cellNo })
+                    body: JSON.stringify({ phone: cellNo, plan: selectedPlan })
                 });
             } catch (e) {
                 console.error("request-approval failed:", e);
@@ -366,7 +406,7 @@
                     <div class="inner-box p-3 rounded-xl flex items-center justify-between my-2 border border-slate-800">
                         <div>
                             <p class="text-xs font-bold text-sky-400">📱 ${item.phone}</p>
-                            <p class="text-[9px] text-slate-400">Waiting for approval</p>
+                            <p class="text-[9px] text-slate-400">Waiting for approval — <span class="text-amber-400 font-semibold">${item.plan === 'BEGINNER' ? '₹1,499 Beginner (1 Lot)' : '₹2,499 Full Access'}</span></p>
                         </div>
                         <div class="flex space-x-2">
                             <button onclick="approveUser('${item.phone}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow">Approve</button>
@@ -441,6 +481,8 @@
                 }
 
                 document.getElementById('mainApp').style.display = 'block';
+                currentUserPlan = data.plan || "FULL";
+                applyPlanRestrictions();
 
                 if (data.status === "APPROVED" && data.days_left !== null && data.days_left <= 3) {
                     document.getElementById("daysLeftText").innerText = `${data.days_left} రోజులు`;
@@ -499,6 +541,36 @@
         function goToRenew() {
             document.getElementById('expiredScreen').style.display = 'none';
             document.getElementById('paymentScreen').style.display = 'block';
+            selectPlan("FULL");
+        }
+
+        // ------------------------------------------------------------------
+        // PLAN-BASED LOT RESTRICTION — Beginner (₹1,499) వాళ్ళకి 1 Lot మాత్రమే.
+        // ఇది కేవలం UI convenience — అసలైన enforcement backend లో (/start-strategy)
+        // ఇప్పటికే జరుగుతుంది, కాబట్టి ఎవరైనా dropdown bypass చేసినా ఆర్డర్ వెళ్ళదు.
+        // ------------------------------------------------------------------
+        function applyPlanRestrictions() {
+            const lotSelect = document.getElementById('lotSelect');
+            const upgradeHint = document.getElementById('upgradeHint');
+
+            if (currentUserPlan === "BEGINNER") {
+                for (const opt of lotSelect.options) {
+                    opt.disabled = (opt.value !== "1");
+                }
+                lotSelect.value = "1";
+                if (upgradeHint) upgradeHint.style.display = 'block';
+            } else {
+                for (const opt of lotSelect.options) {
+                    opt.disabled = false;
+                }
+                if (upgradeHint) upgradeHint.style.display = 'none';
+            }
+        }
+
+        function upgradePlan() {
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('paymentScreen').style.display = 'block';
+            selectPlan("FULL");
         }
 
         // ------------------------------------------------------------------
@@ -517,6 +589,11 @@
             const apiKey = document.getElementById('apiKey').value.trim();
             const apiSecret = document.getElementById('apiSecret').value.trim();
             const lots = document.getElementById('lotSelect').value;
+
+            if (currentUserPlan === "BEGINNER" && lots !== "1") {
+                alert("Beginner ప్లాన్ (₹1,499) లో 1 Lot మాత్రమే అనుమతి. దయచేసి 'Upgrade' నొక్కి Full Access కి మారండి.");
+                return;
+            }
 
             if (!apiKey || !apiSecret) {
                 alert("దయచేసి API Key మరియు API Secret / Access Token నమోదు చేయండి.");
@@ -599,7 +676,10 @@
             const map = {
                 "STRIKES_READY": "📊 9:15 candle ready — strikes selected",
                 "ENTRY_ORDER_PLACED": "🟡 Entry order placed",
+                "ENTRY_ORDER_FAILED": "⚠️ Entry order FAILED to place",
+                "ENTRY_REJECTED": "⚠️ Entry order REJECTED by broker",
                 "ENTERED": "🟢 Entered",
+                "SL_ORDER_FAILED": "🚨 SL order FAILED (unprotected!)",
                 "TARGET_HIT": "🎯 Target hit",
                 "SQUARE_OFF_ON_TARGET": "🎯 Square-off (other leg)",
                 "SL_HIT": "🔴 Stop-loss hit",
