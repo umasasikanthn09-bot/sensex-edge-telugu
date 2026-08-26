@@ -347,39 +347,51 @@ def resolve_dhan_security_id(symbol):
 #    caller (start_strategy) దాన్ని చూసి స్ట్రాటజీ మొదలుపెట్టదు.
 # ==============================================================================
 
+def _candle_time_str(candle_ts):
+    """Candle timestamp (ఉదా. '2026-08-26T09:15:00+05:30') నుండి 'HH:MM' తీస్తుంది."""
+    if "T" in candle_ts:
+        return candle_ts.split("T")[1][:5]
+    return candle_ts[11:16]
+
+
 def fetch_915_high_low(broker, access_token):
+    """
+    ⚠️ మార్పు: Upstox ఇక "15minute" interval ని support చేయదు (HTTP 400,
+    errorCode UDAPI1020 — "Interval accepts one of (1minute,30minute,day,week,month)").
+    కాబట్టి ఇప్పుడు "1minute" candles తెచ్చి, 09:15–09:29 విండో లో ఉన్నవాటిని
+    తీసుకుని, High/Low ని మనమే calculate చేస్తాం — ఇది అసలైన 15-min candle కి సమానం.
+    """
     broker = str(broker).lower()
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     if broker == "upstox":
         index_key = resolve_upstox_sensex_index_key(access_token)
-        url = f"https://api.upstox.com/v2/historical-candle/{index_key}/15minute/{today_str}/{today_str}"
+        url = f"https://api.upstox.com/v2/historical-candle/{index_key}/1minute/{today_str}/{today_str}"
         headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
         try:
             response = requests.get(url, headers=headers, timeout=10)
             res = response.json()
 
             if response.status_code != 200:
-                # ⚠️ ఇక్కడే exact కారణం కనిపిస్తుంది — 401/403 అయితే token సమస్య,
-                # 404 అయితే instrument_key తప్పు, ఇలా Render Logs లో exact చూపిస్తాం.
                 print(f"[UPSTOX 9:15 CANDLE] ❌ HTTP {response.status_code} | URL: {url}")
                 print(f"[UPSTOX 9:15 CANDLE] Response: {str(res)[:500]}")
                 return None, None
 
             candles = res.get("data", {}).get("candles", [])
             if not candles:
-                print(f"[UPSTOX 9:15 CANDLE] ⚠️ HTTP 200 కానీ candles ఖాళీగా ఉంది. "
-                      f"Full response: {str(res)[:500]}")
+                print(f"[UPSTOX 9:15 CANDLE] ⚠️ HTTP 200 కానీ candles ఖాళీగా ఉంది.")
                 return None, None
 
-            for c in candles:
-                if "09:15:00" in c[0]:
-                    high, low = float(c[2]), float(c[3])
-                    print(f"[ALGO] 9:15 Candle -> High:{high} Low:{low}")
-                    return high, low
+            window = [c for c in candles if "09:15" <= _candle_time_str(c[0]) <= "09:29"]
+            if not window:
+                print(f"[UPSTOX 9:15 CANDLE] ⚠️ 09:15-09:29 window లో candles దొరకలేదు "
+                      f"(మొత్తం {len(candles)} candles వచ్చాయి, ఇంకా ఆ సమయం అవ్వలేదేమో).")
+                return None, None
 
-            print(f"[UPSTOX 9:15 CANDLE] ⚠️ HTTP 200, {len(candles)} candles వచ్చాయి కానీ "
-                  f"09:15:00 timestamp లేదు. మొదటి candle: {candles[0] if candles else 'N/A'}")
+            high = max(float(c[2]) for c in window)
+            low = min(float(c[3]) for c in window)
+            print(f"[ALGO] 9:15 Candle (1-min aggregated, {len(window)} bars) -> High:{high} Low:{low}")
+            return high, low
         except Exception as e:
             print(f"[UPSTOX 9:15 CANDLE] ❌ Exception: {e}")
     else:
@@ -411,17 +423,34 @@ def calculate_atm_strikes(high_915, low_915, broker):
 # ==============================================================================
 
 def get_1030_candle_high(broker, symbol, access_token, target_date):
+    """
+    ⚠️ ఇక్కడ కూడా అదే fix — "1minute" candles తెచ్చి, 10:30–10:44 విండో లో High
+    ని మనమే calculate చేస్తాం (Upstox "15minute" interval support చేయదు).
+    """
     broker = str(broker).lower()
     if broker == "upstox":
         inst_key = get_upstox_instrument_key(symbol, access_token)
-        url = f"https://api.upstox.com/v2/historical-candle/{inst_key}/15minute/{target_date}/{target_date}"
+        url = f"https://api.upstox.com/v2/historical-candle/{inst_key}/1minute/{target_date}/{target_date}"
         headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
         try:
-            res = requests.get(url, headers=headers, timeout=10).json()
+            response = requests.get(url, headers=headers, timeout=10)
+            res = response.json()
+
+            if response.status_code != 200:
+                print(f"[UPSTOX 10:30 CANDLE] ❌ HTTP {response.status_code} | Response: {str(res)[:400]}")
+                return None
+
             candles = res.get("data", {}).get("candles", [])
-            for c in candles:
-                if "10:30:00" in c[0]:
-                    return float(c[2])
+            if not candles:
+                return None
+
+            window = [c for c in candles if "10:30" <= _candle_time_str(c[0]) <= "10:44"]
+            if not window:
+                return None
+
+            high = max(float(c[2]) for c in window)
+            print(f"[ALGO] 10:30 Candle (1-min aggregated, {len(window)} bars) -> High:{high} (Symbol:{symbol})")
+            return high
         except Exception as e:
             print(f"[ERROR] 10:30 candle ({target_date}) fetch failed: {e}")
     else:
@@ -1336,4 +1365,3 @@ def get_history():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port, debug=False)
-
