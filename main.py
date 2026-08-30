@@ -1026,6 +1026,8 @@ def wait_for_915_data_and_setup_legs(phone, session, state):
     api_key = session["api_key"]
 
     print(f"[ALGO] [{phone}] 9:15 candle కోసం wait చేస్తోంది (broker చార్ట్ ప్రకారం పూర్తయ్యేదాకా)...")
+    print(f"[ALGO] [{phone}] ప్రస్తుత IST సమయం: {now_ist().strftime('%Y-%m-%d %H:%M:%S')} "
+          f"(cutoff: {DATA_WAIT_CUTOFF_TIME})")
     high_915 = low_915 = None
 
     while state["is_active"]:
@@ -1423,6 +1425,14 @@ def start_strategy():
         }), 403
 
     broker = data.get("broker", "upstox").lower()
+    # ⚠️ ప్రస్తుతం debugging focus కోసం Upstox మరియు Dhan మాత్రమే — మిగతా బ్రోకర్లు
+    # (Zerodha, AngelOne, Fyers) live verify అయ్యేదాకా తాత్కాలికంగా ఆపేసాం.
+    SUPPORTED_BROKERS = {"upstox", "dhan"}
+    if broker not in SUPPORTED_BROKERS:
+        return jsonify({
+            "status": "error",
+            "message": f"ప్రస్తుతం '{broker}' సపోర్ట్ చేయడం లేదు. Upstox లేదా Dhan వాడండి."
+        }), 400
     # ⚠️ Plan-based target — Beginner (₹1,499) కి 50 points, Full (₹2,499) కి 100 points.
     # Entry trigger, Initial SL (15 points), Trailing (30 points move -> 15 points SL move)
     # రెండు ప్లాన్లకూ SAME గా ఉంటాయి — Target మరియు Lot cap మాత్రమే differ అవుతాయి.
@@ -1535,4 +1545,3 @@ def get_history():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port, debug=False)
-
