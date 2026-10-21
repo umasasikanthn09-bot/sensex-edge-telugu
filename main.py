@@ -82,7 +82,7 @@ ENTRY_BUFFER_POINTS = 3          # ⚠️ పాత "High+3 breakout" entry ల�
 # తీసుకుంటాం — ఇలా రోజుకి మొత్తం MAX_ENTRY_ATTEMPTS (3) సార్లు మాత్రమే.
 ENTRY_HIGH_BUFFER_POINTS = 5     # ⚠️ 2026-10-10: ఎంట్రీ ఇప్పుడు (వెనుకటి డే/లైవ్ టుడే) 10:30 High + ఈ పాయింట్లు
 NEAR_BREAKOUT_BUFFER_POINTS = 3  # ట్రిగ్గర్ లెవెల్ కి ఇంకా ఇన్ని పాయింట్లు దూరం లో ఉన్నప్పుడే ముందస్తు హెచ్చరిక
-REVERSAL_SL_POINTS = 10
+REVERSAL_SL_POINTS = 30
 # ⚠️ కొత్త ఫాల్‌బ్యాక్ ఎంట్రీ లాజిక్ (యూజర్ కోరిక ప్రకారం, 2026-10-14): CE/PE ప్రతి లెగ్ కీ
 # స్వతంత్రంగా (per-leg independent) నిర్ణయం — ఆ లెగ్ యొక్క సొంత వెనుకటి ట్రేడింగ్ డే 10:30
 # High దొరికితే ("first step") పాత SAME-LEG High-బ్రేక్ లాజిక్ (పైన) వర్తిస్తుంది, SL=10
